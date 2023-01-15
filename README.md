@@ -19,7 +19,7 @@ The function `find_best_bridges` takes a list of monsters `deck_monster_names` i
 
 Running the notebook will calculate the best bridges between cards from an example Mathmech deck that also connects the example targets. To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the output bridges, replace the list `required_target_names` with a list of those card's names. If not, you can replace it with the empy list `[]`.
 
-The card names must be typed to exactly match the actual card name, including using capital letters. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
+Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
