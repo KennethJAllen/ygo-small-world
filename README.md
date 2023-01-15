@@ -9,7 +9,7 @@ In theory, Small World can search any monster from your deck and add it to your 
 
 ## Dataset
 
-The card data `cardinfo.php` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+The card data `cardinfo.php.json` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
 
 ## Running the Code
 
