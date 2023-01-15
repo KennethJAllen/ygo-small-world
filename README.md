@@ -11,9 +11,9 @@ In theory, Small World can search any monster from your deck and add it to your 
 
 The Small World bridge finder is run with the `sw-bridge-finder.ipynb` notebook.
 
-The function `find_best_bridges` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards that connect the most number of cards in the deck in addition to connecting the required target cards.
+The function `find_best_bridges` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards that connect the most cards in the deck in addition to connecting the required target cards.
 
-Running the notebook will calculate the best bridges between cards from an example Mathmech deck that also connects the example targets.
+Running the notebook will calculate the best bridges between cards from an example Mathmech deck that also connects the example targets. To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the output bridges, replace the list `required_target_names` with a list of those card's names. If not, you can replace it with the empy list `[]`.
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
