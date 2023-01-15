@@ -19,11 +19,11 @@ Proof: Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from
 
 Consider the adjacency matrix $M$ corresponding to cards in a Mathmech deck.
 
-![Mathmech Deck Adjacency Matrix](https://i.imgur.com/8OwvRNZ.jpg)
+![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.jpg)
 
 Squaring $M$, we get the matrix $M^2$.
 
-![Mathmech Deck Adjacency Matrix Squared](https://i.imgur.com/o7zqP7v.jpg)
+![Mathmech Deck Adjacency Matrix Squared](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix-squared.jpg)
 
 Every entry in the first column corresponding to Mathmech Circular is non-zero except for the entry corresponding to Mathmech Multiplication, which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
