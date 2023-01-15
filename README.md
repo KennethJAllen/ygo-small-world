@@ -7,6 +7,10 @@ The purpose of this repository is to assist in finding the best Small World brid
 
 In theory, Small World can search any monster from your deck and add it to your hand. However, it may not be possible to bridge a card in your hand to the card that you want to search. The first card you reveal in your deck is referred to as the Small World *bridge* which connects the card you reveal in your hand and the card you add to your hand. It is desierable to include cards in your deck that act as bridges between many other cards, but finding an appropriate one can be difficult.
 
+## Dataset
+
+The card data `cardinfo.php` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+
 ## Running the Code
 
 The Small World bridge finder is run with the `sw-bridge-finder.ipynb` notebook.
@@ -14,6 +18,8 @@ The Small World bridge finder is run with the `sw-bridge-finder.ipynb` notebook.
 The function `find_best_bridges` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards that connect the most cards in the deck in addition to connecting the required target cards.
 
 Running the notebook will calculate the best bridges between cards from an example Mathmech deck that also connects the example targets. To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the output bridges, replace the list `required_target_names` with a list of those card's names. If not, you can replace it with the empy list `[]`.
+
+The card names must be typed to exactly match the actual card name, including using capital letters. Exact card names can be found in the [Yu-Gi-Oh card database](https://ygoprodeck.com/card-database/).
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
