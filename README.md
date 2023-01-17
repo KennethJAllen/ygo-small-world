@@ -13,7 +13,7 @@ The card data `cardinfo.php.json` is obtained from the [Yu-Gi-Oh! API](https://y
 
 ## Running the Code
 
-The Small World bridge finder is run with the `sw-bridge-finder.ipynb` notebook.
+The Small World bridge finder is run with the `sw_bridge_finder.ipynb` notebook.
 
 The function `find_best_bridges` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards connect the required target cards, ordered by the number of connections to the deck monsters.
 
