@@ -8,7 +8,8 @@ def sub_df(df, column_values, column_name):
     return df[mask]
 
 def load_main_monsters():
-    with open('cardinfo.php.json') as file_path:
+    #with open('cardinfo.php.json') as file_path:
+    with open('mydata.json') as file_path:
         cards_json = json.load(file_path)
     all_cards = pd.DataFrame(cards_json['data'])
     all_cards = all_cards.rename(columns={'type': 'card_type','race':'type'})
