@@ -21,6 +21,8 @@ Running the notebook will calculate the best bridges between cards from an examp
 
 Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
+To get a list of names from a `.ydk` file, you can simply run the `ydk_to_monster_names` function. An example is given in the notebook.
+
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
 
