@@ -46,10 +46,10 @@ def create_sw_adjacency_matrix(df_cards):
         adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
     return adjacency_matrix
 
-def ydk_to_card_ids(ydk_decklist):
+def ydk_to_card_ids(ydk_file):
     #convers a ydk file to card ids
     card_ids = []
-    with open(ydk_decklist) as f:
+    with open(ydk_file) as f:
         lines = f.readlines()
         for line in lines:
             try:
@@ -59,3 +59,9 @@ def ydk_to_card_ids(ydk_decklist):
             else:
                 card_ids.append(id)
     return card_ids
+
+def ydk_to_monster_names(ydk_file, df_cards):
+    deck_ids = ydk_to_card_ids(ydk_file)
+    df_monsters = sub_df(df_cards, deck_ids, 'id')
+    monster_names = df_monsters['name'].tolist()
+    return monster_names
