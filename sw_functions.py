@@ -4,7 +4,7 @@ import numpy as np
 
 def sub_df(df, column_values, column_name):
     #creates subset of dataframe consisting of rows with column values in column
-    mask = df[column_name].apply(lambda x: any(value for value in column_values if value in x))
+    mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
     return df[mask]
 
 def load_main_monsters():
@@ -31,7 +31,7 @@ def load_main_monsters():
                                 'Pendulum Effect Ritual Monster',
                                 'Pendulum Flip Effect Monster']
     df_main_monsters = sub_df(df_all_cards, main_monster_card_category, 'category').reset_index(drop=True)
-    df_main_monsters = df_main_monsters[['name','type','attribute','level','atk','def']] #keep only relevant columns
+    df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
 def create_sw_adjacency_matrix(df_cards):
@@ -45,3 +45,17 @@ def create_sw_adjacency_matrix(df_cards):
         similarity_measure = card_similarities.astype(int).sum(axis=1)
         adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
     return adjacency_matrix
+
+def ydk_to_card_ids(ydk_decklist):
+    #convers a ydk file to card ids
+    card_ids = []
+    with open(ydk_decklist) as f:
+        lines = f.readlines()
+        for line in lines:
+            try:
+                id = int(line)
+            except:
+                pass
+            else:
+                card_ids.append(id)
+    return card_ids
