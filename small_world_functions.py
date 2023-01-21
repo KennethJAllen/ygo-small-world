@@ -8,7 +8,6 @@ def sub_df(df, column_values, column_name):
     return df[mask]
 
 def load_main_monsters():
-    #with open('cardinfo.php.json') as file_path:
     with open('cardinfo.json') as file_path:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data'])
@@ -34,7 +33,7 @@ def load_main_monsters():
     df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
-def create_sw_adjacency_matrix(df_cards):
+def df_to_small_world_adjacency_matrix(df_cards):
     #creates adjacency matrix corresponding to Small World connections
     #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
     array_cards = df_cards.to_numpy()
