@@ -11,6 +11,21 @@ In theory, Small World can search any monster from your deck and add it to your 
 
 The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
 
+## Installation
+
+*   Get the small world bridge finder source codes
+
+```
+git clone https://github.com/KennethJAllen/YGO-small-world
+cd YGO-small-world
+```
+
+*   Install small world bridge finder dependencies
+
+```
+pip install -r requirements.txt
+```
+
 ## Running the Code
 
 The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
