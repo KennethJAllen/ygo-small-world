@@ -13,7 +13,7 @@ The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygopr
 
 ## Running the Code
 
-The Small World bridge finder is run with the `sw_bridge_finder.ipynb` notebook.
+The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
 
 The function `find_best_bridges` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards connect the required target cards, ordered by the number of connections to the deck monsters.
 
@@ -21,7 +21,7 @@ Running the notebook will calculate the best bridges between cards from an examp
 
 Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
-To get a list of names from a `.ydk` file, you can simply run the `ydk_to_monster_names` function. An example is given in the notebook.
+To get a list of names from a `.ydk` file, you can simply run the `find_best_bridges_from_ydk` function. An example is given in the notebook.
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
