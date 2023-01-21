@@ -1,7 +1,7 @@
 # YGO-small-world
 
 ## Introduction
-The purpose of this repository is to assist in finding the best Small World bridges for any particular deck in the card game *Yu-Gi-Oh*. 
+The purpose of this repository is to assist in finding the best Small World bridges for any particular deck in the card game *Yu-Gi-Oh!*. 
 
 [Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a card which is notorious for being difficult to understand. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card (out of attack, defense, level, type, and attribute), then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
 
