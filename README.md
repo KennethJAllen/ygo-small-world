@@ -25,6 +25,8 @@ Card names must be typed to exactly match the actual card name, including using 
 
 A `.ydk` file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, YGOPRODeck, Duelingbook, and Yu-Gi-Oh! Dueling Nexus. To get a list of bridges from a `.ydk` file, you can simply run the `find_best_bridges_from_ydk(ydk_file)` function. An example is given in the notebook.
 
+Note: Monsters in the side deck are counted as cards that are desierable to find connections to.
+
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
 
