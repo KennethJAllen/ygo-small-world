@@ -21,7 +21,9 @@ Running the notebook will calculate the best bridges between cards from an examp
 
 Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
-To get a list of names from a `.ydk` file, you can simply run the `find_best_bridges_from_ydk` function. An example is given in the notebook.
+### Generate Bridges from YDK File
+
+A `.ydk` file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, YGOPRODeck, Duelingbook, and Yu-Gi-Oh! Dueling Nexus. To get a list of bridges from a `.ydk` file, you can simply run the `find_best_bridges_from_ydk` function. An example is given in the notebook.
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
@@ -33,6 +35,8 @@ Let $N$ be the number of distinct monsters in your deck. Label the distinct mons
 **Theorem: Starting with monster $i$, you can search monster $j$ with Small World if and only if entry $(i,j)$ is non-zero in the matrix $M^2$.**
 
 Proof: Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex $i$ to vertex $j$ in $G$ (see [properties of the adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix)). If entry $(i,j)$ is zero, then there are no bridges between monsters $i$ and $j$. If entry $(i,j)$ is non-zero, then there is at least one bridge from $i$ to $j$, so $j$ can be searched starting with $i$.
+
+To create your own Small World adjacency matrix from a dataframe of monsters
 
 ### Example
 
@@ -47,3 +51,7 @@ Squaring $M$, we get the matrix $M^2$.
 Every entry in the first column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to Mathmech Multiplication, which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
 Moreover, the diagonal entries of $M^2$ are the number of connections a card has to another card in the deck. The diagonal entry corresponding to Effect Veiler is $7$, which means that Effect Veiler connects with $7$ cards in the deck.
+
+### Generate Adjacency Matrix from YDK File
+
+To generate an adjacency matrix from a `.ydk` file, run the `ydk_to_df_adjacency_matrix` function. An example is given in the notebook `small_world_bridge_finder.ipynb`.
