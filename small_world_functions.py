@@ -4,6 +4,7 @@ import numpy as np
 
 def sub_df(df, column_values, column_name):
     #creates subset of dataframe consisting of rows with column values in column
+    df = df.copy()
     mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
     return df[mask]
 
@@ -36,6 +37,7 @@ def load_main_monsters():
 def df_to_small_world_adjacency_matrix(df_cards):
     #creates adjacency matrix corresponding to Small World connections
     #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
+    df_cards = df_cards[['type','attribute','level','atk','def']]
     array_cards = df_cards.to_numpy()
     num_cards = len(df_cards)
     adjacency_matrix = np.zeros((num_cards,num_cards))
