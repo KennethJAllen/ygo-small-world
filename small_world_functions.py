@@ -47,6 +47,9 @@ def df_to_small_world_adjacency_matrix(df_cards):
         adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
     return adjacency_matrix
 
+MAIN_MONSTERS = load_main_monsters()
+SW_ADJACENCY_MATRIX = df_to_small_world_adjacency_matrix(MAIN_MONSTERS) #small world adjacency matrix of all cards
+
 def ydk_to_card_ids(ydk_file):
     #convers a ydk file to card ids
     card_ids = []
@@ -61,14 +64,12 @@ def ydk_to_card_ids(ydk_file):
                 card_ids.append(id)
     return card_ids
 
-def ydk_to_monster_names(ydk_file, df_cards):
+def ydk_to_monster_names(ydk_file):
+    #inputs: ydk file, which consists of card IDs
     deck_ids = ydk_to_card_ids(ydk_file)
-    df_monsters = sub_df(df_cards, deck_ids, 'id')
+    df_monsters = sub_df(MAIN_MONSTERS, deck_ids, 'id')
     monster_names = df_monsters['name'].tolist()
     return monster_names
-
-MAIN_MONSTERS = load_main_monsters()
-SW_ADJACENCY_MATRIX = df_to_small_world_adjacency_matrix(MAIN_MONSTERS) #small world adjacency matrix of all cards
 
 def find_best_bridges(deck_monster_names, required_target_names=[]):
     #inputs: list of monster names and list of monsters that are required to connect with the small world bridges
@@ -99,7 +100,7 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     return df_bridges
 
 def find_best_bridges_from_ydk(ydk_file):
-    deck_monster_names = ydk_to_monster_names(ydk_file, MAIN_MONSTERS)
+    deck_monster_names = ydk_to_monster_names(ydk_file)
     df_bridges = find_best_bridges(deck_monster_names)
     return df_bridges
 
@@ -111,7 +112,7 @@ def monster_names_to_df(card_names):
 def ydk_to_df_adjacency_matrix(ydk_file, squared=False):
     #input: ydk file of deck. Optional parameter to square resulting matrix
     #output: adjacency matrix dataframe
-    card_names = ydk_to_monster_names(ydk_file, MAIN_MONSTERS)
+    card_names = ydk_to_monster_names(ydk_file)
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_small_world_adjacency_matrix(df_cards)
     if squared==True:
