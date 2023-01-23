@@ -1,11 +1,12 @@
 # YGO-small-world
 
-## Introduction
-The purpose of this repository is to assist in finding the best Small World bridges for any particular deck in the card game *Yu-Gi-Oh!*. 
+[Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a *Yu-Gi-Oh!* card which is notorious for being difficult to understand. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card out of attack, defense, level, type, and attribute, then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
 
-[Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a card which is notorious for being difficult to understand. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card (out of attack, defense, level, type, and attribute), then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
+In theory, Small World can search any monster from your deck and add it to your hand. However, it may not be possible to bridge a card in your hand to the card that you want to search. The first card you reveal in your deck is referred to as the Small World *bridge* which connects the card you reveal in your hand and the card you add to your hand.
 
-In theory, Small World can search any monster from your deck and add it to your hand. However, it may not be possible to bridge a card in your hand to the card that you want to search. The first card you reveal in your deck is referred to as the Small World *bridge* which connects the card you reveal in your hand and the card you add to your hand. It is desierable to include cards in your deck that act as bridges between many other cards, but finding an appropriate one can be difficult.
+If you use Small World, it is generally desirable to include one or more dedicated Small World bridges that connects many cards in your deck so you have plenty of options for what to search starting from any card. However, such cards are difficult to find due to the many ways that cards can be considered connected via Small World. Because of the difficulty in optimizing a deck for Small World, there is a high barrier of entry to use the card.
+
+The purpose of this repository is to assist in finding the best Small World bridges for any deck.
 
 ## Dataset
 
@@ -28,17 +29,25 @@ pip install -r requirements.txt
 
 ## Running the Code
 
-The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
+*   The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
 
-The function `find_best_bridges(deck_monster_names, required_target_names)` takes a list of monsters `deck_monster_names` in your main deck, as well as a list of monsters `required_target_names` that are required to connect to a particular bridge, either as search targets or starting cards. The outputs are the cards connect the required target cards, ordered by the number of connections to the deck monsters.
+*   Run the cell under the `Import Functions` header first.
 
-Running the notebook will calculate the best bridges between cards from an example Mathmech deck that also connects the example targets. To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the output bridges, replace `required_target_names` with a list of those card's names. If not, you can replace it with the empy list.
+### Find Bridges From List of Names
 
-Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
+*   Running the cell under the `Find Best Bridges From List of Names` markdwon will calculate the best bridges between cards from an example Mathmech deck.
 
-### Generate Bridges from YDK File
+*   To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the output bridges, replace `required_target_names` with a list of those card's names. If not, you can replace it with the empy list.
 
-A `.ydk` file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, YGOPRODeck, Duelingbook, and Yu-Gi-Oh! Dueling Nexus. To get a list of bridges from a `.ydk` file, you can simply run the `find_best_bridges_from_ydk(ydk_file)` function. An example is given in the notebook.
+*   Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
+
+### Find Bridges From YDK File
+
+A YDK file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, Duelingbook, and Dueling Nexus.
+
+*   Running the cell under the `Find Best Bridges From YDK File` markdwon will calculate the best bridges between cards from an example Mathmech deck from a YDK file.
+
+*   To get a list of bridges from your YDK file, add your file to the `YGO-small-world` folder. Then replace `mathmech_deck.ydk` with the name of your YDK file.
 
 Note: Monsters in the side deck are counted as cards that are desierable to find connections to.
 
@@ -71,4 +80,4 @@ Moreover, the diagonal entries of $M^2$ are the number of connections a card has
 
 ### Generate Adjacency Matrix from YDK File
 
-To generate an adjacency matrix from a `.ydk` file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
+To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
