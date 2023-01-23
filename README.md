@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 *   Running the cell under the `Find Best Bridges From List of Names` markdwon will calculate the best bridges between cards from an example Mathmech deck.
 
-*   To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the bridges, replace `required_target_names` with a list of those card's names. If not, you can replace it with the empy list.
+*   To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the bridges, replace `required_target_names` with a list of those card's names. If not, you can replace it with the empy list `[]`.
 
 *   Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
