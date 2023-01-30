@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 A YDK file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, Duelingbook, and Dueling Nexus.
 
-*   Running the cell under the `Find Best Bridges From YDK File` markdwon will calculate the best bridges between cards from an example Mathmech deck from a YDK file.
+*   Running the cell under the `Find Best Bridges From YDK File` markdown will calculate the best bridges between cards from an example Mathmech deck from a YDK file.
 
 *   To get a list of bridges from your YDK file, add your file to the `YGO-small-world` folder. Then replace `mathmech_deck.ydk` with the name of your YDK file. Note: Monsters in the side deck are counted as cards that are desierable to find connections to.
 
