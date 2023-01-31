@@ -85,17 +85,17 @@ Then the graph of connections via Small World can be visualized as follows.
 
 ![Mathmech Deck Graph](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-graph.png)
 
-The adjacency matrix corresponding to cards in a Mathmech deck is the following matrix $M$.
+The adjacency matrix corresponding to cards in a Mathmech deck is the following matrix. If an entry is black, that means the corresponding cards connect via Small World. If an entry is white, that means there is no connection.
 
-![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.jpg)
+![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.png)
 
-Squaring $M$, we get the matrix $M^2$.
+Squaring the adjacency matrix, we get the following. If an entry is non-white, that means that one corresponding card can be searched from the other. The darker the color, the more connecting bridges the two cards have.
 
-![Mathmech Deck Adjacency Matrix Squared](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix-squared.jpg)
+![Mathmech Deck Adjacency Matrix Squared](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix-squared.png)
 
-Every entry in the first column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to Mathmech Multiplication, which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
+Every entry in the column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to [Mathmech Multiplication](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=14748), which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
-Moreover, the diagonal entries of $M^2$ are the number of connections a card has to another card in the deck. The diagonal entry corresponding to Effect Veiler is $7$, which means that Effect Veiler connects with $7$ cards in the deck.
+Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
 ### Generate Adjacency Matrix from YDK File
 
