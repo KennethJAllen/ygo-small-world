@@ -91,7 +91,7 @@ The adjacency matrix corresponding to cards in a Mathmech deck is the following 
 
 ![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.png)
 
-Squaring the adjacency matrix, we get the following. If an entry is non-white, that means that one corresponding card can be searched from the other. The darker the color, the more connecting bridges the two cards have.
+Squaring the adjacency matrix, we get the following figure. If an entry is non-white, that means that one corresponding card can be searched from the other. The darker the color, the more connecting bridges the two cards have.
 
 ![Mathmech Deck Adjacency Matrix Squared](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix-squared.png)
 
