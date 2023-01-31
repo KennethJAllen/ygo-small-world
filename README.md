@@ -85,7 +85,7 @@ Then the graph of connections via Small World can be visualized as follows.
 
 ![Mathmech Deck Graph](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-graph.png)
 
-Consider the adjacency matrix $M$ corresponding to cards in a Mathmech deck.
+The adjacency matrix $M$ corresponding to cards in a Mathmech deck is the following matrix $M$.
 
 ![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.jpg)
 
