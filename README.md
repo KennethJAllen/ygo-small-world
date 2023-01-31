@@ -79,7 +79,7 @@ Consider a Mathmech deck consisting of the monsters
 'Mathmech Subtraction',
 'Nibiru, the Primal Being',
 'PSY-Frame Driver',
-'PSY-Framegear Gamma'
+'PSY-Framegear Gamma'.
 ```
 Then the graph of connections via Small World can be visualized as follows.
 
