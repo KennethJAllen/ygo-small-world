@@ -31,6 +31,8 @@ pip install -r requirements.txt
 
 *   The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
 
+*   If the card info is not up to date, current card info can be pulled with `fetch_card_data.py`.
+
 *   Run the cell under the `Import Functions` header first.
 
 ### Find Bridges From List of Names
