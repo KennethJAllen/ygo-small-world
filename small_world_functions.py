@@ -105,7 +105,6 @@ def find_best_bridges_from_ydk(ydk_file):
     return df_bridges
 
 def monster_names_to_df(card_names):
-    #input: list of card names. output: dataframe of card names
     df_cards = sub_df(MAIN_MONSTERS, card_names, 'name')
     return df_cards
 
@@ -113,6 +112,14 @@ def ydk_to_df_adjacency_matrix(ydk_file, squared=False):
     #input: ydk file of deck. Optional parameter to square resulting matrix
     #output: adjacency matrix dataframe
     card_names = ydk_to_monster_names(ydk_file)
+    df_cards = monster_names_to_df(card_names)
+    adjacency_matrix = df_to_small_world_adjacency_matrix(df_cards)
+    if squared==True:
+        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+    df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
+    return df_adjacency_matrix
+
+def monster_names_to_df_adjacency_matrix(card_names, squared=False):
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_small_world_adjacency_matrix(df_cards)
     if squared==True:
