@@ -64,6 +64,27 @@ To create your own Small World adjacency matrix from a dataframe of monsters
 
 ### Example
 
+Consider a Mathmech deck consisting of the monsters
+```
+'Ash Blossom & Joyous Spring',
+'D.D. Crow',
+'Effect Veiler',
+'Ghost Belle & Haunted Mansion',
+'Mathmech Addition',
+'Mathmech Circular',
+'Mathmech Diameter',
+'Mathmech Multiplication',
+'Mathmech Nabla',
+'Mathmech Sigma',
+'Mathmech Subtraction',
+'Nibiru, the Primal Being',
+'PSY-Frame Driver',
+'PSY-Framegear Gamma'
+```
+Then the graph of connections via Small World can be visualized as follows.
+
+![Mathmech Deck Graph](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-graph.png)
+
 Consider the adjacency matrix $M$ corresponding to cards in a Mathmech deck.
 
 ![Mathmech Deck Adjacency Matrix](https://github.com/KennethJAllen/YGO-small-world/blob/main/images/mathmech-adjacency-matrix.jpg)
