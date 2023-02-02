@@ -35,7 +35,7 @@ def load_main_monsters():
     df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
-def df_to_adjacency_array(df_cards):
+def df_to_adjacency_matrix(df_cards):
     #creates adjacency array corresponding to Small World connections
     #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
     df_cards = df_cards[['type','attribute','level','atk','def']]
@@ -49,7 +49,7 @@ def df_to_adjacency_array(df_cards):
     return adjacency_matrix
 
 MAIN_MONSTERS = load_main_monsters()
-SW_ADJACENCY_MATRIX = df_to_adjacency_array(MAIN_MONSTERS) #small world adjacency array of all cards
+SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
 
 def monster_names_to_df(card_names):
     #converts list of monster names into a dataframe of those monsters
@@ -117,19 +117,19 @@ def find_best_bridges_from_ydk(ydk_file):
 
 #### Generate Adjacency Matrix Functions
 
-def monster_names_to_adjacency_matrix(card_names, squared=False):
+def names_to_labeled_adjacency_matrix(card_names, squared=False):
     #input: list of monster names. Optional parameter to square resulting matrix
     #output: adjacency matrix dataframe
     df_cards = monster_names_to_df(card_names)
-    adjacency_matrix = df_to_adjacency_array(df_cards)
+    adjacency_matrix = df_to_adjacency_matrix(df_cards)
     if squared==True:
         adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
     df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
     return df_adjacency_matrix
 
-def ydk_to_adjacency_matrix(ydk_file, squared=False):
+def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
     #input: ydk file of deck. Optional parameter to square resulting matrix
     #output: adjacency matrix dataframe
     card_names = ydk_to_monster_names(ydk_file)
-    df_adjacency_matrix = monster_names_to_adjacency_matrix(card_names, squared=squared)
+    df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
     return df_adjacency_matrix
