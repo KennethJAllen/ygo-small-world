@@ -16,45 +16,33 @@ def load_main_monsters():
     df_all_cards = df_all_cards.rename(columns={'type': 'category','race':'type'})
 
     main_monster_card_category = ['Effect Monster',
-                                'Normal Monster',
-                                'Flip Effect Monster',
-                                'Union Effect Monster',
-                                'Pendulum Effect Monster',
-                                'Tuner Monster',
-                                'Gemini Monster',
-                                'Normal Tuner Monster',
-                                'Spirit Monster',
-                                'Ritual Effect Monster',
-                                'Ritual Monster',
-                                'Toon Monster',
-                                'Pendulum Normal Monster',
-                                'Pendulum Tuner Effect Monster',
-                                'Pendulum Effect Ritual Monster',
-                                'Pendulum Flip Effect Monster']
+                                    'Normal Monster',
+                                    'Flip Effect Monster',
+                                    'Union Effect Monster',
+                                    'Pendulum Effect Monster',
+                                    'Tuner Monster',
+                                    'Gemini Monster',
+                                    'Normal Tuner Monster',
+                                    'Spirit Monster',
+                                    'Ritual Effect Monster',
+                                    'Ritual Monster',
+                                    'Toon Monster',
+                                    'Pendulum Normal Monster',
+                                    'Pendulum Tuner Effect Monster',
+                                    'Pendulum Effect Ritual Monster',
+                                    'Pendulum Flip Effect Monster']
     df_main_monsters = sub_df(df_all_cards, main_monster_card_category, 'category').reset_index(drop=True) #only keep main deck monsters
     df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
-def df_to_adjacency_matrix(df_cards):
-    #creates adjacency array corresponding to Small World connections
-    #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
-    df_cards = df_cards[['type','attribute','level','atk','def']]
-    array_cards = df_cards.to_numpy()
-    num_cards = len(df_cards)
-    adjacency_matrix = np.zeros((num_cards,num_cards))
-    for i in range(num_cards):
-        card_similarities = array_cards==array_cards[i]
-        similarity_measure = card_similarities.astype(int).sum(axis=1)
-        adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
-    return adjacency_matrix
-
 MAIN_MONSTERS = load_main_monsters()
-SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
 
 def monster_names_to_df(card_names):
     #converts list of monster names into a dataframe of those monsters
     df_cards = sub_df(MAIN_MONSTERS, card_names, 'name')
     return df_cards
+
+#### READING YDK FILES ####
 
 def ydk_to_card_ids(ydk_file):
     #convers a ydk file to card ids
@@ -78,7 +66,43 @@ def ydk_to_monster_names(ydk_file):
     monster_names = df_monsters['name'].tolist()
     return monster_names
 
-#### Bridge Finding Functions
+#### ADJACENCY MATRICES GENERATION ####
+
+def df_to_adjacency_matrix(df_cards, squared=False):
+    #creates adjacency array corresponding to Small World connections
+    #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
+    df_cards = df_cards[['type','attribute','level','atk','def']]
+    array_cards = df_cards.to_numpy()
+    num_cards = len(df_cards)
+    adjacency_matrix = np.zeros((num_cards,num_cards))
+    for i in range(num_cards):
+        card_similarities = array_cards==array_cards[i]
+        similarity_measure = card_similarities.astype(int).sum(axis=1)
+        adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
+    if squared==True:
+        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+    return adjacency_matrix
+
+SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
+
+def names_to_labeled_adjacency_matrix(card_names, squared=False):
+    #input: list of monster names. Optional parameter to square resulting matrix
+    #output: adjacency matrix dataframe
+    df_cards = monster_names_to_df(card_names)
+    adjacency_matrix = df_to_adjacency_matrix(df_cards)
+    if squared==True:
+        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+    df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
+    return df_adjacency_matrix
+
+def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
+    #input: ydk file of deck. Optional parameter to square resulting matrix
+    #output: adjacency matrix dataframe
+    card_names = ydk_to_monster_names(ydk_file)
+    df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
+    return df_adjacency_matrix
+
+#### BRIDGE FINDING ####
 
 def find_best_bridges(deck_monster_names, required_target_names=[]):
     #inputs: list of monster names and list of monsters that are required to connect with the small world bridges
@@ -115,21 +139,4 @@ def find_best_bridges_from_ydk(ydk_file):
     df_bridges = find_best_bridges(deck_monster_names)
     return df_bridges
 
-#### Generate Adjacency Matrix Functions
-
-def names_to_labeled_adjacency_matrix(card_names, squared=False):
-    #input: list of monster names. Optional parameter to square resulting matrix
-    #output: adjacency matrix dataframe
-    df_cards = monster_names_to_df(card_names)
-    adjacency_matrix = df_to_adjacency_matrix(df_cards)
-    if squared==True:
-        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
-    df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
-    return df_adjacency_matrix
-
-def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
-    #input: ydk file of deck. Optional parameter to square resulting matrix
-    #output: adjacency matrix dataframe
-    card_names = ydk_to_monster_names(ydk_file)
-    df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
-    return df_adjacency_matrix
+#### IMAGE GENERATION ####
