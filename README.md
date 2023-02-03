@@ -54,11 +54,11 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 ### Image Generation and Visualization
 
-* To generate Small World graph and matrix visualizations from a YDK file or list of cards, use the `small_world_generate_images` notebook.
+*   To generate Small World graph and matrix visualizations from a YDK file or list of cards, use the `small_world_generate_images` notebook.
 
 ### Generate Adjacency Matrix from YDK File
 
-To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
+*   To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
 
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
