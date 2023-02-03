@@ -99,6 +99,10 @@ Every entry in the column corresponding to [Mathmech Circular](https://www.db.yu
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
+## Image Generation
+
+* To generate Small World graph and matrix visualizations with a YDK file or list of cards, use the `small_world_generate_images` notebook.
+
 ### Generate Adjacency Matrix from YDK File
 
 To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
