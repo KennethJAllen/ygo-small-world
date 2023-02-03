@@ -54,7 +54,7 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 ### Image Generation and Visualization
 
-*   To generate Small World graph and matrix visualizations from a YDK file or list of cards, use the `small_world_generate_images` notebook.
+*   To generate Small World graph and matrix visualizations such as the examples below from a YDK file or list of cards, use the `small_world_generate_images` notebook.
 
 ### Generate Adjacency Matrix from YDK File
 
