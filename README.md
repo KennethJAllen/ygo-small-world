@@ -51,6 +51,15 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 *   To get a list of bridges from your YDK file, add your file to the `YGO-small-world` folder. Then replace `mathmech_deck.ydk` with the name of your YDK file. Note: Monsters in the side deck are counted as cards that are desierable to find connections to.
 
+
+### Image Generation and Visualization
+
+* To generate Small World graph and matrix visualizations from a YDK file or list of cards, use the `small_world_generate_images` notebook.
+
+### Generate Adjacency Matrix from YDK File
+
+To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
+
 ## Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
 
@@ -98,11 +107,3 @@ Squaring the adjacency matrix, we get the following figure. If an entry is non-w
 Every entry in the column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) in red is non-zero except for the entry corresponding to [Mathmech Multiplication](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=14748), which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
-
-## Image Generation
-
-* To generate Small World graph and matrix visualizations with a YDK file or list of cards, use the `small_world_generate_images` notebook.
-
-### Generate Adjacency Matrix from YDK File
-
-To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
