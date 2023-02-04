@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import networkx as nx
 import requests
+from functools import cache
 from PIL import Image
 from io import BytesIO
 
@@ -156,6 +157,7 @@ def names_to_image_urls(card_names):
     urls = df_deck_images['card_images'].tolist()
     return urls
 
+@cache
 def load_image(url): 
     res = requests.get(url)
     imgage = np.array(Image.open(BytesIO(res.content)))
@@ -279,6 +281,7 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
                     #greyscale cell color
                     cell_brightness_max = 220
                     matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,:] = cell_brightness_max*(1-matrix_entry/matrix_maximum)
+                    
     full_image[CARD_SIZE:,CARD_SIZE:,:] = matrix_subimage
 
     full_image = full_image.astype(np.uint8)
