@@ -90,6 +90,11 @@ def df_to_adjacency_matrix(df_cards, squared=False):
         adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
     return adjacency_matrix
 
+def names_to_adjacency_matrix(card_names, squared=False):
+    df_cards = monster_names_to_df(card_names)
+    adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
+    return adjacency_matrix
+
 SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
 
 def names_to_labeled_adjacency_matrix(card_names, squared=False):
@@ -127,15 +132,34 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     required_bridge_indices = df_bridges.index #indices of monsters that satisfy all required connections
     if len(df_bridges)==0:
         print('There are no monsters that bridge all required targets.')
-        return
+        return 
     #subset of adjacency matrix corresponding to (deck monsters) by (monsters with connections to the required cards)
     bridge_matrix = SW_ADJACENCY_MATRIX[deck_indices,:][:,required_bridge_indices]
 
     num_deck_bridges = bridge_matrix.sum(axis=0)
     df_bridges['number_of_connections'] = num_deck_bridges
+
+    #calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included ...
+    # ... divided by square of num cards in deck + 1
+    adjacency_matrix = names_to_adjacency_matrix(deck_monster_names)
+    adjacency_matrix_squared = names_to_adjacency_matrix(deck_monster_names, squared=True)
+
+    num_deck_cards = bridge_matrix.shape[0]
+    i,j = np.mgrid[0:num_deck_cards,0:num_deck_cards]
+    outer_product_tensor = bridge_matrix[i] * bridge_matrix[j] #outer product of connection vectors
+    deck_connection_tensor = outer_product_tensor + adjacency_matrix_squared[:,:,np.newaxis] #A^2 + x(x.T) for all connection vectors x
+    deck_connectivity = deck_connection_tensor.astype(bool).astype(int).sum(axis=(0,1)) #number of non-zero elements in each slice
+
+    bridge_connection_matrix = adjacency_matrix @ bridge_matrix
+    bridge_connectivity = bridge_connection_matrix.astype(bool).astype(int).sum(axis=0) #num non-zero elements in each row
+
+    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2)
+    df_bridges['bridge_score'] = bridge_score
+
+    #assemble df
     df_bridges = df_bridges[df_bridges['number_of_connections'] > 0]
-    df_bridges = df_bridges[['number_of_connections', 'name', 'type', 'attribute', 'level', 'atk', 'def']] #reorder columns
-    df_bridges = df_bridges.sort_values(by=['number_of_connections','name'], ascending=[False, True]).reset_index(drop=True) #reorder rows
+    df_bridges = df_bridges[['bridge_score', 'number_of_connections', 'name', 'type', 'attribute', 'level', 'atk', 'def']] #reorder columns
+    df_bridges = df_bridges.sort_values(by=['bridge_score','number_of_connections','name'], ascending=[False, False, True]).reset_index(drop=True) #reorder rows
     return df_bridges
 
 def find_best_bridges_from_ydk(ydk_file):
