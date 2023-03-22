@@ -153,7 +153,7 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     bridge_connection_matrix = adjacency_matrix @ bridge_matrix
     bridge_connectivity = bridge_connection_matrix.astype(bool).astype(int).sum(axis=0) #num non-zero elements in each row
 
-    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2)
+    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2) #formula derived from block matrix multiplication
     df_bridges['bridge_score'] = bridge_score
 
     #assemble df
