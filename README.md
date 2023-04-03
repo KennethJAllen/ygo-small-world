@@ -60,19 +60,6 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 *   To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
 
-## Small World Mathematics
-We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
-
-We can model the monsters in a deck as the vertices of an undirected graph $G$. Define an edge between monsters $i$ and $j$ if they are a valid connections between each other for Small World. e.g. [Ash Blossom](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=12950) and [Effect Veiler](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=8933) would have an edge connecting them because they the same attack but have different types, attributes, defense, and level. However, Ash Blossom and [Ghost Belle](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=13587) would not have an edge connecting them 
-
-Let $N$ be the number of distinct monsters in your deck. Label the distinct monsters in your deck $1$ through $N$. e.g. 'Ash Blossom' $= 1$, 'Effect Veiler' $= 2$, 'Ghost Belle' $= 3$, etc. Let $M$ be the $N \times N$ adjacency matrix of the graph $G$. There is a one in entry $(i,j)$ in $M$ if there is an edge between monster $i$ and monster $j$, with zeros everywhere else. In other words, there is a $1$ in entry $(i,j)$ if monster $i$ and monster $j$ connect through Small World. In this case, entry $(1,2)$ would have a $1$ because Ash Blossom and Effect Veiler connect, but entry $(1,3)$ would be $0$ because Ash Blossom and Ghost Belle do not connect because they have the same level, attack, defense, and type.
-
-**Theorem: Starting with monster $i$, you can search monster $j$ with Small World if and only if entry $(i,j)$ is non-zero in the matrix $M^2$.**
-
-Proof: Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex $i$ to vertex $j$ in $G$ (see [properties of the adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix)). If entry $(i,j)$ is zero, then there are no bridges between monsters $i$ and $j$. If entry $(i,j)$ is non-zero, then there is at least one bridge from $i$ to $j$, so $j$ can be searched starting with $i$.
-
-To create your own Small World adjacency matrix from a dataframe of monsters
-
 ### Example
 
 Consider a Mathmech deck consisting of the monsters
@@ -107,3 +94,36 @@ Squaring the adjacency matrix, we get the following figure. If an entry is non-w
 Every entry in the column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to [Mathmech Multiplication](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=14748), which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
+
+## Small World Mathematics
+We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
+
+We can model the monsters in a deck as the vertices of an undirected graph $G$. Define an edge between monsters $i$ and $j$ if they are a valid connections between each other for Small World. e.g. [Ash Blossom](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=12950) and [Effect Veiler](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=8933) would have an edge connecting them because they the same attack but have different types, attributes, defense, and level. However, Ash Blossom and [Ghost Belle](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=13587) would not have an edge connecting them 
+
+Let $N$ be the number of distinct monsters in your deck. Label the distinct monsters in your deck $1$ through $N$. e.g. 'Ash Blossom' $= 1$, 'Effect Veiler' $= 2$, 'Ghost Belle' $= 3$, etc. Let $M$ be the $N \times N$ adjacency matrix of the graph $G$. There is a one in entry $(i,j)$ in $M$ if there is an edge between monster $i$ and monster $j$, with zeros everywhere else. In other words, there is a $1$ in entry $(i,j)$ if monster $i$ and monster $j$ connect through Small World. In this case, entry $(1,2)$ would have a $1$ because Ash Blossom and Effect Veiler connect, but entry $(1,3)$ would be $0$ because Ash Blossom and Ghost Belle do not connect because they have the same level, attack, defense, and type.
+
+### Theorem: Starting with monster $i$, you can search monster $j$ with Small World if and only if entry $(i,j)$ is non-zero in the matrix $M^2$.**
+
+### Proof: Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex $i$ to vertex $j$ in $G$ (see [properties of the adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix)). If entry $(i,j)$ is zero, then there are no bridges between monsters $i$ and $j$. If entry $(i,j)$ is non-zero, then there is at least one bridge from $i$ to $j$, so $j$ can be searched starting with $i$.
+
+### Calculating the Small World Bridge Score
+
+When using the `small_world_bridge_finder` notebook, there is a `bridge_score` output for each potential bridge to add to a deck. The score is a way of measuring the resulting connectivity of your deck after adding that bridge. A score of $1$ means that every card is searchable from every other card, and a bridge score of $0$ means that there are no cards you can search with Small World, no matter what card you start with.
+
+More specifically, the bridge score for any particular bridge is the number of cards in the deck, including the bridge, which are searchable starting from other cards in the deck, including the bridge, divided by $(N+1)^2$.
+
+In more mathematical terms, consider a potential bridge $b$. Let $M$ be the adjacency matrix generated by the input deck. Let $B$ be the $N \times 1$ bridge vector which has a $1$ in entry $i$ if card $i$ in the deck connects to the bridge and is zero otherwise. Then the adjacency matrix for the deck, including the bridge $b$, is the $(N+1) \times (N+1)$ matrix
+
+```math
+M_b = \begin{bmatrix}M & B\\B^\top & 0\end{bmatrix}.
+```
+
+Then the bridge score is calculated as the number of non-zero terms in $M_b^2$ divided by $(N+1)^2$.
+
+Because of the block matrix structure of $M_b$, we can express its square as
+
+```math
+M_b^2 = \begin{bmatrix}M^2 + BB^\top & MB\\B^\top M & B^\top B\end{bmatrix}.
+```
+
+Because $M$ is symmetric, $B^\top M = (MB)^\top$. So to calculate $M_b^2$ we only need to calculate $M^2$ once. Then for each potential bridge $b$, we calculate $BB^\top$, $MB$, and $B^\top B$, which is significantly faster than calculating the full matrix multiplication for $M_b^2$ for each bridge $b$.
