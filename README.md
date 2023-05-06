@@ -130,4 +130,6 @@ Because of the block matrix structure of $M_b$, we can express its square as
 M_b^2 = \begin{bmatrix}M^2 + xx^\top & Mx\\x^\top M & x^\top x\end{bmatrix}.
 ```
 
-Because $M$ is symmetric, $x^\top M = (Mx)^\top$. So to calculate $M_b^2$ we only need to calculate $M^2$ once. Then for each potential bridge $b$, we calculate $xx^\top$, $Mx$, and $x^\top x$, which is significantly faster than calculating the full matrix multiplication for $M_b^2$ for each bridge $b$.
+Because $M$ is symmetric, $x^\top M = (Mx)^\top$. So to calculate $M_b^2$ we only need to calculate $M^2$ once. Then for each potential bridge $b$, we calculate $xx^\top$, $Mx$, and $x^\top x$.
+
+If there are $n$ possible bridges $b$, then calculating the Small World bridge score for every bridge with this approach only takes $O(nN^2)$ multiplications. This is much better than the naive approach of performing the full matrix multiplication for $M_b^2$ for each bridge $b$, which would take $O(nN^3)$ multiplications.
