@@ -96,7 +96,7 @@ Every entry in the column corresponding to [Mathmech Circular](https://www.db.yu
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
 ## Small World Mathematics
-We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched starting from any card.
+We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched via Small World starting from any card.
 
 We can model the monsters in a deck as the vertices of an undirected graph $G$. Define an edge between monsters $i$ and $j$ if they are a valid connections between each other for Small World. e.g. [Ash Blossom](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=12950) and [Effect Veiler](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=8933) would have an edge connecting them because they the same attack but have different types, attributes, defense, and level. However, Ash Blossom and [Ghost Belle](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=13587) would not have an edge connecting them 
 
@@ -122,7 +122,7 @@ In more mathematical terms, consider a potential bridge $b$. Let $M$ be the adja
 M_b = \begin{bmatrix}M & x\\x^\top & 0\end{bmatrix}.
 ```
 
-Then the bridge score is calculated as the number of non-zero terms in $M_b^2$ divided by $(N+1)^2$.
+Then the bridge score is calculated as the number of non-zero elements in $M_b^2$ divided by $(N+1)^2$.
 
 Because of the block matrix structure of $M_b$, we can express its square as
 
