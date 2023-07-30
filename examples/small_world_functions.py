@@ -253,7 +253,7 @@ def matrix_to_graph_image(connection_matrix, card_images):
         a.imshow(G.nodes[n]['image'])
         a.axis('off')
     ax.axis('off')
-    plt.savefig('example-images\small-wolrd-graph.png', dpi=450)
+    plt.savefig('images\small-wolrd-graph.png', dpi=450)
     plt.show()
 
 def names_to_graph_image(card_names):
@@ -315,9 +315,9 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
     ax = plt.subplot(111)
     ax.axis('off')
     if squared==False:
-        plt.savefig('example-images\small-world-matrix.png', dpi=450, bbox_inches='tight')
+        plt.savefig('images\small-world-matrix.png', dpi=450, bbox_inches='tight')
     else:
-        plt.savefig('example-images\small-world-matrix-squared.png', dpi=450, bbox_inches='tight')
+        plt.savefig('images\small-world-matrix-squared.png', dpi=450, bbox_inches='tight')
     plt.show()
 
 def names_to_matrix_image(card_names, squared=False):
