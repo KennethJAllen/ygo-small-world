@@ -24,7 +24,7 @@ cd YGO-small-world
 *   Install small world bridge finder dependencies
 
 ```
-pip install -r requirements.txt
+poetry install
 ```
 
 ## Running the Code

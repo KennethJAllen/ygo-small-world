@@ -1,4 +1,5 @@
 import json
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,7 +18,11 @@ def sub_df(df, column_values, column_name):
 
 def load_main_monsters():
     #loads dataframe of all main deck monsters
-    with open('cardinfo.json') as file_path:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    cardinfo_path = os.path.join(current_dir, "cardinfo.json")
+
+    # Load the contents of cardinfo.json
+    with open(cardinfo_path, "r") as file_path:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data'])
     df_all_cards = df_all_cards.rename(columns={'type': 'category','race':'type'})
@@ -172,7 +177,11 @@ def find_best_bridges_from_ydk(ydk_file):
 #### GET CARD IMAGES ####
 
 def names_to_image_urls(card_names):
-    with open('cardinfo.json') as file_path:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    cardinfo_path = os.path.join(current_dir, "cardinfo.json")
+
+    # Load the contents of cardinfo.json
+    with open(cardinfo_path, "r") as file_path:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data']) #dataframe of all cards to get image links
 
