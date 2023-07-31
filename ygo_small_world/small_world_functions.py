@@ -10,13 +10,17 @@ from PIL import Image
 from io import BytesIO
 
 def sub_df(df, column_values, column_name):
-    #creates subset of dataframe consisting of rows with column_values in column
+    """
+    creates subset of dataframe consisting of rows with column_values in column
+    """
     df = df.copy()
     mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
     return df[mask]
 
 def load_main_monsters():
-    #loads dataframe of all main deck monsters
+    """
+    loads dataframe of all main deck monsters
+    """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     cardinfo_path = os.path.join(current_dir, "cardinfo.json")
 
@@ -49,14 +53,18 @@ def load_main_monsters():
 MAIN_MONSTERS = load_main_monsters()
 
 def monster_names_to_df(card_names):
-    #converts list of monster names into a dataframe of those monsters
+    """
+    converts list of monster names into a dataframe of those monsters
+    """
     df_cards = sub_df(MAIN_MONSTERS, card_names, 'name')
     return df_cards
 
 #### READ YDK FILES ####
 
 def ydk_to_card_ids(ydk_file):
-    #convers a ydk file to card ids
+    """
+    convers a ydk file to card ids
+    """
     card_ids = []
     with open(ydk_file) as f:
         lines = f.readlines()
@@ -70,8 +78,10 @@ def ydk_to_card_ids(ydk_file):
     return card_ids
 
 def ydk_to_monster_names(ydk_file):
-    #input: ydk file, which consists of card IDs
-    #output: list of names of main deck monsters in ydk file
+    """
+    input: ydk file, which consists of card IDs
+    output: list of names of main deck monsters in ydk file
+    """
     card_ids = ydk_to_card_ids(ydk_file)
     df_monsters = sub_df(MAIN_MONSTERS, card_ids, 'id')
     monster_names = df_monsters['name'].tolist()
@@ -80,8 +90,10 @@ def ydk_to_monster_names(ydk_file):
 #### ADJACENCY MATRIX GENERATION ####
 
 def df_to_adjacency_matrix(df_cards, squared=False):
-    #creates adjacency array corresponding to Small World connections
-    #two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
+    """
+    creates adjacency array corresponding to Small World connections
+    two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
+    """
     df_cards = df_cards[['type','attribute','level','atk','def']]
     array_cards = df_cards.to_numpy()
     num_cards = len(df_cards)
@@ -102,8 +114,10 @@ def names_to_adjacency_matrix(card_names, squared=False):
 SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
 
 def names_to_labeled_adjacency_matrix(card_names, squared=False):
-    #input: list of monster names. Optional parameter to square resulting matrix
-    #output: adjacency matrix dataframe
+    """
+    input: list of monster names. Optional parameter to square resulting matrix
+    output: adjacency matrix dataframe
+    """
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards)
     if squared==True:
@@ -112,8 +126,10 @@ def names_to_labeled_adjacency_matrix(card_names, squared=False):
     return df_adjacency_matrix
 
 def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
-    #input: ydk file of deck. Optional parameter to square resulting matrix
-    #output: adjacency matrix dataframe
+    """
+    input: ydk file of deck. Optional parameter to square resulting matrix
+    output: adjacency matrix dataframe
+    """
     card_names = ydk_to_monster_names(ydk_file)
     df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
     return df_adjacency_matrix
@@ -121,8 +137,10 @@ def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
 #### BRIDGE FINDING ####
 
 def find_best_bridges(deck_monster_names, required_target_names=[]):
-    #inputs: list of monster names and list of monsters that are required to connect with the small world bridges
-    #output: The bridges that connect the most cards in your deck and connect with all the required targets
+    """
+    inputs: list of monster names and list of monsters that are required to connect with the small world bridges
+    output: The bridges that connect the most cards in your deck and connect with all the required targets
+    """
     deck_monster_names = list(set(deck_monster_names) | set(required_target_names)) #union names so required_target_names is a subset of deck_monster_names
     deck_indices = sub_df(MAIN_MONSTERS, deck_monster_names, 'name').index
     required_indices = sub_df(MAIN_MONSTERS, required_target_names, 'name').index #indices of required targets
@@ -167,8 +185,10 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     return df_bridges
 
 def find_best_bridges_from_ydk(ydk_file):
-    #inputs: ydk file of deck
-    #output: The bridges that connect the most cards in your deck
+    """
+    inputs: ydk file of deck
+    output: The bridges that connect the most cards in your deck
+    """
     deck_monster_names = ydk_to_monster_names(ydk_file)
     df_bridges = find_best_bridges(deck_monster_names)
     return df_bridges
@@ -232,6 +252,24 @@ def names_to_images(card_names):
 
 #### CREATE GRAPH IMAGE ####
 
+def create_images_folder(folder_name):
+    """
+    Create a folder in the current directory if it doesn't exist.
+    """
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+
+def save_images(file_name):
+    """
+    Save images to 'images' folder in the current directory.
+    """
+    folder_name = "images"
+    create_images_folder(folder_name)
+    current_dir = os.getcwd()
+    image_path = os.path.join(current_dir, folder_name, file_name)
+    plt.savefig(image_path, dpi=450, bbox_inches='tight')
+
+
 def matrix_to_graph_image(connection_matrix, card_images):
     G = nx.from_numpy_array(connection_matrix)
     for i in range(len(card_images)):
@@ -261,7 +299,8 @@ def matrix_to_graph_image(connection_matrix, card_images):
         a.imshow(G.nodes[n]['image'])
         a.axis('off')
     ax.axis('off')
-    plt.savefig('images\small-wolrd-graph.png', dpi=450)
+
+    save_images('small-wolrd-graph.png')
     plt.show()
 
 def names_to_graph_image(card_names):
@@ -322,10 +361,13 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
     fig = plt.imshow(full_image)
     ax = plt.subplot(111)
     ax.axis('off')
+
+    #create_images_folder()
+    current_dir = os.getcwd()
     if squared==False:
-        plt.savefig('images\small-world-matrix.png', dpi=450, bbox_inches='tight')
+        save_images('small-world-matrix.png')
     else:
-        plt.savefig('images\small-world-matrix-squared.png', dpi=450, bbox_inches='tight')
+        save_images('small-world-matrix-squared.png')
     plt.show()
 
 def names_to_matrix_image(card_names, squared=False):
