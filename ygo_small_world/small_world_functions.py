@@ -11,7 +11,15 @@ from io import BytesIO
 
 def sub_df(df, column_values, column_name):
     """
-    creates subset of dataframe consisting of rows with column_values in column
+    Creates a subset of the given DataFrame based on specified values in a particular column.
+    
+    Parameters:
+        df (pd.DataFrame): The input DataFrame from which the subset will be extracted.
+        column_values (list): A list of values to match against the specified column to filter rows.
+        column_name (str): The name of the column in which to look for the specified values.
+
+    Returns:
+        pd.DataFrame: A new DataFrame containing only the rows where the specified column contains any of the values in 'column_values'.
     """
     df = df.copy()
     mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
@@ -19,7 +27,12 @@ def sub_df(df, column_values, column_name):
 
 def load_main_monsters():
     """
-    loads dataframe of all main deck monsters
+    Loads a DataFrame containing information about all main deck monster cards from a JSON file. 
+    The JSON file should contain data for all cards. This function filters for the main monster card categories.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing information about all main deck monsters, 
+                      including their ID, name, type, attribute, level, attack, and defense.
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     cardinfo_path = os.path.join(current_dir, "cardinfo.json")
@@ -54,16 +67,27 @@ MAIN_MONSTERS = load_main_monsters()
 
 def monster_names_to_df(card_names):
     """
-    converts list of monster names into a dataframe of those monsters
+    Converts a list of monster card names into a DataFrame containing details of those monsters.
+
+    Parameters:
+        card_names (list): List of monster card names as strings.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the information of the specified monster cards.
     """
-    df_cards = sub_df(MAIN_MONSTERS, card_names, 'name')
-    return df_cards
+    return sub_df(MAIN_MONSTERS, card_names, 'name')
 
 #### READ YDK FILES ####
 
 def ydk_to_card_ids(ydk_file):
     """
-    convers a ydk file to card ids
+    Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file.
+
+    Returns:
+        list: A list of card IDs as integers.
     """
     card_ids = []
     with open(ydk_file) as f:
@@ -79,8 +103,13 @@ def ydk_to_card_ids(ydk_file):
 
 def ydk_to_monster_names(ydk_file):
     """
-    input: ydk file, which consists of card IDs
-    output: list of names of main deck monsters in ydk file
+    Extracts the names of main deck monsters from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file.
+
+    Returns:
+        list: A list of names of main deck monsters present in the ydk file.
     """
     card_ids = ydk_to_card_ids(ydk_file)
     df_monsters = sub_df(MAIN_MONSTERS, card_ids, 'id')
@@ -91,8 +120,15 @@ def ydk_to_monster_names(ydk_file):
 
 def df_to_adjacency_matrix(df_cards, squared=False):
     """
-    creates adjacency array corresponding to Small World connections
-    two cards are considered adjacent if they have exactly one type, attribute, level, atk, or def in common
+    Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
+    Two cards are considered adjacent if they have exactly one property in common from the following attributes: type, attribute, level, attack, or defense.
+
+    Parameters:
+        df_cards (pd.DataFrame): DataFrame containing information about the cards.
+        squared (bool, optional): If True, the adjacency matrix is squared; default is False.
+
+    Returns:
+        np.array: An adjacency matrix representing the connections between cards.
     """
     df_cards = df_cards[['type','attribute','level','atk','def']]
     array_cards = df_cards.to_numpy()
@@ -107,6 +143,16 @@ def df_to_adjacency_matrix(df_cards, squared=False):
     return adjacency_matrix
 
 def names_to_adjacency_matrix(card_names, squared=False):
+    """
+    Creates an adjacency matrix based on Small World connections for a list of monster card names.
+
+    Parameters:
+        card_names (list): List of monster card names.
+        squared (bool, optional): If True, the adjacency matrix is squared; default is False.
+
+    Returns:
+        np.array: An adjacency matrix representing the connections between the named cards.
+    """
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
     return adjacency_matrix
@@ -115,8 +161,14 @@ SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacen
 
 def names_to_labeled_adjacency_matrix(card_names, squared=False):
     """
-    input: list of monster names. Optional parameter to square resulting matrix
-    output: adjacency matrix dataframe
+    Creates a labeled adjacency matrix DataFrame based on Small World connections for a given list of monster names.
+
+    Parameters:
+        card_names (list): List of monster names.
+        squared (bool, optional): If True, the adjacency matrix is squared; default is False.
+
+    Returns:
+        pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the monster names.
     """
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards)
@@ -127,8 +179,14 @@ def names_to_labeled_adjacency_matrix(card_names, squared=False):
 
 def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
     """
-    input: ydk file of deck. Optional parameter to square resulting matrix
-    output: adjacency matrix dataframe
+    Creates a labeled adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file containing the deck information.
+        squared (bool, optional): If True, the adjacency matrix is squared; default is False.
+
+    Returns:
+        pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the names of monsters in the ydk file.
     """
     card_names = ydk_to_monster_names(ydk_file)
     df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
@@ -138,8 +196,17 @@ def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
 
 def find_best_bridges(deck_monster_names, required_target_names=[]):
     """
-    inputs: list of monster names and list of monsters that are required to connect with the small world bridges
-    output: The bridges that connect the most cards in your deck and connect with all the required targets
+    Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
+    and connect to all the required targets.
+
+    Parameters:
+        deck_monster_names (list): A list of monster names in the deck.
+        required_target_names (list, optional): A list of monster names that must be connected to the bridges via Small World.
+          Default is an empty list.
+
+    Returns:
+        DataFrame: A Pandas DataFrame containing details of the best bridges including bridge score, number of connections,
+          name, type, attribute, level, attack, and defense. If no bridges meet the requirements, prints a message and returns None.
     """
     deck_monster_names = list(set(deck_monster_names) | set(required_target_names)) #union names so required_target_names is a subset of deck_monster_names
     deck_indices = sub_df(MAIN_MONSTERS, deck_monster_names, 'name').index
@@ -161,8 +228,7 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     num_deck_bridges = bridge_matrix.sum(axis=0)
     df_bridges['number_of_connections'] = num_deck_bridges
 
-    #calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included ...
-    # ... divided by square of num cards in deck + 1
+    #calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included divided by square of num cards in deck + 1
     adjacency_matrix = names_to_adjacency_matrix(deck_monster_names)
     adjacency_matrix_squared = names_to_adjacency_matrix(deck_monster_names, squared=True)
 
@@ -186,8 +252,13 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
 
 def find_best_bridges_from_ydk(ydk_file):
     """
-    inputs: ydk file of deck
-    output: The bridges that connect the most cards in your deck
+    Identifies the best bridges that connect the most cards in the deck from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file of the deck.
+
+    Returns:
+        DataFrame: A Pandas DataFrame containing details of the best bridges. The same as returned by `find_best_bridges`.
     """
     deck_monster_names = ydk_to_monster_names(ydk_file)
     df_bridges = find_best_bridges(deck_monster_names)
@@ -195,7 +266,19 @@ def find_best_bridges_from_ydk(ydk_file):
 
 #### GET CARD IMAGES ####
 
+CARD_SIZE = 624
+MAX_PIXEL_BRIGHTNESS = 255
+
 def names_to_image_urls(card_names):
+    """
+    Retrieves the URLs of the images corresponding to the given card names.
+
+    Parameters:
+        card_names (list): A list of card names.
+
+    Returns:
+        list: A list of URLs corresponding to the card images.
+    """
     current_dir = os.path.dirname(os.path.abspath(__file__))
     cardinfo_path = os.path.join(current_dir, "cardinfo.json")
 
@@ -210,22 +293,46 @@ def names_to_image_urls(card_names):
     return urls
 
 @cache
-def load_image(url): 
+def load_image(url):
+    """
+    Loads an image from a given URL.
+
+    Parameters:
+        url (str): The URL of the image.
+
+    Returns:
+        ndarray: A NumPy array representing the image.
+    """
     res = requests.get(url)
     imgage = np.array(Image.open(BytesIO(res.content)))
     return imgage
 
 def load_images(urls):
+    """
+    Loads multiple images from a list of URLs.
+
+    Parameters:
+        urls (list): A list of URLs of the images.
+
+    Returns:
+        list: A list of NumPy arrays representing the images.
+    """
     images = []
     for url in urls:
         image = load_image(url)
         images.append(image)
     return images
 
-CARD_SIZE = 624
-MAX_PIXEL_BRIGHTNESS = 255
-
 def normalize_images(images):
+    """
+    Normalizes a list of images to a standard size.
+
+    Parameters:
+        images (list): A list of NumPy arrays representing the images.
+
+    Returns:
+        list: A list of normalized images.
+    """
     normalized_images = []
     for image in images:
         image_length = image.shape[0]
@@ -245,6 +352,15 @@ def normalize_images(images):
     return normalized_images
 
 def names_to_images(card_names):
+    """
+    Converts a list of card names to normalized images.
+
+    Parameters:
+        card_names (list): A list of card names.
+
+    Returns:
+        list: A list of normalized images.
+    """
     urls = names_to_image_urls(card_names)
     images = load_images(urls)
     normalized_images = normalize_images(images)
@@ -254,14 +370,20 @@ def names_to_images(card_names):
 
 def create_images_folder(folder_name):
     """
-    Create a folder in the current directory if it doesn't exist.
+    Creates a folder with the specified name in the current directory if it doesn't exist.
+
+    Parameters:
+        folder_name (str): The name of the folder to create.
     """
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
 
 def save_images(file_name):
     """
-    Save images to 'images' folder in the current directory.
+    Saves images to the 'images' folder in the current directory.
+
+    Parameters:
+        file_name (str): The name of the file to save.
     """
     folder_name = "images"
     create_images_folder(folder_name)
@@ -271,6 +393,13 @@ def save_images(file_name):
 
 
 def matrix_to_graph_image(connection_matrix, card_images):
+    """
+    Converts a connection matrix into a graph image visualization and saves it.
+
+    Parameters:
+        connection_matrix (ndarray): A NumPy array representing the connection matrix.
+        card_images (list): A list of images corresponding to the nodes.
+    """
     G = nx.from_numpy_array(connection_matrix)
     for i in range(len(card_images)):
         G.nodes[i]['image'] = card_images[i] #asigns image to each node
@@ -304,18 +433,39 @@ def matrix_to_graph_image(connection_matrix, card_images):
     plt.show()
 
 def names_to_graph_image(card_names):
+    """
+    Converts a list of card names into a graph image visualization and saves it.
+
+    Parameters:
+        card_names (list): A list of card names.
+    """
     card_images = names_to_images(card_names)
     df_deck = monster_names_to_df(card_names).reset_index(drop=True)
     connection_matrix = df_to_adjacency_matrix(df_deck)
     matrix_to_graph_image(connection_matrix, card_images)
 
 def ydk_to_graph_image(ydk_file):
+    """
+    Converts a ydk (Yu-Gi-Oh Deck) file into a graph image visualization and saves it.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file of the deck.
+    """
     card_names = ydk_to_monster_names(ydk_file)
     names_to_graph_image(card_names)
 
 #### CREATE MATRIX IMAGE ####
 
 def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_columns=[]):
+    """
+    Converts a connection matrix into an image and saves it.
+
+    Parameters:
+        connection_matrix (ndarray): A NumPy array representing the connection matrix.
+        card_images (list): A list of images corresponding to the nodes.
+        squared (bool, optional): If True, the connection matrix is squared. Default is False.
+        highlighted_columns (list, optional): List of columns to be highlighted. Default is an empty list.
+    """
     num_cards = len(card_images)
 
     vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
@@ -371,11 +521,25 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
     plt.show()
 
 def names_to_matrix_image(card_names, squared=False):
+    """
+    Converts a list of card names into a matrix image.
+
+    Parameters:
+        card_names (list): A list of card names.
+        squared (bool, optional): If True, the connection matrix is squared. Default is False.
+    """
     card_images = names_to_images(card_names)
     df_deck = monster_names_to_df(card_names).reset_index(drop=True)
     connection_matrix = df_to_adjacency_matrix(df_deck, squared=squared)
     matrix_to_image(connection_matrix, card_images, squared=squared)
 
 def ydk_to_matrix_image(ydk_file, squared=False):
+    """
+    Converts a ydk file into a matrix image.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file of the deck.
+        squared (bool, optional): If True, the connection matrix is squared. Default is False.
+    """
     card_names = ydk_to_monster_names(ydk_file)
     names_to_matrix_image(card_names, squared=squared)
