@@ -368,7 +368,7 @@ def names_to_images(card_names):
 
 #### CREATE GRAPH IMAGE ####
 
-def create_images_folder(folder_name):
+def create_folder(folder_name):
     """
     Creates a folder with the specified name in the current directory if it doesn't exist.
 
@@ -386,7 +386,7 @@ def save_images(file_name):
         file_name (str): The name of the file to save.
     """
     folder_name = "images"
-    create_images_folder(folder_name)
+    create_folder(folder_name)
     current_dir = os.getcwd()
     image_path = os.path.join(current_dir, folder_name, file_name)
     plt.savefig(image_path, dpi=450, bbox_inches='tight')
@@ -429,6 +429,7 @@ def matrix_to_graph_image(connection_matrix, card_images):
         a.axis('off')
     ax.axis('off')
 
+    create_folder("images")
     save_images('small-wolrd-graph.png')
     plt.show()
 
@@ -512,8 +513,7 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
     ax = plt.subplot(111)
     ax.axis('off')
 
-    #create_images_folder()
-    current_dir = os.getcwd()
+    create_folder("images")
     if squared==False:
         save_images('small-world-matrix.png')
     else:
