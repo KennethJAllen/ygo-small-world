@@ -16,7 +16,7 @@ The purpose of this repository is to assist in finding the best Small World brid
    - [Find Bridges From YDK File](#find-bridges-from-ydk-file)
    - [Image Generation and Visualization](#image-generation-and-visualization)
    - [Generate Adjacency Matrix](#generate-adjacency-matrix)
-4. [💡 Example](#-example)
+4. [🎴 Example](#-example)
 5. [🌐 Small World Mathematics](#-small-world-mathematics)
    - [Theorem](#theorem)
    - [Proof](#proof)
@@ -74,7 +74,7 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 *   To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
 
-## 💡 Example
+## 🎴 Example
 
 Consider a Mathmech deck consisting of the monsters
 ```
