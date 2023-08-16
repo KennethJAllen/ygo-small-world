@@ -8,11 +8,25 @@ If you use Small World, it is generally desirable to include one or more dedicat
 
 The purpose of this repository is to assist in finding the best Small World bridges for any deck.
 
-## Dataset
+## 📖 Table of Contents
+1. [📊 Dataset](#-dataset)
+2. [🔧 Installation](#-installation)
+3. [▶️ Running the Code](#-running-the-code)
+   - [Find Bridges From List of Names](#find-bridges-from-list-of-names)
+   - [Find Bridges From YDK File](#find-bridges-from-ydk-file)
+   - [Image Generation and Visualization](#image-generation-and-visualization)
+   - [Generate Adjacency Matrix](#generate-adjacency-matrix)
+4. [💡 Example](#-example)
+5. [🌐 Small World Mathematics](#-small-world-mathematics)
+   - [Theorem](#theorem)
+   - [Proof](#proof)
+   - [Bridge Score](#bridge-score)
+
+## 📊 Dataset
 
 The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
 
-## Installation
+## 🔧 Installation
 
 *   Get the small world bridge finder source codes
 
@@ -27,7 +41,7 @@ cd YGO-small-world
 poetry install
 ```
 
-## Running the Code
+## ▶️ Running the Code
 
 *   The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
 
@@ -56,11 +70,11 @@ A YDK file is a file containing card IDs from a deck. It is supported by program
 
 *   To generate Small World graph and matrix visualizations such as the examples below from a YDK file or list of cards, use the `small_world_generate_images` notebook.
 
-### Generate Adjacency Matrix from YDK File
+### Generate Adjacency Matrix
 
 *   To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
 
-### Example
+## 💡 Example
 
 Consider a Mathmech deck consisting of the monsters
 ```
@@ -95,7 +109,7 @@ Every entry in the column corresponding to [Mathmech Circular](https://www.db.yu
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
-## Small World Mathematics
+## 🌐 Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched via Small World starting from any card.
 
 We can model the monsters in a deck as the vertices of an undirected graph $G$. Define an edge between monsters $i$ and $j$ if they are a valid connections between each other for Small World. e.g. [Ash Blossom](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=12950) and [Effect Veiler](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=8933) would have an edge connecting them because they the same attack but have different types, attributes, defense, and level. However, Ash Blossom and [Ghost Belle](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=13587) would not have an edge connecting them 
@@ -110,7 +124,7 @@ Starting with monster $i$, you can search monster $j$ with Small World if and on
 
 Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex $i$ to vertex $j$ in $G$ (see [properties of the adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix)). If entry $(i,j)$ is zero, then there are no bridges between monsters $i$ and $j$. If entry $(i,j)$ is non-zero, then there is at least one bridge from $i$ to $j$, so $j$ can be searched starting with $i$.
 
-### Calculating the Small World Bridge Score
+### Bridge Score
 
 When using the `small_world_bridge_finder` notebook, there is a `bridge_score` output for each potential bridge to add to a deck. The score is a way of measuring the resulting connectivity of your deck after adding that bridge. A score of $1$ means that every card is searchable from every other card, and a bridge score of $0$ means that there are no cards you can search with Small World, no matter what card you start with.
 
