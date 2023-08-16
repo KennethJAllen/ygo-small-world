@@ -11,7 +11,7 @@ The purpose of this repository is to assist in finding the best Small World brid
 ## 📖 Table of Contents
 1. [📊 Dataset](#-dataset)
 2. [🔧 Installation](#-installation)
-3. [▶️ Running the Code](#-running-the-code)
+3. [💻 Running the Code](#-running-the-code)
    - [Find Bridges From List of Names](#find-bridges-from-list-of-names)
    - [Find Bridges From YDK File](#find-bridges-from-ydk-file)
    - [Image Generation and Visualization](#image-generation-and-visualization)
@@ -41,7 +41,7 @@ cd YGO-small-world
 poetry install
 ```
 
-## ▶️ Running the Code
+## 💻 Running the Code
 
 *   The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
 
