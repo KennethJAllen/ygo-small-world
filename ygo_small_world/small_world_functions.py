@@ -9,7 +9,7 @@ from functools import cache
 from PIL import Image
 from io import BytesIO
 
-def sub_df(df, column_values, column_name):
+def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
     """
     Creates a subset of the given DataFrame based on specified values in a particular column.
     
@@ -21,11 +21,15 @@ def sub_df(df, column_values, column_name):
     Returns:
         pd.DataFrame: A new DataFrame containing only the rows where the specified column contains any of the values in 'column_values'.
     """
-    df = df.copy()
-    mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
-    return df[mask]
+    #mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
+    if column_name not in df.columns:
+        raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
+    
+    mask = df[column_name].isin(column_values)
+    return df.loc[mask].copy()
 
-def load_main_monsters():
+@cache
+def load_main_monsters() -> pd.DataFrame:
     """
     Loads a DataFrame containing information about all main deck monster cards from a JSON file. 
     The JSON file should contain data for all cards. This function filters for the main monster card categories.
@@ -63,8 +67,6 @@ def load_main_monsters():
     df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
-MAIN_MONSTERS = load_main_monsters()
-
 def monster_names_to_df(card_names):
     """
     Converts a list of monster card names into a DataFrame containing details of those monsters.
@@ -75,7 +77,8 @@ def monster_names_to_df(card_names):
     Returns:
         pd.DataFrame: A DataFrame containing the information of the specified monster cards.
     """
-    return sub_df(MAIN_MONSTERS, card_names, 'name')
+    main_monsters = load_main_monsters()
+    return sub_df(main_monsters, card_names, 'name')
 
 #### READ YDK FILES ####
 
@@ -112,7 +115,8 @@ def ydk_to_monster_names(ydk_file):
         list: A list of names of main deck monsters present in the ydk file.
     """
     card_ids = ydk_to_card_ids(ydk_file)
-    df_monsters = sub_df(MAIN_MONSTERS, card_ids, 'id')
+    main_monsters = load_main_monsters()
+    df_monsters = sub_df(main_monsters, card_ids, 'id')
     monster_names = df_monsters['name'].tolist()
     return monster_names
 
@@ -156,8 +160,6 @@ def names_to_adjacency_matrix(card_names, squared=False):
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
     return adjacency_matrix
-
-SW_ADJACENCY_MATRIX = df_to_adjacency_matrix(MAIN_MONSTERS) #small world adjacency array of all cards
 
 def names_to_labeled_adjacency_matrix(card_names, squared=False):
     """
@@ -208,22 +210,24 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
         DataFrame: A Pandas DataFrame containing details of the best bridges including bridge score, number of connections,
           name, type, attribute, level, attack, and defense. If no bridges meet the requirements, prints a message and returns None.
     """
+    main_monsters = load_main_monsters()
+    sw_adjacency_matrix = df_to_adjacency_matrix(main_monsters) #small world adjacency array of all cards
     deck_monster_names = list(set(deck_monster_names) | set(required_target_names)) #union names so required_target_names is a subset of deck_monster_names
-    deck_indices = sub_df(MAIN_MONSTERS, deck_monster_names, 'name').index
-    required_indices = sub_df(MAIN_MONSTERS, required_target_names, 'name').index #indices of required targets
+    deck_indices = sub_df(main_monsters, deck_monster_names, 'name').index
+    required_indices = sub_df(main_monsters, required_target_names, 'name').index #indices of required targets
 
     num_required_targets = len(required_target_names) #number of cards required to connect with one bridge
 
-    required_monster_matrix = SW_ADJACENCY_MATRIX[required_indices,:] #array corresponding to required connection monsters by all monsters
+    required_monster_matrix = sw_adjacency_matrix[required_indices,:] #array corresponding to required connection monsters by all monsters
     num_bridges_to_required_cards = required_monster_matrix.sum(axis=0) #number of required connections satisfied by all monsters
     required_bridge_mask = num_bridges_to_required_cards==num_required_targets
-    df_bridges = MAIN_MONSTERS[required_bridge_mask].copy() #data frame of monsters connecting all required targets
+    df_bridges = main_monsters[required_bridge_mask].copy() #data frame of monsters connecting all required targets
     required_bridge_indices = df_bridges.index #indices of monsters that satisfy all required connections
     if len(df_bridges)==0:
         print('There are no monsters that bridge all required targets.')
         return 
     #subset of adjacency matrix corresponding to (deck monsters) by (monsters with connections to the required cards)
-    bridge_matrix = SW_ADJACENCY_MATRIX[deck_indices,:][:,required_bridge_indices]
+    bridge_matrix = sw_adjacency_matrix[deck_indices,:][:,required_bridge_indices]
 
     num_deck_bridges = bridge_matrix.sum(axis=0)
     df_bridges['number_of_connections'] = num_deck_bridges
@@ -264,7 +268,7 @@ def find_best_bridges_from_ydk(ydk_file):
     df_bridges = find_best_bridges(deck_monster_names)
     return df_bridges
 
-#### GET CARD IMAGES ####
+#### CARD IMAGES ####
 
 CARD_SIZE = 624
 MAX_PIXEL_BRIGHTNESS = 255
