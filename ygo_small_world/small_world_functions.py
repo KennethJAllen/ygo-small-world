@@ -446,19 +446,9 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
         highlighted_columns (list, optional): List of columns to be highlighted. Default is an empty list.
     """
     num_cards = len(card_images)
+    matrix_subimage_size = CARD_SIZE*num_cards #size of matrix subimage, not including card images
 
-    vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
-    horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
-    image_size = CARD_SIZE*(num_cards+1)
-    matrix_subimage_size = CARD_SIZE*num_cards
-
-    full_image = np.ones((image_size,image_size,3))*MAX_PIXEL_BRIGHTNESS
-
-    #card images
-    full_image[CARD_SIZE:,0:CARD_SIZE,:] = horizontal_cards
-    full_image[0:CARD_SIZE,CARD_SIZE:,:] = vertical_cards
-
-    matrix_subimage = (np.ones((matrix_subimage_size,matrix_subimage_size,3))*MAX_PIXEL_BRIGHTNESS)
+    matrix_subimage = np.ones((matrix_subimage_size,matrix_subimage_size,3))*MAX_PIXEL_BRIGHTNESS
 
     matrix_maximum = np.max(connection_matrix)
     if highlighted_columns != []:
@@ -481,7 +471,16 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
                     #greyscale cell color
                     cell_brightness_max = 220
                     matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,:] = cell_brightness_max*(1-matrix_entry/matrix_maximum)
-                    
+
+    #assemble full image
+    full_image_size = CARD_SIZE*(num_cards+1)
+    full_image = np.ones((full_image_size,full_image_size,3))*MAX_PIXEL_BRIGHTNESS
+
+    vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
+    horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
+
+    full_image[CARD_SIZE:,0:CARD_SIZE,:] = horizontal_cards
+    full_image[0:CARD_SIZE,CARD_SIZE:,:] = vertical_cards
     full_image[CARD_SIZE:,CARD_SIZE:,:] = matrix_subimage
 
     full_image = full_image.astype(np.uint8)
