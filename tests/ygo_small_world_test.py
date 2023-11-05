@@ -7,27 +7,27 @@ from ygo_small_world import small_world_functions as sw
 def sample_df():
     return pd.DataFrame({
         'A': [1, 2, 3, 4, 5],
-        'B': ['a', 'b', 'c', 'd', 'e'],
+        'B': ['a', 'b', 'c', 'd', 'd'],
         'C': [10, 20, 30, 40, 50]
     })
 
 def test_valid_subset_ints(sample_df):
-    result = sw.sub_df(sample_df, column_values=[2, 4], column_name='A')
+    result = sw.sub_df(sample_df, column_values=[2, 4], column_name='A').reset_index(drop=True)
     expected = pd.DataFrame({
         'A': [2, 4],
         'B': ['b', 'd'],
         'C': [20, 40]
     })
-    pd.testing.assert_frame_equal(result.reset_index(drop=True), expected.reset_index(drop=True))
+    pd.testing.assert_frame_equal(result, expected)
 
 def test_valid_subset_strs(sample_df):
-    result = sw.sub_df(sample_df, column_values=['b', 'd'], column_name='B')
+    result = sw.sub_df(sample_df, column_values=['b', 'd'], column_name='B').reset_index(drop=True)
     expected = pd.DataFrame({
-        'A': [2, 4],
-        'B': ['b', 'd'],
-        'C': [20, 40]
+        'A': [2, 4, 5],
+        'B': ['b', 'd', 'd'],
+        'C': [20, 40, 50]
     })
-    pd.testing.assert_frame_equal(result.reset_index(drop=True), expected.reset_index(drop=True))
+    pd.testing.assert_frame_equal(result, expected)
 
 def test_empty_subset(sample_df):
     result = sw.sub_df(sample_df, column_values=[6, 7], column_name='A')

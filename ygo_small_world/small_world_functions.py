@@ -21,7 +21,6 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     Returns:
         pd.DataFrame: A new DataFrame containing only the rows where the specified column contains any of the values in 'column_values'.
     """
-    #mask = df[column_name].apply(lambda x: any(value for value in column_values if value == x))
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
     
@@ -47,27 +46,15 @@ def load_main_monsters() -> pd.DataFrame:
     df_all_cards = pd.DataFrame(json_all_cards['data'])
     df_all_cards = df_all_cards.rename(columns={'type': 'category','race':'type'})
 
-    main_monster_card_category = ['Effect Monster',
-                                    'Normal Monster',
-                                    'Flip Effect Monster',
-                                    'Union Effect Monster',
-                                    'Pendulum Effect Monster',
-                                    'Tuner Monster',
-                                    'Gemini Monster',
-                                    'Normal Tuner Monster',
-                                    'Spirit Monster',
-                                    'Ritual Effect Monster',
-                                    'Ritual Monster',
-                                    'Toon Monster',
-                                    'Pendulum Normal Monster',
-                                    'Pendulum Tuner Effect Monster',
-                                    'Pendulum Effect Ritual Monster',
-                                    'Pendulum Flip Effect Monster']
+    main_monster_card_category = ['Effect Monster', 'Normal Monster', 'Flip Effect Monster', 'Union Effect Monster',
+                                    'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
+                                    'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
+                                    'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster', 'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster']
     df_main_monsters = sub_df(df_all_cards, main_monster_card_category, 'category').reset_index(drop=True) #only keep main deck monsters
     df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
     return df_main_monsters
 
-def monster_names_to_df(card_names):
+def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
     """
     Converts a list of monster card names into a DataFrame containing details of those monsters.
 
@@ -82,7 +69,7 @@ def monster_names_to_df(card_names):
 
 #### READ YDK FILES ####
 
-def ydk_to_card_ids(ydk_file):
+def ydk_to_card_ids(ydk_file: str) -> list[int]:
     """
     Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
 
@@ -104,7 +91,7 @@ def ydk_to_card_ids(ydk_file):
                 card_ids.append(id)
     return card_ids
 
-def ydk_to_monster_names(ydk_file):
+def ydk_to_monster_names(ydk_file: str) -> list[str]:
     """
     Extracts the names of main deck monsters from a given ydk (Yu-Gi-Oh Deck) file.
 
@@ -122,7 +109,7 @@ def ydk_to_monster_names(ydk_file):
 
 #### ADJACENCY MATRIX GENERATION ####
 
-def df_to_adjacency_matrix(df_cards, squared=False):
+def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool=False) -> np.ndarray:
     """
     Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
     Two cards are considered adjacent if they have exactly one property in common from the following attributes: type, attribute, level, attack, or defense.
@@ -146,7 +133,7 @@ def df_to_adjacency_matrix(df_cards, squared=False):
         adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
     return adjacency_matrix
 
-def names_to_adjacency_matrix(card_names, squared=False):
+def names_to_adjacency_matrix(card_names: list[str], squared: bool=False) -> np.ndarray:
     """
     Creates an adjacency matrix based on Small World connections for a list of monster card names.
 
@@ -155,13 +142,13 @@ def names_to_adjacency_matrix(card_names, squared=False):
         squared (bool, optional): If True, the adjacency matrix is squared; default is False.
 
     Returns:
-        np.array: An adjacency matrix representing the connections between the named cards.
+        ndarray: An adjacency matrix representing the connections between the named cards.
     """
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
     return adjacency_matrix
 
-def names_to_labeled_adjacency_matrix(card_names, squared=False):
+def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool=False) -> pd.DataFrame:
     """
     Creates a labeled adjacency matrix DataFrame based on Small World connections for a given list of monster names.
 
@@ -172,14 +159,11 @@ def names_to_labeled_adjacency_matrix(card_names, squared=False):
     Returns:
         pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the monster names.
     """
-    df_cards = monster_names_to_df(card_names)
-    adjacency_matrix = df_to_adjacency_matrix(df_cards)
-    if squared==True:
-        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+    adjacency_matrix = names_to_adjacency_matrix(card_names, squared=squared)
     df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
     return df_adjacency_matrix
 
-def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
+def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool=False) -> pd.DataFrame:
     """
     Creates a labeled adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
 
@@ -196,7 +180,7 @@ def ydk_to_labeled_adjacency_matrix(ydk_file, squared=False):
 
 #### BRIDGE FINDING ####
 
-def find_best_bridges(deck_monster_names, required_target_names=[]):
+def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str]=[]) -> pd.DataFrame:
     """
     Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
     and connect to all the required targets.
@@ -224,8 +208,7 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     df_bridges = main_monsters[required_bridge_mask].copy() #data frame of monsters connecting all required targets
     required_bridge_indices = df_bridges.index #indices of monsters that satisfy all required connections
     if len(df_bridges)==0:
-        print('There are no monsters that bridge all required targets.')
-        return 
+        raise ValueError(f'There are no monsters that bridge all required targets.')
     #subset of adjacency matrix corresponding to (deck monsters) by (monsters with connections to the required cards)
     bridge_matrix = sw_adjacency_matrix[deck_indices,:][:,required_bridge_indices]
 
@@ -254,7 +237,7 @@ def find_best_bridges(deck_monster_names, required_target_names=[]):
     df_bridges = df_bridges.sort_values(by=['bridge_score','number_of_connections','name'], ascending=[False, False, True]).reset_index(drop=True) #reorder rows
     return df_bridges
 
-def find_best_bridges_from_ydk(ydk_file):
+def find_best_bridges_from_ydk(ydk_file: str) -> pd.DataFrame:
     """
     Identifies the best bridges that connect the most cards in the deck from a given ydk (Yu-Gi-Oh Deck) file.
 
@@ -273,7 +256,7 @@ def find_best_bridges_from_ydk(ydk_file):
 CARD_SIZE = 624
 MAX_PIXEL_BRIGHTNESS = 255
 
-def names_to_image_urls(card_names):
+def names_to_image_urls(card_names: list[str]) -> list[str]:
     """
     Retrieves the URLs of the images corresponding to the given card names.
 
@@ -297,7 +280,7 @@ def names_to_image_urls(card_names):
     return urls
 
 @cache
-def load_image(url):
+def load_image(url: str) -> np.ndarray:
     """
     Loads an image from a given URL.
 
@@ -311,7 +294,7 @@ def load_image(url):
     imgage = np.array(Image.open(BytesIO(res.content)))
     return imgage
 
-def load_images(urls):
+def load_images(urls: list[str]) -> list[np.ndarray]:
     """
     Loads multiple images from a list of URLs.
 
@@ -327,7 +310,7 @@ def load_images(urls):
         images.append(image)
     return images
 
-def normalize_images(images):
+def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
     """
     Normalizes a list of images to a standard size.
 
@@ -355,7 +338,7 @@ def normalize_images(images):
         normalized_images.append(normalized_image)
     return normalized_images
 
-def names_to_images(card_names):
+def names_to_images(card_names: list[str]) -> list[np.ndarray]:
     """
     Converts a list of card names to normalized images.
 
@@ -372,17 +355,7 @@ def names_to_images(card_names):
 
 #### CREATE GRAPH IMAGE ####
 
-def create_folder(folder_name):
-    """
-    Creates a folder with the specified name in the current directory if it doesn't exist.
-
-    Parameters:
-        folder_name (str): The name of the folder to create.
-    """
-    if not os.path.exists(folder_name):
-        os.makedirs(folder_name)
-
-def save_images(file_name):
+def save_images(file_name: str) -> None:
     """
     Saves images to the 'images' folder in the current directory.
 
@@ -390,13 +363,15 @@ def save_images(file_name):
         file_name (str): The name of the file to save.
     """
     folder_name = "images"
-    create_folder(folder_name)
+    #create folder
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
     current_dir = os.getcwd()
     image_path = os.path.join(current_dir, folder_name, file_name)
     plt.savefig(image_path, dpi=450, bbox_inches='tight')
 
 
-def matrix_to_graph_image(connection_matrix, card_images):
+def matrix_to_graph_image(connection_matrix: np.ndarray, card_images: list[np.ndarray]) -> None:
     """
     Converts a connection matrix into a graph image visualization and saves it.
 
@@ -433,11 +408,10 @@ def matrix_to_graph_image(connection_matrix, card_images):
         a.axis('off')
     ax.axis('off')
 
-    create_folder("images")
     save_images('small-wolrd-graph.png')
     plt.show()
 
-def names_to_graph_image(card_names):
+def names_to_graph_image(card_names) -> None:
     """
     Converts a list of card names into a graph image visualization and saves it.
 
@@ -449,7 +423,7 @@ def names_to_graph_image(card_names):
     connection_matrix = df_to_adjacency_matrix(df_deck)
     matrix_to_graph_image(connection_matrix, card_images)
 
-def ydk_to_graph_image(ydk_file):
+def ydk_to_graph_image(ydk_file) -> None:
     """
     Converts a ydk (Yu-Gi-Oh Deck) file into a graph image visualization and saves it.
 
@@ -461,7 +435,7 @@ def ydk_to_graph_image(ydk_file):
 
 #### CREATE MATRIX IMAGE ####
 
-def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_columns=[]):
+def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_columns=[]) -> None:
     """
     Converts a connection matrix into an image and saves it.
 
@@ -517,14 +491,13 @@ def matrix_to_image(connection_matrix, card_images, squared=False, highlighted_c
     ax = plt.subplot(111)
     ax.axis('off')
 
-    create_folder("images")
     if squared==False:
         save_images('small-world-matrix.png')
     else:
         save_images('small-world-matrix-squared.png')
     plt.show()
 
-def names_to_matrix_image(card_names, squared=False):
+def names_to_matrix_image(card_names, squared=False) -> None:
     """
     Converts a list of card names into a matrix image.
 
@@ -537,7 +510,7 @@ def names_to_matrix_image(card_names, squared=False):
     connection_matrix = df_to_adjacency_matrix(df_deck, squared=squared)
     matrix_to_image(connection_matrix, card_images, squared=squared)
 
-def ydk_to_matrix_image(ydk_file, squared=False):
+def ydk_to_matrix_image(ydk_file, squared=False) -> None:
     """
     Converts a ydk file into a matrix image.
 
