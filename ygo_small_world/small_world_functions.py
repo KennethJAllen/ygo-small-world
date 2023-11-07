@@ -435,7 +435,7 @@ def ydk_to_graph_image(ydk_file: str) -> None:
 
 #### CREATE MATRIX IMAGE ####
 
-def matrix_to_image(adjacency_matrix: np.ndarray, highlighted_columns: list[int]=[]) -> np.ndarray:
+def matrix_to_image(adjacency_matrix: np.ndarray) -> np.ndarray:
     '''
     Generate the matrix subimage of the full matrix imageas an np.ndarray of size N x N x 3.
     N is CARD_SIZE*num_cards. The third dimension is for the color channels.
@@ -455,26 +455,18 @@ def matrix_to_image(adjacency_matrix: np.ndarray, highlighted_columns: list[int]
     matrix_subimage = np.ones((matrix_subimage_size,matrix_subimage_size,3))*MAX_PIXEL_BRIGHTNESS
 
     matrix_maximum = np.max(adjacency_matrix)
-    if len(highlighted_columns) > 0:
-        highlighted_maximum = np.max(adjacency_matrix[:,highlighted_columns])
 
     #color in cells
     for i in range(num_cards):
+        #specify the vertical range of the region in the image corresponding to the adjacency matrix entry
+        vertical_min = i*CARD_SIZE
+        vertical_max = (i+1)*CARD_SIZE
         for j in range(num_cards):
-            matrix_entry = adjacency_matrix[i,j]
-            if matrix_entry>0:
-                if j in highlighted_columns:
-                    #highlighted cell color
-                    red_highlight_max = 255
-                    green_highlight_max = 220
-                    blue_highlight_max = 220
-                    matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,0] = red_highlight_max
-                    matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,1] = green_highlight_max*(1-matrix_entry/highlighted_maximum)
-                    matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,2] = blue_highlight_max*(1-matrix_entry/highlighted_maximum)
-                else:
-                    #greyscale cell color
-                    cell_brightness_max = 220
-                    matrix_subimage[i*CARD_SIZE:(i+1)*CARD_SIZE,j*CARD_SIZE:(j+1)*CARD_SIZE,:] = cell_brightness_max*(1-matrix_entry/matrix_maximum)
+            #specify the horizohntal range of the region in the image corresponding to the adjacency matrix entry
+            horizontal_min = j*CARD_SIZE
+            horizontal_max = (j+1)*CARD_SIZE
+            scaled_matrix_value = adjacency_matrix[i,j]/matrix_maximum
+            matrix_subimage[vertical_min:vertical_max, horizontal_min:horizontal_max, :] = MAX_PIXEL_BRIGHTNESS*(1-scaled_matrix_value)
     return matrix_subimage
 
 
