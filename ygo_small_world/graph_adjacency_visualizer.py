@@ -10,8 +10,12 @@ from PIL import Image
 from io import BytesIO
 from . import small_world_bridge_generator as sw
 
-CARD_SIZE = 624
-MAX_PIXEL_BRIGHTNESS = 255
+class Settings:
+    def __init__(self):
+        self.card_size = 624
+        self.max_pixel_brightness = 255
+
+default_settings = Settings()
 
 def names_to_image_urls(card_names: list[str]) -> list[str]:
     """
@@ -67,30 +71,35 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
         images.append(image)
     return images
 
-def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
+def normalize_images(images: list[np.ndarray], settings=default_settings) -> list[np.ndarray]:
     """
     Normalizes a list of images to a standard size.
 
     Parameters:
         images (list): A list of NumPy arrays representing the images.
+        settings (Settings, optional): An instance of the Settings class which provides
+                                        `card_size` as the size of the card and
+                                        `max_pixel_brightness` as the maximum value for pixel brightness.
 
     Returns:
         list: A list of normalized images.
     """
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
     normalized_images = []
     for image in images:
         image_length = image.shape[0]
         image_width = image.shape[1]
-        normalized_image = np.ones([CARD_SIZE,CARD_SIZE,3])*MAX_PIXEL_BRIGHTNESS
+        normalized_image = np.ones([card_size,card_size,3])*max_pixel_brightness
         #covering cases when image is too small
-        if image_length<CARD_SIZE and image_width<CARD_SIZE: #case when length & width are too small
+        if image_length<card_size and image_width<card_size: #case when length & width are too small
             normalized_image[:image_length,:image_width,:] = image
-        elif image_length<CARD_SIZE: #case when only length is too small
-            normalized_image[:image_length,:,:] = image[:,:CARD_SIZE,:]
-        elif image_width<CARD_SIZE: #case when only width is too small
-            normalized_image[:,:image_width,:] = image[:CARD_SIZE,:,:]
+        elif image_length<card_size: #case when only length is too small
+            normalized_image[:image_length,:,:] = image[:,:card_size,:]
+        elif image_width<card_size: #case when only width is too small
+            normalized_image[:,:image_width,:] = image[:card_size,:,:]
         else: #case when image is same size or too big
-            normalized_image = image[:CARD_SIZE,:CARD_SIZE,:]
+            normalized_image = image[:card_size,:card_size,:]
         normalized_image = normalized_image.astype(np.uint8)
         normalized_images.append(normalized_image)
     return normalized_images
@@ -192,49 +201,58 @@ def ydk_to_graph_image(ydk_file: str) -> None:
 
 #### CREATE MATRIX IMAGE ####
 
-def matrix_to_image(adjacency_matrix: np.ndarray) -> np.ndarray:
+def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> np.ndarray:
     '''
     Generate the matrix subimage of the full matrix imageas an np.ndarray of size N x N x 3.
     N is CARD_SIZE*num_cards. The third dimension is for the color channels.
 
     Parameters:
         adjacency_matrix (ndarray): A NumPy array representing the adjacency matrix.
-        highlighted_columns (list, optional): List of column indices to be highlighted. Default is an empty list.
+        settings (Settings, optional): An instance of the Settings class which provides
+                                        `card_size` as the size of the card and
+                                        `max_pixel_brightness` as the maximum value for pixel brightness.
     Returns:
         ndarray: An image of the submatrix
     '''
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
     num_cards = adjacency_matrix.shape[0]
     #check that the adjacency matrix is square
     if not (num_cards == adjacency_matrix.shape[1]):
         raise ValueError("The adjacency matrix must be square.")
     
-    matrix_subimage_size = CARD_SIZE*num_cards #size of matrix subimage, not including card images
-    matrix_subimage = np.ones((matrix_subimage_size,matrix_subimage_size,3))*MAX_PIXEL_BRIGHTNESS
+    matrix_subimage_size = card_size*num_cards #size of matrix subimage, not including card images
+    matrix_subimage = np.ones((matrix_subimage_size,matrix_subimage_size,3))*max_pixel_brightness
 
     matrix_maximum = np.max(adjacency_matrix)
 
     #color in cells
     for i in range(num_cards):
         #specify the vertical range of the region in the image corresponding to the adjacency matrix entry
-        vertical_min = i*CARD_SIZE
-        vertical_max = (i+1)*CARD_SIZE
+        vertical_min = i*card_size
+        vertical_max = (i+1)*card_size
         for j in range(num_cards):
             #specify the horizohntal range of the region in the image corresponding to the adjacency matrix entry
-            horizontal_min = j*CARD_SIZE
-            horizontal_max = (j+1)*CARD_SIZE
+            horizontal_min = j*card_size
+            horizontal_max = (j+1)*card_size
             scaled_matrix_value = adjacency_matrix[i,j]/matrix_maximum
-            matrix_subimage[vertical_min:vertical_max, horizontal_min:horizontal_max, :] = MAX_PIXEL_BRIGHTNESS*(1-scaled_matrix_value)
+            matrix_subimage[vertical_min:vertical_max, horizontal_min:horizontal_max, :] = max_pixel_brightness*(1-scaled_matrix_value)
     return matrix_subimage
 
 
-def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray]) -> None:
+def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings=default_settings) -> None:
     """
     Converts an adjacency matrix into an image and saves it.
 
     Parameters:
         adjacency_matrix (ndarray): A NumPy array representing the ajdacency matrix.
         card_images (list): A list of ndarray images corresponding to the nodes.
+        settings (Settings, optional): An instance of the Settings class which provides
+                                        `card_size` as the size of the card and
+                                        `max_pixel_brightness` as the maximum value for pixel brightness.
     """
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
     num_cards = len(card_images)
 
     #check that number of cards equals each dimension of the adjacency matrix
@@ -250,15 +268,15 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
     matrix_subimage = matrix_to_image(adjacency_matrix)
 
     #assemble full image
-    full_image_size = CARD_SIZE*(num_cards+1)
-    full_image = np.ones((full_image_size,full_image_size,3))*MAX_PIXEL_BRIGHTNESS
+    full_image_size = card_size*(num_cards+1)
+    full_image = np.ones((full_image_size,full_image_size,3))*max_pixel_brightness
 
     vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
     horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
 
-    full_image[CARD_SIZE:,0:CARD_SIZE,:] = horizontal_cards
-    full_image[0:CARD_SIZE,CARD_SIZE:,:] = vertical_cards
-    full_image[CARD_SIZE:,CARD_SIZE:,:] = matrix_subimage
+    full_image[card_size:,0:card_size,:] = horizontal_cards
+    full_image[0:card_size,card_size:,:] = vertical_cards
+    full_image[card_size:,card_size:,:] = matrix_subimage
 
     full_image = full_image.astype(np.uint8)
 
