@@ -35,7 +35,7 @@ def names_to_image_urls(card_names: list[str]) -> list[str]:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data']) #dataframe of all cards to get image links
 
-    df_deck_images = sw.sub_df(df_all_cards,card_names,'name')
+    df_deck_images = sw.sub_df(df_all_cards, card_names, 'name')
     df_deck_images['card_images'] = df_deck_images['card_images'].apply(lambda x: x[0]['image_url_cropped'])
     urls = df_deck_images['card_images'].tolist()
     return urls
@@ -90,16 +90,16 @@ def normalize_images(images: list[np.ndarray], settings=default_settings) -> lis
     for image in images:
         image_length = image.shape[0]
         image_width = image.shape[1]
-        normalized_image = np.ones([card_size,card_size,3])*max_pixel_brightness
+        normalized_image = np.ones([card_size, card_size, 3])*max_pixel_brightness
         #covering cases when image is too small
-        if image_length<card_size and image_width<card_size: #case when length & width are too small
-            normalized_image[:image_length,:image_width,:] = image
-        elif image_length<card_size: #case when only length is too small
-            normalized_image[:image_length,:,:] = image[:,:card_size,:]
-        elif image_width<card_size: #case when only width is too small
-            normalized_image[:,:image_width,:] = image[:card_size,:,:]
+        if image_length < card_size and image_width < card_size: #case when length & width are too small
+            normalized_image[:image_length, :image_width, :] = image
+        elif image_length < card_size: #case when only length is too small
+            normalized_image[:image_length, :, :] = image[:, :card_size, :]
+        elif image_width < card_size: #case when only width is too small
+            normalized_image[:, :image_width, :] = image[:card_size, :, :]
         else: #case when image is same size or too big
-            normalized_image = image[:card_size,:card_size,:]
+            normalized_image = image[:card_size, :card_size, :]
         normalized_image = normalized_image.astype(np.uint8)
         normalized_images.append(normalized_image)
     return normalized_images
@@ -146,29 +146,29 @@ def matrix_to_graph_image(adjacency_matrix: np.ndarray, card_images: list[np.nda
         card_images (list): A list of ndarray images corresponding to the nodes.
     """
     G = nx.from_numpy_array(adjacency_matrix)
-    for i in range(len(card_images)):
-        G.nodes[i]['image'] = card_images[i] #asigns image to each node
+    for i, card in enumerate(card_images):
+        G.nodes[i]['image'] = card #asigns image to each node
 
-    pos=nx.circular_layout(G)
+    pos = nx.circular_layout(G)
 
-    fig=plt.figure(figsize=(5,5))
-    ax=plt.subplot(111)
+    fig = plt.figure(figsize=(5, 5))
+    ax = plt.subplot(111)
     ax.set_aspect('equal')
-    nx.draw_networkx_edges(G,pos,ax=ax, width=1.3), 
+    nx.draw_networkx_edges(G, pos, ax=ax, width=1.3),
 
-    plt.xlim(-1,1)
-    plt.ylim(-1,1)
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
 
-    trans=ax.transData.transform
-    trans2=fig.transFigure.inverted().transform
+    trans = ax.transData.transform
+    trans2 = fig.transFigure.inverted().transform
 
     num_cards = len(card_images)
     piesize = -0.003*num_cards+0.15 #image size is a linear function of the number of cards
-    p2=piesize/2.0
+    p2 = piesize/2.0
     for n in G:
-        xx,yy=trans(pos[n]) #figure coordinates
-        xa,ya=trans2((xx,yy)) #axes coordinates
-        a = plt.axes([xa-p2,ya-p2, piesize, piesize])
+        xx, yy = trans(pos[n]) #figure coordinates
+        xa, ya = trans2((xx, yy)) #axes coordinates
+        a = plt.axes([xa-p2, ya-p2, piesize, piesize])
         a.set_aspect('equal')
         a.imshow(G.nodes[n]['image'])
         a.axis('off')
@@ -218,11 +218,11 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> 
     max_pixel_brightness = settings.max_pixel_brightness
     num_cards = adjacency_matrix.shape[0]
     #check that the adjacency matrix is square
-    if not (num_cards == adjacency_matrix.shape[1]):
+    if num_cards != adjacency_matrix.shape[1]:
         raise ValueError("The adjacency matrix must be square.")
     
     matrix_subimage_size = card_size*num_cards #size of matrix subimage, not including card images
-    matrix_subimage = np.ones((matrix_subimage_size,matrix_subimage_size,3))*max_pixel_brightness
+    matrix_subimage = np.ones((matrix_subimage_size, matrix_subimage_size, 3))*max_pixel_brightness
 
     matrix_maximum = np.max(adjacency_matrix)
 
@@ -235,7 +235,7 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> 
             #specify the horizohntal range of the region in the image corresponding to the adjacency matrix entry
             horizontal_min = j*card_size
             horizontal_max = (j+1)*card_size
-            scaled_matrix_value = adjacency_matrix[i,j]/matrix_maximum
+            scaled_matrix_value = adjacency_matrix[i, j]/matrix_maximum
             matrix_subimage[vertical_min:vertical_max, horizontal_min:horizontal_max, :] = max_pixel_brightness*(1-scaled_matrix_value)
     return matrix_subimage
 
@@ -258,7 +258,7 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
     #check that number of cards equals each dimension of the adjacency matrix
     if not (num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]):
         raise ValueError("The number of card images must equal to each dimension of the adjacency matrix.")
-    
+
     #If the adjacency matrix is all zeros, then there are no Small World connections between cards.
     adjacency_max = np.max(adjacency_matrix)
     if adjacency_max==0:
@@ -274,9 +274,9 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
     vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
     horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
 
-    full_image[card_size:,0:card_size,:] = horizontal_cards
-    full_image[0:card_size,card_size:,:] = vertical_cards
-    full_image[card_size:,card_size:,:] = matrix_subimage
+    full_image[card_size:, 0:card_size, :] = horizontal_cards
+    full_image[0:card_size, card_size:, :] = vertical_cards
+    full_image[card_size:, card_size:, :] = matrix_subimage
 
     full_image = full_image.astype(np.uint8)
 
@@ -287,7 +287,7 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
 
     #if any of the diagonal elements are non-zero, then the adjacency matrix has been squared
     diag_max = np.max(np.diagonal(adjacency_matrix))
-    if diag_max>0:
+    if diag_max > 0:
         squared = True
     else:
         squared = False
@@ -299,7 +299,7 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
 
     plt.show()
 
-def names_to_matrix_image(card_names: list[str], squared: bool=False) -> None:
+def names_to_matrix_image(card_names: list[str], squared: bool = False) -> None:
     """
     Converts a list of card names into a matrix image.
 
@@ -312,7 +312,7 @@ def names_to_matrix_image(card_names: list[str], squared: bool=False) -> None:
     adjacency_matrix = sw.df_to_adjacency_matrix(df_deck, squared=squared)
     cards_and_matrix_to_image(adjacency_matrix, card_images)
 
-def ydk_to_matrix_image(ydk_file: str, squared: bool=False) -> None:
+def ydk_to_matrix_image(ydk_file: str, squared: bool = False) -> None:
     """
     Converts a ydk file into a matrix image.
 

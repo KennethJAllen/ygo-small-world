@@ -39,14 +39,14 @@ def load_main_monsters() -> pd.DataFrame:
     with open(cardinfo_path, "r") as file_path:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data'])
-    df_all_cards = df_all_cards.rename(columns={'type': 'category','race':'type'})
+    df_all_cards = df_all_cards.rename(columns={'type': 'category', 'race': 'type'})
 
     main_monster_card_category = ['Effect Monster', 'Normal Monster', 'Flip Effect Monster', 'Union Effect Monster',
-                                    'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
-                                    'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
-                                    'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster', 'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster']
+                                  'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
+                                  'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
+                                  'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster', 'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster']
     df_main_monsters = sub_df(df_all_cards, main_monster_card_category, 'category').reset_index(drop=True) #only keep main deck monsters
-    df_main_monsters = df_main_monsters[['id', 'name','type','attribute','level','atk','def']] #keep only relevant columns
+    df_main_monsters = df_main_monsters[['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']] #keep only relevant columns
     return df_main_monsters
 
 def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
@@ -62,7 +62,7 @@ def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
     main_monsters = load_main_monsters()
     return sub_df(main_monsters, card_names, 'name')
 
-#### READ YDK FILES ####
+# READ YDK FILES
 
 def ydk_to_card_ids(ydk_file: str) -> list[int]:
     """
@@ -104,7 +104,7 @@ def ydk_to_monster_names(ydk_file: str) -> list[str]:
 
 #### ADJACENCY MATRIX GENERATION ####
 
-def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool=False) -> np.ndarray:
+def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.ndarray:
     """
     Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
     Two cards are considered adjacent if they have exactly one property in common from the following attributes: type, attribute, level, attack, or defense.
@@ -116,10 +116,10 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool=False) -> np.nd
     Returns:
         np.array: An adjacency matrix representing the connections between cards.
     """
-    df_cards = df_cards[['type','attribute','level','atk','def']]
+    df_cards = df_cards[['type', 'attribute', 'level', 'atk', 'def']]
     array_cards = df_cards.to_numpy()
     num_cards = len(df_cards)
-    adjacency_matrix = np.zeros((num_cards,num_cards))
+    adjacency_matrix = np.zeros((num_cards, num_cards))
     for i in range(num_cards):
         card_similarities = array_cards==array_cards[i]
         similarity_measure = card_similarities.astype(int).sum(axis=1)
@@ -128,7 +128,7 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool=False) -> np.nd
         adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
     return adjacency_matrix
 
-def names_to_adjacency_matrix(card_names: list[str], squared: bool=False) -> np.ndarray:
+def names_to_adjacency_matrix(card_names: list[str], squared: bool = False) -> np.ndarray:
     """
     Creates an adjacency matrix based on Small World connections for a list of monster card names.
 
@@ -143,7 +143,7 @@ def names_to_adjacency_matrix(card_names: list[str], squared: bool=False) -> np.
     adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
     return adjacency_matrix
 
-def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool=False) -> pd.DataFrame:
+def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool = False) -> pd.DataFrame:
     """
     Creates a labeled adjacency matrix DataFrame based on Small World connections for a given list of monster names.
 
@@ -158,7 +158,7 @@ def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool=False
     df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
     return df_adjacency_matrix
 
-def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool=False) -> pd.DataFrame:
+def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.DataFrame:
     """
     Creates a labeled adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
 
@@ -175,7 +175,7 @@ def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool=False) -> pd.Da
 
 #### BRIDGE FINDING ####
 
-def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str]=[]) -> pd.DataFrame:
+def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str] = []) -> pd.DataFrame:
     """
     Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
     and connect to all the required targets.
@@ -197,7 +197,7 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
 
     num_required_targets = len(required_target_names) #number of cards required to connect with one bridge
 
-    required_monster_matrix = sw_adjacency_matrix[required_indices,:] #array corresponding to required connection monsters by all monsters
+    required_monster_matrix = sw_adjacency_matrix[required_indices, :] #array corresponding to required connection monsters by all monsters
     num_bridges_to_required_cards = required_monster_matrix.sum(axis=0) #number of required connections satisfied by all monsters
     required_bridge_mask = num_bridges_to_required_cards==num_required_targets
     df_bridges = main_monsters[required_bridge_mask].copy() #data frame of monsters connecting all required targets
@@ -212,12 +212,12 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
 
     #calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included divided by square of num cards in deck + 1
     adjacency_matrix = names_to_adjacency_matrix(deck_monster_names)
-    adjacency_matrix_squared = names_to_adjacency_matrix(deck_monster_names, squared=True)
+    adjacency_matrix_squared = names_to_adjacency_matrix(deck_monster_names, squared = True)
 
     num_deck_cards = bridge_matrix.shape[0]
-    i,j = np.mgrid[0:num_deck_cards,0:num_deck_cards]
+    i,j = np.mgrid[0:num_deck_cards, 0:num_deck_cards]
     outer_product_tensor = bridge_matrix[i] * bridge_matrix[j] #outer product of connection vectors
-    deck_connection_tensor = outer_product_tensor + adjacency_matrix_squared[:,:,np.newaxis] #A^2 + x(x.T) for all connection vectors x
+    deck_connection_tensor = outer_product_tensor + adjacency_matrix_squared[:, :, np.newaxis] #A^2 + x(x.T) for all connection vectors x
     deck_connectivity = deck_connection_tensor.astype(bool).astype(int).sum(axis=(0,1)) #number of non-zero elements in each slice
 
     bridge_connection_matrix = adjacency_matrix @ bridge_matrix
@@ -228,8 +228,8 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
 
     #assemble df
     df_bridges = df_bridges[df_bridges['number_of_connections'] > 0]
-    df_bridges = df_bridges[['bridge_score', 'number_of_connections', 'name', 'type', 'attribute', 'level', 'atk', 'def']] #reorder columns
-    df_bridges = df_bridges.sort_values(by=['bridge_score','number_of_connections','name'], ascending=[False, False, True]).reset_index(drop=True) #reorder rows
+    df_bridges = df_bridges[['bridge_score', 'number_of_connections', 'name', 'type', 'attribute', 'level', 'atk', 'def']]  #reorder columns
+    df_bridges = df_bridges.sort_values(by=['bridge_score', 'number_of_connections', 'name'], ascending=[False, False, True]).reset_index(drop=True) #reorder rows
     return df_bridges
 
 def find_best_bridges_from_ydk(ydk_file: str) -> pd.DataFrame:
