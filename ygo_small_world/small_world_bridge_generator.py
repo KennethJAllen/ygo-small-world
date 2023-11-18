@@ -1,7 +1,8 @@
 '''
 Module: small_world_bridge_generator
 
-Part of the YGO-small-world project, this module is for identifying optimal 'Small World' bridges in Yu-Gi-Oh! decks. It includes functionalities to generate adjacency matrices, calculate bridge scores, and find effective bridges for specific decks.
+Part of the YGO-small-world project, this module is for identifying optimal 'Small World' bridges in Yu-Gi-Oh! decks.
+It includes functionalities to generate adjacency matrices, calculate bridge scores, and find effective bridges for specific decks.
 
 Key Functions:
 - ydk_to_df_adjacency_matrix: Generates adjacency matrix from YDK files.
@@ -33,7 +34,7 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     '''
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
-    
+
     mask = df[column_name].isin(column_values)
     return df.loc[mask].copy()
 
@@ -216,11 +217,13 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     '''
     if required_target_names is None:
         required_target_names = []
+
     main_monsters = load_main_monsters()
-    sw_adjacency_matrix = df_to_adjacency_matrix(main_monsters) #small world adjacency array of all cards
+    sw_adjacency_matrix = df_to_adjacency_matrix(main_monsters)
+
     deck_monster_names = list(set(deck_monster_names) | set(required_target_names)) #union names so required_target_names is a subset of deck_monster_names
     deck_indices = sub_df(main_monsters, deck_monster_names, 'name').index
-    required_indices = sub_df(main_monsters, required_target_names, 'name').index #indices of required targets
+    required_indices = sub_df(main_monsters, required_target_names, 'name').index
 
     num_required_targets = len(required_target_names) #number of cards required to connect with one bridge
 
