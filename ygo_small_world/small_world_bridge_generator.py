@@ -39,13 +39,13 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     return df.loc[mask].copy()
 
 @cache
-def load_main_monsters() -> pd.DataFrame:
+def load_cards() -> pd.DataFrame:
     '''
-    Loads a DataFrame containing information about all main deck monster cards from a JSON file. 
-    The JSON file should contain data for all cards. This function filters for the main monster card categories.
+    Loads a DataFrame containing information about all cards from a JSON file. 
+    The JSON file should contain data for all cards.
 
     Returns:
-        pd.DataFrame: A DataFrame containing information about all main deck monsters, 
+        pd.DataFrame: A DataFrame containing information about all cards, 
                       including their ID, name, type, attribute, level, attack, and defense.
     '''
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -54,15 +54,35 @@ def load_main_monsters() -> pd.DataFrame:
     # Load the contents of cardinfo.json
     with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
         json_all_cards = json.load(file_path)
-    df_all_cards = pd.DataFrame(json_all_cards['data'])
-    df_all_cards = df_all_cards.rename(columns={'type': 'category', 'race': 'type'})
+    df_all_cards = pd.DataFrame(json_all_cards['data']).rename(columns={'type': 'category', 'race': 'type'})
 
-    main_monster_card_category = ['Effect Monster', 'Normal Monster', 'Flip Effect Monster', 'Union Effect Monster',
-                                  'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
-                                  'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
-                                  'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster', 'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster']
-    df_main_monsters = sub_df(df_all_cards, main_monster_card_category, 'category').reset_index(drop=True) #only keep main deck monsters
-    df_main_monsters = df_main_monsters[['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']] #keep only relevant columns
+    return df_all_cards
+
+def load_main_monsters() -> pd.DataFrame:
+    '''
+    Filters a DataFrame containing information about all cards to only main deck monster cards. 
+
+    Returns:
+        pd.DataFrame: A DataFrame containing information about all main deck monsters, 
+                      including their ID, name, type, attribute, level, attack, and defense.
+    '''
+
+    df_all_cards = load_cards()
+    #only keep main deck monsters
+    main_monster_card_categories = [
+        'Effect Monster', 'Normal Monster', 'Flip Effect Monster', 'Union Effect Monster',
+        'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
+        'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
+        'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster',
+        'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster'
+        ]
+    
+    df_main_monsters = sub_df(df_all_cards, main_monster_card_categories, 'category').reset_index(drop=True)
+
+    #filter relevant columns
+    relevent_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']
+    df_main_monsters = df_main_monsters[relevent_columns]
+
     return df_main_monsters
 
 def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
@@ -134,7 +154,7 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.
     '''
     required_columns = ['type', 'attribute', 'level', 'atk', 'def']
     if not all(column in df_cards.columns for column in required_columns):
-        raise ValueError("DataFrame must contain columns: 'type', 'attribute', 'level', 'atk', 'def'")
+        raise ValueError("DataFrame must have columns: 'type', 'attribute', 'level', 'atk', 'def'")
 
     # Extract relevant columns and convert to numpy array
     card_attributes = df_cards[required_columns].to_numpy()
@@ -253,7 +273,8 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     bridge_connection_matrix = adjacency_matrix @ bridge_matrix
     bridge_connectivity = bridge_connection_matrix.astype(bool).astype(int).sum(axis=0) #num non-zero elements in each row
 
-    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2) #formula derived from block matrix multiplication
+    #formula for bridge score derived from block matrix multiplication
+    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2)
     df_bridges['bridge_score'] = bridge_score
 
     #assemble df

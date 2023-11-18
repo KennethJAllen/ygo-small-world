@@ -1,3 +1,6 @@
+'''Tests for small_world_bridge_generator.py.'''
+# pylint: disable=redefined-outer-name
+
 import pandas as pd
 import pytest
 from ygo_small_world import small_world_bridge_generator as sw
@@ -47,4 +50,9 @@ def test_column_values_not_list(sample_df):
     with pytest.raises(TypeError):
         sw.sub_df(sample_df, column_values="a", column_name='B')
 
-    
+# test load_main_monsters
+
+def test_main_monsters_notnull():
+    '''Test there are no nulls.'''
+    main_monsters = sw.load_main_monsters()
+    assert main_monsters.notnull().values.all()
