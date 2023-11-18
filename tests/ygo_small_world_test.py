@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from ygo_small_world import small_world_functions as sw
+from ygo_small_world import small_world_bridge_generator as sw
 
 # Sample data for tests
 @pytest.fixture
