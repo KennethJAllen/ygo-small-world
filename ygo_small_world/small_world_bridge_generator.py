@@ -1,3 +1,18 @@
+'''
+Module: small_world_bridge_generator
+
+Part of the YGO-small-world project, this module is for identifying optimal 'Small World' bridges in Yu-Gi-Oh! decks. It includes functionalities to generate adjacency matrices, calculate bridge scores, and find effective bridges for specific decks.
+
+Key Functions:
+- ydk_to_df_adjacency_matrix: Generates adjacency matrix from YDK files.
+- calculate_bridge_score: Computes bridge score for potential bridge cards.
+- find_best_bridges: Determines optimal bridges for a given deck.
+
+Usage: Used within the YGO-small-world environment, relying on Yu-Gi-Oh! card data for accuracy.
+
+Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
+'''
+
 import json
 import os
 from functools import cache
@@ -5,7 +20,7 @@ import pandas as pd
 import numpy as np
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
-    """
+    '''
     Creates a subset of the given DataFrame based on specified values in a particular column.
     
     Parameters:
@@ -15,7 +30,7 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
 
     Returns:
         pd.DataFrame: A new DataFrame containing only the rows where the specified column contains any of the values in 'column_values'.
-    """
+    '''
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
     
@@ -50,7 +65,7 @@ def load_main_monsters() -> pd.DataFrame:
     return df_main_monsters
 
 def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
-    """
+    '''
     Converts a list of monster card names into a DataFrame containing details of those monsters.
 
     Parameters:
@@ -58,14 +73,14 @@ def monster_names_to_df(card_names: list[str]) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: A DataFrame containing the information of the specified monster cards.
-    """
+    '''
     main_monsters = load_main_monsters()
     return sub_df(main_monsters, card_names, 'name')
 
 # READ YDK FILES
 
 def ydk_to_card_ids(ydk_file: str) -> list[int]:
-    """
+    '''
     Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
 
     Parameters:
@@ -73,7 +88,7 @@ def ydk_to_card_ids(ydk_file: str) -> list[int]:
 
     Returns:
         list: A list of card IDs as integers.
-    """
+    '''
     card_ids = []
     with open(ydk_file, encoding='utf-8') as f:
         lines = f.readlines()
@@ -87,7 +102,7 @@ def ydk_to_card_ids(ydk_file: str) -> list[int]:
     return card_ids
 
 def ydk_to_monster_names(ydk_file: str) -> list[str]:
-    """
+    '''
     Extracts the names of main deck monsters from a given ydk (Yu-Gi-Oh Deck) file.
 
     Parameters:
@@ -95,7 +110,7 @@ def ydk_to_monster_names(ydk_file: str) -> list[str]:
 
     Returns:
         list: A list of names of main deck monsters present in the ydk file.
-    """
+    '''
     card_ids = ydk_to_card_ids(ydk_file)
     main_monsters = load_main_monsters()
     df_monsters = sub_df(main_monsters, card_ids, 'id')
@@ -105,7 +120,7 @@ def ydk_to_monster_names(ydk_file: str) -> list[str]:
 #### ADJACENCY MATRIX GENERATION ####
 
 def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.ndarray:
-    """
+    '''
     Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
     Two cards are considered adjacent if they have exactly one property in common from the following attributes: type, attribute, level, attack, or defense.
 
@@ -115,7 +130,7 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.
 
     Returns:
         np.array: An adjacency matrix representing the connections between cards.
-    """
+    '''
     df_cards = df_cards[['type', 'attribute', 'level', 'atk', 'def']]
     array_cards = df_cards.to_numpy()
     num_cards = len(df_cards)
@@ -129,7 +144,7 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.
     return adjacency_matrix
 
 def names_to_adjacency_matrix(card_names: list[str], squared: bool = False) -> np.ndarray:
-    """
+    '''
     Creates an adjacency matrix based on Small World connections for a list of monster card names.
 
     Parameters:
@@ -138,13 +153,13 @@ def names_to_adjacency_matrix(card_names: list[str], squared: bool = False) -> n
 
     Returns:
         ndarray: An adjacency matrix representing the connections between the named cards.
-    """
+    '''
     df_cards = monster_names_to_df(card_names)
     adjacency_matrix = df_to_adjacency_matrix(df_cards, squared=squared)
     return adjacency_matrix
 
 def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool = False) -> pd.DataFrame:
-    """
+    '''
     Creates a labeled adjacency matrix DataFrame based on Small World connections for a given list of monster names.
 
     Parameters:
@@ -153,13 +168,13 @@ def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool = Fal
 
     Returns:
         pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the monster names.
-    """
+    '''
     adjacency_matrix = names_to_adjacency_matrix(card_names, squared=squared)
     df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
     return df_adjacency_matrix
 
 def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.DataFrame:
-    """
+    '''
     Creates a labeled adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
 
     Parameters:
@@ -168,7 +183,7 @@ def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.
 
     Returns:
         pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the names of monsters in the ydk file.
-    """
+    '''
     card_names = ydk_to_monster_names(ydk_file)
     df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
     return df_adjacency_matrix
@@ -176,7 +191,7 @@ def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.
 #### BRIDGE FINDING ####
 
 def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str] = None) -> pd.DataFrame:
-    """
+    '''
     Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
     and connect to all the required targets.
 
@@ -188,7 +203,7 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     Returns:
         DataFrame: A Pandas DataFrame containing details of the best bridges including bridge score, number of connections,
           name, type, attribute, level, attack, and defense. If no bridges meet the requirements, prints a message and returns None.
-    """
+    '''
     if required_target_names is None:
         required_target_names = []
     main_monsters = load_main_monsters()
@@ -235,7 +250,7 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     return df_bridges
 
 def find_best_bridges_from_ydk(ydk_file: str) -> pd.DataFrame:
-    """
+    '''
     Identifies the best bridges that connect the most cards in the deck from a given ydk (Yu-Gi-Oh Deck) file.
 
     Parameters:
@@ -243,7 +258,7 @@ def find_best_bridges_from_ydk(ydk_file: str) -> pd.DataFrame:
 
     Returns:
         DataFrame: A Pandas DataFrame containing details of the best bridges. The same as returned by `find_best_bridges`.
-    """
+    '''
     deck_monster_names = ydk_to_monster_names(ydk_file)
     df_bridges = find_best_bridges(deck_monster_names)
     return df_bridges
