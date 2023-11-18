@@ -131,16 +131,26 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.
     Returns:
         np.array: An adjacency matrix representing the connections between cards.
     '''
-    df_cards = df_cards[['type', 'attribute', 'level', 'atk', 'def']]
-    array_cards = df_cards.to_numpy()
-    num_cards = len(df_cards)
-    adjacency_matrix = np.zeros((num_cards, num_cards))
-    for i in range(num_cards):
-        card_similarities = array_cards==array_cards[i]
-        similarity_measure = card_similarities.astype(int).sum(axis=1)
-        adjacency_matrix[:,i] = (similarity_measure==1).astype(int) #indicates where there is exactly one similarity
+    required_columns = ['type', 'attribute', 'level', 'atk', 'def']
+    if not all(column in df_cards.columns for column in required_columns):
+        raise ValueError("DataFrame must contain columns: 'type', 'attribute', 'level', 'atk', 'def'")
+
+    # Extract relevant columns and convert to numpy array
+    card_attributes = df_cards[required_columns].to_numpy()
+
+    # Broadcasting to compare each card with every other card
+    # This creates a 3D array where the third dimension is the attribute comparison between cards
+    comparisons = card_attributes[:, np.newaxis, :] == card_attributes
+
+    # Sum along the last axis to count the number of similarities between each pair of cards
+    similarity_count = comparisons.sum(axis=2)
+
+    # Create the adjacency matrix where exactly one attribute matches
+    adjacency_matrix = (similarity_count == 1).astype(int)
+
     if squared:
         adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+
     return adjacency_matrix
 
 def names_to_adjacency_matrix(card_names: list[str], squared: bool = False) -> np.ndarray:
