@@ -1,16 +1,23 @@
 import json
 import os
+from functools import cache
+from io import BytesIO
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 import requests
-from functools import cache
 from PIL import Image
-from io import BytesIO
 from . import small_world_bridge_generator as sw
 
 class Settings:
+    '''
+    Represents settings for graphical elements in an application.
+
+    Attributes:
+        card_size (int): Default size of a card in pixels, set to 624.
+        max_pixel_brightness (int): Maximum pixel brightness level, capped at 255.
+    '''
     def __init__(self):
         self.card_size = 624
         self.max_pixel_brightness = 255
@@ -31,7 +38,7 @@ def names_to_image_urls(card_names: list[str]) -> list[str]:
     cardinfo_path = os.path.join(current_dir, "cardinfo.json")
 
     # Load the contents of cardinfo.json
-    with open(cardinfo_path, "r") as file_path:
+    with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
         json_all_cards = json.load(file_path)
     df_all_cards = pd.DataFrame(json_all_cards['data']) #dataframe of all cards to get image links
 
@@ -51,7 +58,7 @@ def load_image(url: str) -> np.ndarray:
     Returns:
         ndarray: A NumPy array representing the image.
     """
-    res = requests.get(url)
+    res = requests.get(url, timeout=10)
     imgage = np.array(Image.open(BytesIO(res.content)))
     return imgage
 
@@ -92,13 +99,13 @@ def normalize_images(images: list[np.ndarray], settings=default_settings) -> lis
         image_width = image.shape[1]
         normalized_image = np.ones([card_size, card_size, 3])*max_pixel_brightness
         #covering cases when image is too small
-        if image_length < card_size and image_width < card_size: #case when length & width are too small
+        if image_length < card_size and image_width < card_size: #length & width too small
             normalized_image[:image_length, :image_width, :] = image
-        elif image_length < card_size: #case when only length is too small
+        elif image_length < card_size: #only length is too small
             normalized_image[:image_length, :, :] = image[:, :card_size, :]
-        elif image_width < card_size: #case when only width is too small
+        elif image_width < card_size: #only width is too small
             normalized_image[:, :image_width, :] = image[:card_size, :, :]
-        else: #case when image is same size or too big
+        else: #image is same size or too big
             normalized_image = image[:card_size, :card_size, :]
         normalized_image = normalized_image.astype(np.uint8)
         normalized_images.append(normalized_image)
@@ -220,7 +227,7 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> 
     #check that the adjacency matrix is square
     if num_cards != adjacency_matrix.shape[1]:
         raise ValueError("The adjacency matrix must be square.")
-    
+
     matrix_subimage_size = card_size*num_cards #size of matrix subimage, not including card images
     matrix_subimage = np.ones((matrix_subimage_size, matrix_subimage_size, 3))*max_pixel_brightness
 
