@@ -69,15 +69,8 @@ def load_main_monsters() -> pd.DataFrame:
 
     df_all_cards = load_cards()
     #only keep main deck monsters
-    main_monster_card_categories = [
-        'Effect Monster', 'Normal Monster', 'Flip Effect Monster', 'Union Effect Monster',
-        'Pendulum Effect Monster', 'Tuner Monster', 'Gemini Monster', 'Normal Tuner Monster',
-        'Spirit Monster', 'Ritual Effect Monster', 'Ritual Monster', 'Toon Monster',
-        'Pendulum Normal Monster', 'Pendulum Tuner Effect Monster',
-        'Pendulum Effect Ritual Monster', 'Pendulum Flip Effect Monster'
-        ]
-    
-    df_main_monsters = sub_df(df_all_cards, main_monster_card_categories, 'category').reset_index(drop=True)
+    main_monster_frame_types = ['effect', 'normal', 'effect_pendulum', 'ritual', 'normal_pendulum', 'ritual_pendulum']
+    df_main_monsters = sub_df(df_all_cards, main_monster_frame_types, 'frameType').reset_index(drop=True)
 
     #filter relevant columns
     relevent_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']
@@ -201,8 +194,7 @@ def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool = Fal
         pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the monster names.
     '''
     adjacency_matrix = names_to_adjacency_matrix(card_names, squared=squared)
-    df_adjacency_matrix = pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
-    return df_adjacency_matrix
+    return pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
 
 def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.DataFrame:
     '''
@@ -216,8 +208,7 @@ def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.
         pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the names of monsters in the ydk file.
     '''
     card_names = ydk_to_monster_names(ydk_file)
-    df_adjacency_matrix = names_to_labeled_adjacency_matrix(card_names, squared=squared)
-    return df_adjacency_matrix
+    return names_to_labeled_adjacency_matrix(card_names, squared=squared)
 
 #### BRIDGE FINDING ####
 
