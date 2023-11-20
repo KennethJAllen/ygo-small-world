@@ -181,7 +181,7 @@ def test_ydk_to_labeled_adjacency_matrix_squared(ydk_file_path, sample_labeled_a
     np.testing.assert_array_equal(result, sample_labeled_adjacency_matrix_squared)
 
 # test find_best_bridges.
-# The best bridges could change with newly released cards, so certian properties such as length of dataframe are tested
+# The best bridges could change with newly released cards, so certian properties are tested
 
 def test_length_find_best_bridges(sample_monster_names):
     '''Checks that length of best bridges is sufficiently large.'''
@@ -189,16 +189,34 @@ def test_length_find_best_bridges(sample_monster_names):
     assert len(result) > 4000
 
 def test_number_of_connections(sample_monster_names):
-    '''Checks that the most number of connections is 3.'''
+    '''
+    Checks that the most number of connections is equal to the number of monsters.
+    This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
+    '''
     result = sw.find_best_bridges(sample_monster_names)
-    assert result['number_of_connections'].max() == 3
+    num_monsters = len(sample_monster_names)
+    assert result['number_of_connections'].max() == num_monsters
 
 def test_bridge_score(sample_monster_names):
-    '''Checks that the best bridge score is 1.0.'''
+    '''
+    Checks that the best bridge score is 1.0.
+    This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
+    '''
     result = sw.find_best_bridges(sample_monster_names)
     assert result['bridge_score'].max() == 1.0
 
-def test_required_target_names(sample_monster_names):
-    '''Tests that smallest number of connections with all required targets is 3.'''
+def test_all_required_target_names(sample_monster_names):
+    '''
+    Tests that smallest number of connections with all required targets is equal to the number of monsters.
+    This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
+    '''
     result = sw.find_best_bridges(sample_monster_names, required_target_names=sample_monster_names)
-    assert result['number_of_connections'].min() == 3
+    num_required_targets = len(sample_monster_names)
+    assert result['number_of_connections'].min() == num_required_targets
+
+def test_some_required_target_names(sample_monster_names):
+    '''Tests that smallest number of connections with all required targets is equal to num_in_sublist.'''
+    num_in_sublist = 2
+    required_target_names = sample_monster_names[:num_in_sublist]
+    result = sw.find_best_bridges(sample_monster_names, required_target_names=required_target_names)
+    assert result['number_of_connections'].min() == num_in_sublist
