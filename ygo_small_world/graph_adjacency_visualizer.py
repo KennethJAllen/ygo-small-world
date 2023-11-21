@@ -327,7 +327,7 @@ def names_to_matrix_image(card_names: list[str], squared: bool = False) -> None:
 
     Parameters:
         card_names (list): A list of card names.
-        squared (bool, optional): If True, the image is saved with name referring to the squared adjacency matrix. Default is False.
+        squared (bool, optional): If True, the image is saved with name referring to the squared adjacency matrix.
     '''
     card_images = names_to_images(card_names)
     df_deck = sw.monster_names_to_df(card_names).reset_index(drop=True)
@@ -340,7 +340,7 @@ def ydk_to_matrix_image(ydk_file: str, squared: bool = False) -> None:
 
     Parameters:
         ydk_file (str): Path to the ydk file of the deck.
-        squared (bool, optional): If True, the image is saved with name referring to the squared adjacency matrix. Default is False.
+        squared (bool, optional): If True, the image is saved with name referring to the squared adjacency matrix.
     '''
     card_names = sw.ydk_to_monster_names(ydk_file)
     names_to_matrix_image(card_names, squared=squared)

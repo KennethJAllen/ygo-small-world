@@ -38,7 +38,6 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     mask = df[column_name].isin(column_values)
     return df.loc[mask].copy()
 
-@cache
 def load_cards() -> pd.DataFrame:
     '''
     Loads a DataFrame containing information about all cards from a JSON file. 
@@ -54,10 +53,13 @@ def load_cards() -> pd.DataFrame:
     # Load the contents of cardinfo.json
     with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
         json_all_cards = json.load(file_path)
-    df_all_cards = pd.DataFrame(json_all_cards['data']).rename(columns={'type': 'category', 'race': 'type'})
+
+    rename_map = {'type': 'category', 'race': 'type'}
+    df_all_cards = pd.DataFrame(json_all_cards['data']).rename(columns=rename_map)
 
     return df_all_cards
 
+@cache
 def load_main_monsters() -> pd.DataFrame:
     '''
     Filters a DataFrame containing information about all cards to only main deck monster cards. 
@@ -69,7 +71,8 @@ def load_main_monsters() -> pd.DataFrame:
 
     df_all_cards = load_cards()
     #only keep main deck monsters
-    main_monster_frame_types = ['effect', 'normal', 'effect_pendulum', 'ritual', 'normal_pendulum', 'ritual_pendulum']
+    main_monster_frame_types = ['effect', 'normal', 'effect_pendulum',
+                                'ritual', 'normal_pendulum', 'ritual_pendulum']
     df_main_monsters = sub_df(df_all_cards, main_monster_frame_types, 'frameType').reset_index(drop=True)
 
     #filter relevant columns
@@ -163,7 +166,7 @@ def df_to_adjacency_matrix(df_cards: pd.DataFrame, squared: bool = False) -> np.
     adjacency_matrix = (similarity_count == 1).astype(int)
 
     if squared:
-        adjacency_matrix = np.linalg.matrix_power(adjacency_matrix, 2)
+        adjacency_matrix = adjacency_matrix @ adjacency_matrix
 
     return adjacency_matrix
 
@@ -212,6 +215,43 @@ def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.
 
 #### BRIDGE FINDING ####
 
+@cache
+def calculate_all_cards_adjacency_matrix() -> np.ndarray:
+    '''Calculates adjacency matrix of all main deck monsters.'''
+    main_monsters = load_main_monsters()
+    return df_to_adjacency_matrix(main_monsters)
+
+def filter_main_monsters(required_target_names: list[str]) -> np.ndarray:
+    '''
+    Returns sub-dataframe of all cards which connect to all the cards in required_target_names
+
+    Parameters:
+        required_target_names (list[str]): Array of names of required target cards.
+
+    Returns:
+        np.ndarray: Array of indices corresponding to the bridge cards.
+    '''
+    main_monsters = load_main_monsters()
+    all_cards_adjacency_matrix = calculate_all_cards_adjacency_matrix()
+
+    required_indices = sub_df(main_monsters, required_target_names, 'name').index
+    num_required_targets = len(required_target_names)
+
+    # Subset of adjacency matrix corresponding to (required connection monsters) by (all monsters)
+    required_monster_matrix = all_cards_adjacency_matrix[required_indices, :]
+
+    # Sum along axis=0 to get number of connections from monsters to the required bridges
+    num_bridges_to_required_cards = required_monster_matrix.sum(axis=0)
+
+    # Filter out cards that do not connect to all required bridges.
+    # Return data frame of monsters connecting all required targets.
+    required_bridge_mask = num_bridges_to_required_cards==num_required_targets
+    return main_monsters[required_bridge_mask].copy()
+
+def calculate_bridge_scores(main_monsters: pd.DataFrame, bridge_indices: np.ndarray, deck_monster_names: list[str]):
+    # Calculate the bridge scores
+    pass
+
 def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str] = None) -> pd.DataFrame:
     '''
     Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
@@ -226,30 +266,25 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
         DataFrame: A Pandas DataFrame containing details of the best bridges including bridge score, number of connections,
           name, type, attribute, level, attack, and defense. If no bridges meet the requirements, prints a message and returns None.
     '''
-    if required_target_names is None:
-        required_target_names = []
-
     main_monsters = load_main_monsters()
-    sw_adjacency_matrix = df_to_adjacency_matrix(main_monsters)
+    all_cards_adjacency_matrix = calculate_all_cards_adjacency_matrix()
 
-    deck_monster_names = list(set(deck_monster_names) | set(required_target_names)) #union names so required_target_names is a subset of deck_monster_names
-    deck_indices = sub_df(main_monsters, deck_monster_names, 'name').index
-    required_indices = sub_df(main_monsters, required_target_names, 'name').index
+    if required_target_names:
+        # Union names so required_target_names is a subset of deck_monster_names
+        deck_monster_names = list(set(deck_monster_names) | set(required_target_names))
+        # Filter main_monsters to only include cards that connect with all cards in required_target_names.
+        df_bridges = filter_main_monsters(required_target_names)
+        if len(df_bridges)==0:
+            raise ValueError('There are no monsters that bridge all required targets.')
+    else:
+        df_bridges = main_monsters
 
-    num_required_targets = len(required_target_names) #number of cards required to connect with one bridge
-
-    required_monster_matrix = sw_adjacency_matrix[required_indices, :] #array corresponding to required connection monsters by all monsters
-    num_bridges_to_required_cards = required_monster_matrix.sum(axis=0) #number of required connections satisfied by all monsters
-    required_bridge_mask = num_bridges_to_required_cards==num_required_targets
-    df_bridges = main_monsters[required_bridge_mask].copy() #data frame of monsters connecting all required targets
-    required_bridge_indices = df_bridges.index #indices of monsters that satisfy all required connections
-    if len(df_bridges)==0:
-        raise ValueError('There are no monsters that bridge all required targets.')
     #subset of adjacency matrix corresponding to (deck monsters) by (monsters with connections to the required cards)
-    bridge_matrix = sw_adjacency_matrix[deck_indices,:][:,required_bridge_indices]
+    bridge_indices = df_bridges.index #indices of monsters that satisfy all required connections
+    deck_indices = sub_df(main_monsters, deck_monster_names, 'name').index
+    bridge_matrix = all_cards_adjacency_matrix[deck_indices,:][:,bridge_indices]
 
-    num_deck_bridges = bridge_matrix.sum(axis=0)
-    df_bridges['number_of_connections'] = num_deck_bridges
+    number_of_connections = bridge_matrix.sum(axis=0)
 
     #calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included divided by square of num cards in deck + 1
     adjacency_matrix = names_to_adjacency_matrix(deck_monster_names)
@@ -259,17 +294,18 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     i,j = np.mgrid[0:num_deck_cards, 0:num_deck_cards]
     outer_product_tensor = bridge_matrix[i] * bridge_matrix[j] #outer product of connection vectors
     deck_connection_tensor = outer_product_tensor + adjacency_matrix_squared[:, :, np.newaxis] #A^2 + x(x.T) for all connection vectors x
-    deck_connectivity = deck_connection_tensor.astype(bool).astype(int).sum(axis=(0,1)) #number of non-zero elements in each slice
+    deck_connectivity = deck_connection_tensor.astype(bool).sum(axis=(0,1)) #number of non-zero elements in each slice
 
     bridge_connection_matrix = adjacency_matrix @ bridge_matrix
-    bridge_connectivity = bridge_connection_matrix.astype(bool).astype(int).sum(axis=0) #num non-zero elements in each row
+    bridge_connectivity = bridge_connection_matrix.astype(bool).sum(axis=0) #num non-zero elements in each row
 
     #formula for bridge score derived from block matrix multiplication
     bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2)
-    df_bridges['bridge_score'] = bridge_score
-
+    
     #assemble df
-    df_bridges = df_bridges[df_bridges['number_of_connections'] > 0]
+    df_bridges['number_of_connections'] = number_of_connections
+    df_bridges['bridge_score'] = bridge_score
+    df_bridges = df_bridges[df_bridges['number_of_connections'] > 0] #filter out cards with 0 connections
     df_bridges = df_bridges[['bridge_score', 'number_of_connections', 'name', 'type', 'attribute', 'level', 'atk', 'def']]  #reorder columns
     df_bridges = df_bridges.sort_values(by=['bridge_score', 'number_of_connections', 'name'], ascending=[False, False, True]).reset_index(drop=True) #reorder rows
     return df_bridges
