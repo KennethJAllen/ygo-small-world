@@ -28,18 +28,25 @@ The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygopr
 
 ## 🔧 Installation
 
-*   Get the small world bridge finder source codes
+### Clone the Repository:
 
 ```
 git clone https://github.com/KennethJAllen/YGO-small-world
 cd YGO-small-world
 ```
+### Install Dependencies with Poetry:
 
-*   Install small world bridge finder dependencies
+*   Install Poetry from Poetry official website if not already installed.
+*   Run the following command in the project directory:
 
 ```
 poetry install
 ```
+### Activate the Virtual Environment:
+```
+poetry shell
+```
+You can now run the project's scripts within the poetry shell.
 
 ## 💻 Running the Code
 
