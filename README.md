@@ -12,10 +12,6 @@ The purpose of this repository is to assist in finding the best Small World brid
 1. [📊 Dataset](#-dataset)
 2. [🔧 Installation](#-installation)
 3. [💻 Running the Code](#-running-the-code)
-   - [Find Bridges From List of Names](#find-bridges-from-list-of-names)
-   - [Find Bridges From YDK File](#find-bridges-from-ydk-file)
-   - [Image Generation and Visualization](#image-generation-and-visualization)
-   - [Generate Adjacency Matrix](#generate-adjacency-matrix)
 4. [🎴 Example](#-example)
 5. [🌐 Small World Mathematics](#-small-world-mathematics)
    - [Theorem](#theorem)
@@ -50,36 +46,21 @@ You can now run the project's scripts within the poetry shell.
 
 ## 💻 Running the Code
 
-*   The Small World bridge finder is run with the `small_world_bridge_finder.ipynb` notebook.
+### Using the Notebook
 
-*   If the card info is not up to date, current card info can be pulled with `fetch_card_data.py`.
+* Initial Setup: Open `examples/bridge_generator_examples.ipynb` and run the cell under `Import Module`.
+* Update Card Data: If needed, update card info using fetch_card_data.py
 
-*   Run the cell under the `Import Functions` header first.
+### Finding Bridges
+* From a List of Names:
+  * To find bridges for a specific deck, edit `deck_monster_names` in the cell under `Find Best Bridges From List of Names` with your main deck monster names.
+  * If certain cards are essential for bridge connections, edit `required_target_names`. If not, do not use that argument.
+  * Ensure card names exactly match their official names, which can be verified on the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
-### Find Bridges From List of Names
-
-*   Running the cell under the `Find Best Bridges From List of Names` markdwon will calculate the best bridges between cards from an example Mathmech deck.
-
-*   To find the best bridges for your deck, replace the list `deck_monster_names` with the list of monsters names in your main deck. If there are any cards in your deck that are required to connect to the bridges, replace `required_target_names` with a list of those card's names. If not, you can replace it with the empy list `[]`.
-
-*   Card names must be typed to exactly match the actual card name, including using capital letters and symbols. Exact card names can be found in the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
-
-### Find Bridges From YDK File
-
-A YDK file is a file containing card IDs from a deck. It is supported by programs such as YGOPRO, Duelingbook, and Dueling Nexus.
-
-*   Running the cell under the `Find Best Bridges From YDK File` markdown will calculate the best bridges between cards from an example Mathmech deck from a YDK file.
-
-*   To get a list of bridges from your YDK file, add your file to the `YGO-small-world` folder. Then replace `mathmech_deck.ydk` with the name of your YDK file. Note: Monsters in the side deck are counted as cards that are desierable to find connections to.
-
-
-### Image Generation and Visualization
-
-*   To generate Small World graph and matrix visualizations such as the examples below from a YDK file or list of cards, use the `small_world_generate_images` notebook.
-
-### Generate Adjacency Matrix
-
-*   To generate an adjacency matrix from a YDK file, run the `ydk_to_df_adjacency_matrix(ydk_file, squared=False)` function. To generate the square of the adjacency matrix, set the optional parameter to `squared=True`. An example is given in the notebook `small_world_bridge_finder.ipynb`.
+### Using YDK Files
+* File Preparation: Place your .ydk file in the YGO-small-world directory.
+* Running the Analysis: Replace mathmech_deck.ydk with your file's name in the cell under Find Best Bridges From YDK File.
+  * Note: Side deck monsters are included in the analysis.
 
 ## 🎴 Example
 
@@ -115,6 +96,8 @@ Squaring the adjacency matrix, we get the following figure. If an entry is non-w
 Every entry in the column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to [Mathmech Multiplication](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=14748), which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
+
+To generate your own figures, use the `examples/graph_adacency_visualizer.ipynb` notebook.
 
 ## 🌐 Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched via Small World starting from any card.
