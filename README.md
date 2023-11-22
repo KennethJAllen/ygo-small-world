@@ -116,7 +116,7 @@ Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex
 
 ### Bridge Score
 
-When using the `small_world_bridge_finder` notebook, there is a `bridge_score` output for each potential bridge to add to a deck. The score is a way of measuring the resulting connectivity of your deck after adding that bridge. A score of $1$ means that every card is searchable from every other card, and a bridge score of $0$ means that there are no cards you can search with Small World, no matter what card you start with.
+When using the `bridge_generator_examples.ipynb` notebook, there is a `bridge_score` output for each potential bridge to add to a deck. The score is a way of measuring the resulting connectivity of your deck after adding that bridge. A score of $1$ means that every card is searchable from every other card, and a bridge score of $0$ means that there are no cards you can search with Small World, no matter what card you start with.
 
 More specifically, the bridge score for any particular bridge is the number of cards in the deck, including the bridge, which are searchable starting from other cards in the deck, including the bridge, divided by $(n+1)^2$.
 
