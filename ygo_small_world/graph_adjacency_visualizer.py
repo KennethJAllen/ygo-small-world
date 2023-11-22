@@ -1,7 +1,8 @@
 '''
 Module: graph_adjacency_visualizer
 
-This module is a part of the YGO-small-world project, aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks. It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
+This module is a part of the YGO-small-world project, aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
+It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
 
 Key Functions:
 - create_graph: Constructs a graph from deck data.
@@ -37,7 +38,7 @@ class Settings:
         self.card_size = 624
         self.max_pixel_brightness = 255
 
-default_settings = Settings()
+SETTINGS = Settings()
 
 def names_to_image_urls(card_names: list[str]) -> list[str]:
     '''
@@ -93,7 +94,7 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
         images.append(image)
     return images
 
-def normalize_images(images: list[np.ndarray], settings=default_settings) -> list[np.ndarray]:
+def normalize_images(images: list[np.ndarray], settings=SETTINGS) -> list[np.ndarray]:
     '''
     Normalizes a list of images to a standard size.
 
@@ -223,7 +224,7 @@ def ydk_to_graph_image(ydk_file: str) -> None:
 
 #### CREATE MATRIX IMAGE ####
 
-def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> np.ndarray:
+def matrix_to_image(adjacency_matrix: np.ndarray, settings=SETTINGS) -> np.ndarray:
     '''
     Generate the matrix subimage of the full matrix imageas an np.ndarray of size N x N x 3.
     N is CARD_SIZE*num_cards. The third dimension is for the color channels.
@@ -262,7 +263,7 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings=default_settings) -> 
     return matrix_subimage
 
 
-def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings=default_settings) -> None:
+def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings=SETTINGS) -> None:
     '''
     Converts an adjacency matrix into an image and saves it.
 
