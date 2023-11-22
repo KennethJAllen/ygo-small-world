@@ -21,19 +21,19 @@ def sample_df():
 @pytest.fixture
 def sample_monster_names():
     '''A list sample monster names.'''
-    return ['Ash Blossom & Joyous Spring','Effect Veiler','Ghost Belle & Haunted Mansion']
+    return ['Archfiend Eccentrick', 'Ash Blossom & Joyous Spring', 'Effect Veiler', 'PSY-Framegear Gamma']
 
 @pytest.fixture
 def sample_card_df(sample_monster_names):
     '''A sample card dataframe.'''
     return pd.DataFrame({
-        'id': [14558127, 97268402, 73642296],
+        'id': [57624336, 14558127, 97268402, 38814750],
         'name': sample_monster_names,
-        'type': ['Zombie', 'Spellcaster', 'Zombie'],
-        'attribute': ['FIRE', 'LIGHT', 'EARTH'],
-        'level': [3.0, 1.0, 3.0],
-        'atk': [0.0, 0.0, 0.0],
-        'def': [1800.0, 0.0, 1800.0]
+        'type': ['Fiend', 'Zombie', 'Spellcaster', 'Psychic'],
+        'attribute': ['LIGHT', 'FIRE', 'LIGHT', 'LIGHT'],
+        'level': [3.0, 3.0, 1.0, 2.0],
+        'atk': [800.0, 0.0, 0.0, 1000.0],
+        'def': [1000.0, 1800.0, 0.0, 0.0]
     })
 
 @pytest.fixture
@@ -47,12 +47,12 @@ def ydk_file_path():
 @pytest.fixture
 def sample_adjacency_matrix():
     '''A sample adjacency matrix.'''
-    return np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0],])
+    return np.array([[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]])
 
 @pytest.fixture
 def sample_adjacency_matrix_squared():
     '''A sample adjacency matrix squared.'''
-    return np.array([[1, 0, 1], [0, 2, 0], [1, 0, 1],])
+    return np.array([[3, 1, 1, 0], [1, 2, 1, 1], [1, 1, 2, 1], [0, 1, 1, 1]])
 
 @pytest.fixture
 def sample_labeled_adjacency_matrix(sample_adjacency_matrix, sample_monster_names):
@@ -121,7 +121,7 @@ def test_ydk_to_card_ids(ydk_file_path):
     '''Test getting card ids from test ydk file'''
     result = sw.ydk_to_card_ids(ydk_file_path)
     print(ydk_file_path)
-    expected = [14558127, 14558127, 73642296, 73642296, 97268402, 14558127]
+    expected = [14558127, 97268402, 14558127, 38814750, 57624336, 14558127]
     assert result == expected
 
 # test ydk_to_monster_names
