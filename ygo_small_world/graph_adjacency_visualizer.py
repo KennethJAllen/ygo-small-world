@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import requests
 from PIL import Image
-from . import small_world_bridge_generator as sw
+from ygo_small_world import small_world_bridge_generator as sw
 
 class Settings:
     '''
