@@ -32,7 +32,7 @@ cd YGO-small-world
 ```
 ### Install Dependencies with Poetry:
 
-*   Install Poetry from Poetry if not already installed.
+*   Install Poetry if not already installed.
 *   Run the following command in the project directory:
 
 ```
