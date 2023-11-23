@@ -249,21 +249,19 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings=SETTINGS) -> np.ndarr
 
     matrix_maximum = np.max(adjacency_matrix)
 
-    #color in cells
-    for i in range(num_cards):
-        #specify the vertical range of the region in the image corresponding to the adjacency matrix entry
-        vertical_min = i*card_size
-        vertical_max = (i+1)*card_size
-        for j in range(num_cards):
-            #specify the horizohntal range of the region in the image corresponding to the adjacency matrix entry
-            horizontal_min = j*card_size
-            horizontal_max = (j+1)*card_size
-            scaled_matrix_value = adjacency_matrix[i, j]/matrix_maximum
-            matrix_subimage[vertical_min:vertical_max, horizontal_min:horizontal_max, :] = max_pixel_brightness*(1-scaled_matrix_value)
+    # Normalizing the matrix
+    normalized_matrix = adjacency_matrix / matrix_maximum
+
+    # Creating a 3D block for each cell
+    cell_blocks = max_pixel_brightness * (1 - normalized_matrix[:, :, np.newaxis])
+    cell_blocks_repeated = np.repeat(np.repeat(cell_blocks, card_size, axis=0), card_size, axis=1)
+
+    # Creating the final image by repeating these blocks
+    matrix_subimage = np.tile(cell_blocks_repeated, (1, 1, 3))
     return matrix_subimage
 
 
-def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings=SETTINGS) -> None:
+def cards_and_matrix_to_full_image(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings=SETTINGS) -> None:
     '''
     Converts an adjacency matrix into an image and saves it.
 
@@ -276,10 +274,10 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
     '''
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
-    num_cards = len(card_images)
+    num_cards = adjacency_matrix.shape[0]
 
     #check that number of cards equals each dimension of the adjacency matrix
-    if not (num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]):
+    if not num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]:
         raise ValueError("The number of card images must equal to each dimension of the adjacency matrix.")
 
     #If the adjacency matrix is all zeros, then there are no Small World connections between cards.
@@ -310,10 +308,7 @@ def cards_and_matrix_to_image(adjacency_matrix: np.ndarray, card_images: list[np
 
     #if any of the diagonal elements are non-zero, then the adjacency matrix has been squared
     diag_max = np.max(np.diagonal(adjacency_matrix))
-    if diag_max > 0:
-        squared = True
-    else:
-        squared = False
+    squared = diag_max > 0
 
     if squared:
         save_images('small-world-matrix-squared.png')
@@ -333,7 +328,7 @@ def names_to_matrix_image(card_names: list[str], squared: bool = False) -> None:
     card_images = names_to_images(card_names)
     df_deck = sw.monster_names_to_df(card_names).reset_index(drop=True)
     adjacency_matrix = sw.df_to_adjacency_matrix(df_deck, squared=squared)
-    cards_and_matrix_to_image(adjacency_matrix, card_images)
+    cards_and_matrix_to_full_image(adjacency_matrix, card_images)
 
 def ydk_to_matrix_image(ydk_file: str, squared: bool = False) -> None:
     '''
