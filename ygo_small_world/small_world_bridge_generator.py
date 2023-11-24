@@ -199,6 +199,20 @@ def names_to_labeled_adjacency_matrix(card_names: list[str], squared: bool = Fal
     adjacency_matrix = names_to_adjacency_matrix(card_names, squared=squared)
     return pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
 
+def ydk_to_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.DataFrame:
+    '''
+    Creates an adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file containing the deck information.
+        squared (bool, optional): If True, the adjacency matrix is squared; default is False.
+
+    Returns:
+        pd.DataFrame: A labeled adjacency matrix with both row and column names corresponding to the names of monsters in the ydk file.
+    '''
+    card_names = ydk_to_monster_names(ydk_file)
+    return names_to_adjacency_matrix(card_names, squared=squared)
+
 def ydk_to_labeled_adjacency_matrix(ydk_file: str, squared: bool = False) -> pd.DataFrame:
     '''
     Creates a labeled adjacency matrix DataFrame based on Small World connections from a given ydk (Yu-Gi-Oh Deck) file.
