@@ -6,7 +6,7 @@ In theory, Small World can search any monster from your deck and add it to your 
 
 If you use Small World, it is generally desirable to include one or more dedicated Small World bridges that connects many cards in your deck so you have plenty of options for what to search starting from any card. However, such cards are difficult to find due to the many ways that cards can be considered connected via Small World. Because of the difficulty in optimizing a deck for Small World, there is a high barrier of entry to use the card.
 
-The purpose of this repository is to assist in finding the best Small World bridges for any deck.
+The purpose of this repository is to assist in finding the best Small World bridges for any deck, as well as to visualize the connections between cards.
 
 ## 📖 Table of Contents
 1. [📊 Dataset](#-dataset)
