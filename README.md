@@ -126,7 +126,7 @@ In more mathematical terms, consider a potential bridge $b$. Let $M$ be the $n \
 M_b = \begin{bmatrix}M & x\\x^\top & 0\end{bmatrix}.
 ```
 
-Then the bridge score is calculated as the number of non-zero elements in $M_b^2$ divided by $(n+1)^2$.
+The bridge score is calculated as the number of non-zero elements in $M_b^2$ divided by $(n+1)^2$.
 
 Because of the block matrix structure of $M_b$, we can express its square as
 
