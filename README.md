@@ -108,7 +108,7 @@ Let $n$ be the number of distinct monsters in your deck. Label the distinct mons
 
 ### Theorem
 
-Starting with monster $i$, you can search monster $j$ with Small World if and only if entry $(i,j)$ is non-zero in the matrix $M^2$.
+Starting with card $i$, you can search card $j$ with Small World if and only if entry $(i,j)$ is non-zero in the matrix $M^2$.
 
 ### Proof
 
