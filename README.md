@@ -114,7 +114,7 @@ Starting with card $i$, you can search card $j$ with Small World if and only if 
 
 Entry $(i,j)$ in $M^2$ is equal to the number of paths of length $2$ from vertex $i$ to vertex $j$ in $G$ (see [properties of the adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix)). If entry $(i,j)$ is zero, then there are no bridges between monsters $i$ and $j$. If entry $(i,j)$ is non-zero, then there is at least one bridge from $i$ to $j$, so $j$ can be searched starting with $i$.
 
-### Bridge Score
+### Bridge Ranking Algorithm
 
 When using the `bridge_generator_examples.ipynb` notebook, there is a `bridge_score` output for each potential bridge $b$. The score is a way of measuring the resulting connectivity of your deck after adding that bridge. A score of $1$ means that every card is searchable from every other card, and a bridge score of $0$ means that there are no cards you can search with Small World, no matter what card you start with.
 
