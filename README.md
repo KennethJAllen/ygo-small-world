@@ -58,7 +58,7 @@ You can now run the project's scripts within the poetry shell.
   * Ensure card names exactly match their official names, which can be verified on the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
 
 ### Using YDK Files
-* File Preparation: Place your .ydk file in the YGO-small-world directory.
+* File Preparation: Place your .ydk file in the ygo-small-world directory.
 * Running the Analysis: Replace mathmech_deck.ydk with your file's name in the cell under Find Best Bridges From YDK File.
   * Note: Side deck monsters are included in the analysis.
 
