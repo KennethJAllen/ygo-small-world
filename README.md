@@ -27,8 +27,8 @@ The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygopr
 ### Clone the Repository:
 
 ```
-git clone https://github.com/KennethJAllen/YGO-small-world
-cd YGO-small-world
+git clone https://github.com/KennethJAllen/ygo-small-world
+cd ygo-small-world
 ```
 ### Install Dependencies with Poetry:
 
