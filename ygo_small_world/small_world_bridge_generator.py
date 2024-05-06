@@ -352,15 +352,16 @@ def assemble_df_bridges(df_bridges: pd.DataFrame, number_of_connections: list[in
     df_bridges = df_bridges.sort_values(by=['bridge_score', 'number_of_connections', 'name'], ascending=[False, False, True]).reset_index(drop=True) 
     return df_bridges
 
-def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str] = None) -> pd.DataFrame:
+def find_best_bridges(deck_monster_names: list[str], required_target_names: list[str] = None, top: int = None) -> pd.DataFrame:
     '''
     Identifies the best bridges (monsters) that connect the most cards in the deck via Small World
     and connect to all the required targets.
 
     Parameters:
-        deck_monster_names (list): A list of monster names in the deck.
-        required_target_names (list, optional): A list of monster names that must be connected to the bridges via Small World.
-          Default is an empty list.
+    - deck_monster_names (list): A list of monster names in the deck.
+    - required_target_names (list, optional): A list of monster names that must be connected to the bridges via Small World.
+        Default is an empty list.
+    top (int, optional): The number of top bridges to return.
 
     Returns:
         DataFrame: A Pandas DataFrame containing details of the best bridges including bridge score, number of connections,
@@ -390,18 +391,19 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
     bridge_score = calculate_bridge_scores(deck_monster_names, bridge_matrix)
     
     #assemble df
-    return assemble_df_bridges(df_bridges, number_of_connections, bridge_score)
+    return assemble_df_bridges(df_bridges, number_of_connections, bridge_score).head(top)
 
-def find_best_bridges_from_ydk(ydk_file: str) -> pd.DataFrame:
+def find_best_bridges_from_ydk(ydk_file: str, top: int = None) -> pd.DataFrame:
     '''
     Identifies the best bridges that connect the most cards in the deck from a given ydk (Yu-Gi-Oh Deck) file.
 
     Parameters:
-        ydk_file (str): Path to the ydk file of the deck.
+    - ydk_file (str): Path to the ydk file of the deck.
+    - top (int, optional): The number of top bridges to return.
 
     Returns:
-        DataFrame: A Pandas DataFrame containing details of the best bridges. The same as returned by `find_best_bridges`.
+    - DataFrame: A Pandas DataFrame containing details of the best bridges. The same as returned by `find_best_bridges`.
     '''
     deck_monster_names = ydk_to_monster_names(ydk_file)
-    df_bridges = find_best_bridges(deck_monster_names)
+    df_bridges = find_best_bridges(deck_monster_names, top=top)
     return df_bridges
