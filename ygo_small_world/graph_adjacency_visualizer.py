@@ -18,12 +18,14 @@ import json
 import os
 from functools import cache
 from io import BytesIO
+import requests
+from PIL import Image
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
-import requests
-from PIL import Image
+
 from ygo_small_world import small_world_bridge_generator as sw
 
 class Settings:

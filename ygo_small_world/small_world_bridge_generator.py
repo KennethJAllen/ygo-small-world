@@ -15,6 +15,7 @@ Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is es
 import json
 import os
 from functools import cache
+
 import pandas as pd
 import numpy as np
 
