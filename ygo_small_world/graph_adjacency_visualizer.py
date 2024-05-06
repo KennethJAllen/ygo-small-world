@@ -19,8 +19,8 @@ import os
 from functools import cache
 from io import BytesIO
 import requests
-from PIL import Image
 
+from PIL import Image
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
