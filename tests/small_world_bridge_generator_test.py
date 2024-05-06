@@ -88,8 +88,8 @@ def test_valid_subset_strs(sample_df):
 
 def test_empty_subset(sample_df):
     '''Test empty subset.'''
-    result = sw.sub_df(sample_df, column_values=[6, 7], column_name='A')
-    assert result.empty
+    with pytest.raises(ValueError, match=r"Not all values are in column."):
+        sw.sub_df(sample_df, column_values=[6, 7], column_name='A')
 
 def test_invalid_column(sample_df):
     '''Test invalid column name.'''
