@@ -1,8 +1,8 @@
+"""Updates card data."""
+
 import json
 import os
 import requests
-
-
 
 def fetch_card_data() -> None:
     """
@@ -20,4 +20,5 @@ def fetch_card_data() -> None:
     with open(cardinfo_path, 'w', encoding='utf-8') as f:
         json.dump(response, f)
 
-fetch_card_data()
+if __name__ == "__main__":
+    fetch_card_data()
