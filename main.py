@@ -12,8 +12,8 @@ def main():
     - action (str): Type of analysis ('bridges', 'matrix', 'graph', 'matrix_image').
     
     Optional Args:
-    - --update_data (bool): 
-    - --top (int): Limits the number of bridges displayed when action is 'bridges'. Defaults to showing all.
+    - --update_data (bool): Updates card data cardinfo.json.
+    - --top (int): Limits the number of bridges displayed when action is 'bridges'. Defaults to showing 20.
     - --square (bool): Squares the adjacency matrix if set for 'matrix' or 'matrix_image' actions. Default is False.
     
     Examples:
@@ -26,7 +26,7 @@ def main():
     parser.add_argument('ydk_file', type=str, help='File path to the ydk (Yu-Gi-Oh! deck) file.')
     parser.add_argument('action', type=str, choices=['bridges', 'matrix', 'graph', 'matrix_image'],
                         help='Action to perform: bridges, matrix, graph, or matrix_image')
-    
+
     # optional arguments
     parser.add_argument('--update_data', type=bool, nargs='?', const=True, default=False,
                         help='Update card data cardinfo.json.')
