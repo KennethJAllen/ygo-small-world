@@ -97,7 +97,7 @@ Every entry in the column corresponding to [Mathmech Circular](https://www.db.yu
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
-To generate your own figures, use the `examples/graph_adacency_visualizer.ipynb` notebook.
+The code to generate these figures can be found in the `examples/graph_adacency_visualizer.ipynb` notebook.
 
 ## 🌐 Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched via Small World starting from any card.
