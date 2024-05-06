@@ -16,7 +16,7 @@ The purpose of this repository is to assist in finding the best Small World brid
 5. [🌐 Small World Mathematics](#-small-world-mathematics)
    - [Theorem](#theorem)
    - [Proof](#proof)
-   - [Bridge Score](#bridge-score)
+   - [Bridge Ranking Algorithm](#bridge-ranking-algorithm)
 
 ## 📊 Dataset
 
@@ -46,21 +46,51 @@ You can now run the project's scripts within the poetry shell.
 
 ## 💻 Running the Code
 
-### Using the Notebook
+### Using `main.py`
 
-* Initial Setup: Open `examples/bridge_generator_examples.ipynb` and run the cell under `Import Module`.
-* Update Card Data: If needed, update card info using fetch_card_data.py
+The command line interface for interacting with the Yu-Gi-Oh! Small World analysis tools and performing various analysesis is through `main.py`. Here’s how to use it:
 
-### Finding Bridges
-* From a List of Names:
-  * To find bridges for a specific deck, edit `deck_monster_names` in the cell under `Find Best Bridges From List of Names` with your main deck monster names.
-  * If certain cards are essential for bridge connections, edit `required_target_names`. If not, do not use that argument.
-  * Ensure card names exactly match their official names, which can be verified on the [Yu-Gi-Oh! card database](https://ygoprodeck.com/card-database/).
+1. **Add .ydk File to Directory**
+   - Add your .ydk file of the deck you wish to analyze to the ygo-small-world directory. A .ydk file may be downloaded from various online deck builder such as the [Ygopro deckbuilder](https://ygoprodeck.com/deckbuilder/).
+2. **Using the Script**:
+   - **Find Bridges**: To analyze bridges from a .ydk file:
+     ```
+     py main.py deck_name.ydk bridges
+     ```
+   - **Generate Adjacency Matrix**:
+     ```
+     py main.py deck_name.ydk matrix
+     ```
+   - **Visualize Graph**:
+     ```
+     py main.py deck_name.ydk graph
+     ```
+   - **Visualize Matrix**:
+     ```
+     py main.py deck_name.ydk matrix_image
+     ```
+   - **Options**:
+     - `--top TOP`: Limit the number of bridges shown for `bridges` argument. e.g. `--top 5` to only show top 5 bridges.
+     - `--squared`: Square the adjacency matrix for `matrix` or `matrix_image` arguments.
+     - `--update_data`: Update the card data to the latest version if needed.
 
-### Using YDK Files
-* File Preparation: Place your .ydk file in the ygo-small-world directory.
-* Running the Analysis: Replace mathmech_deck.ydk with your file's name in the cell under Find Best Bridges From YDK File.
-  * Note: Side deck monsters are included in the analysis.
+   Ensure `deck_name.ydk` is replaced with your .ydk file name.
+
+### Using Jupyter Notebooks
+
+For a more interactive approach or for example usage, you can utilize the Jupyter notebooks located in the `examples` folder:
+
+1. **Initial Setup**:
+   - Open `examples/bridge_generator_examples.ipynb` for top bridges or adjacency matrix outputs, or `examples\graph_adjacency_visualizer_examples.ipynb` for graph and adjaceny matrix image generation.
+   - If using a .ydk file, place it in the `examples` folder. Note: Side deck monsters are included in the analysis. Replace `sample_deck.ydk` with your file's name in all relevant cells.
+   - Run the cell under **Import Module** to set up the environment.
+
+2. **Update Card Data**:
+   - Run `fetch_card_data.py` to update the card data to the latest version if needed.
+
+3. **Finding Bridges to Required Targets**:
+   - Open the `bridge_generator_examples.ipynb` notebook. 
+   - Edit `deck_monster_names` in the cell under **Find Best Bridges From List of Names** with your main deck monster names. To include a list of required targets that must connect to all bridges, edit `required_target_names`. Ensure that all card names match their official names, including capitalization and special characters. Card names can be verified on the Yu-Gi-Oh! card database.
 
 ## 🎴 Example
 
@@ -97,7 +127,7 @@ Every entry in the column corresponding to [Mathmech Circular](https://www.db.yu
 
 Moreover, the diagonal entries are the number of connections a card has to another card in the deck. The darker the entry, the more connections a card has to other cards in the deck.
 
-The code to generate these figures can be found in the `examples/graph_adacency_visualizer.ipynb` notebook.
+The code to generate these figures may be found in the `examples/graph_adacency_visualizer.ipynb` notebook.
 
 ## 🌐 Small World Mathematics
 We can use [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to calculate which cards can and cannot be searched via Small World starting from any card.
