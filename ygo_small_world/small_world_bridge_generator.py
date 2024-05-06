@@ -9,8 +9,6 @@ Key Functions:
 - calculate_bridge_score: Computes bridge score for potential bridge cards.
 - find_best_bridges: Determines optimal bridges for a given deck.
 
-Usage: Used within the YGO-small-world environment, relying on Yu-Gi-Oh! card data for accuracy.
-
 Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
 '''
 
@@ -34,6 +32,9 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     '''
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
+    
+    if not pd.Series(column_values).isin(df[column_name]).all():
+        raise ValueError("Not all values are in column.")
 
     mask = df[column_name].isin(column_values)
     return df.loc[mask].copy()
