@@ -81,7 +81,7 @@ The command line interface for interacting with the Yu-Gi-Oh! Small World analys
 For a more interactive approach or for example usage, you can utilize the Jupyter notebooks located in the `examples` folder:
 
 1. **Initial Setup**:
-   - Open `examples/bridge_generator_examples.ipynb` for top bridges or adjacency matrix outputs, or `examples\graph_adjacency_visualizer_examples.ipynb` for graph and adjaceny matrix image generation.
+   - Open `examples/bridge_generator_examples.ipynb` for top bridges or adjacency matrix outputs, or `examples/graph_adjacency_visualizer_examples.ipynb` for graph and adjaceny matrix image generation.
    - If using a .ydk file, place it in the `examples` folder. Note: Side deck monsters are included in the analysis. Replace `sample_deck.ydk` with your file's name in all relevant cells.
    - Run the cell under **Import Module** to set up the environment.
 
