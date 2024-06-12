@@ -19,6 +19,8 @@ from functools import cache
 import pandas as pd
 import numpy as np
 
+from ygo_small_world.fetch_card_data import fetch_card_data
+
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
     '''
     Creates a subset of the given DataFrame based on specified values in a particular column.
@@ -51,6 +53,12 @@ def load_cards() -> pd.DataFrame:
     '''
     current_dir = os.path.dirname(os.path.abspath(__file__))
     cardinfo_path = os.path.join(current_dir, 'cardinfo.json')
+
+    # ensure that card data exists
+    data_exists = os.path.isfile(cardinfo_path)
+    if not data_exists:
+        print("Card data missing, fetching card data.")
+        fetch_card_data()
 
     # Load the contents of cardinfo.json
     with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
