@@ -102,9 +102,7 @@ def normalize_images(images: list[np.ndarray], settings: Settings = SETTINGS) ->
 
     Parameters:
         images (list): A list of NumPy arrays representing the images.
-        settings (Settings, optional): An instance of the Settings class which provides
-                                        `card_size` as the size of the card and
-                                        `max_pixel_brightness` as the maximum value for pixel brightness.
+        settings (Settings, optional): An instance of the Settings class which provides default settings.
 
     Returns:
         list: A list of normalized images.
@@ -254,9 +252,7 @@ def matrix_to_image(adjacency_matrix: np.ndarray, settings: Settings = SETTINGS)
 
     Parameters:
         adjacency_matrix (ndarray): A NumPy array representing the adjacency matrix.
-        settings (Settings, optional): An instance of the Settings class which provides
-                                        `card_size` as the size of the card and
-                                        `max_pixel_brightness` as the maximum value for pixel brightness.
+        settings (Settings, optional): An instance of the Settings class which provides default settings.
     Returns:
         ndarray: An image of the matrix.
     '''
