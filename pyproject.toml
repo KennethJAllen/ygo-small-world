@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ygo_small_world"
-version = "0.2.0"
+version = "1.0.0"
 description = "A bridge finder for the card 'Small World' in the card game 'Yu-Gi-Oh!'."
 authors = ["Kenneth Allen <kencubed@gmail.com>"]
 license = "MIT"
