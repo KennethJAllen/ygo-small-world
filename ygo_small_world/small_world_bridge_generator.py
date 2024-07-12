@@ -23,7 +23,7 @@ from ygo_small_world.fetch_card_data import fetch_card_data
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
     '''
-    Creates a subset of the given DataFrame based on specified values in a particular column.
+    Utility function. Creates a subset of the given DataFrame based on specified values in a particular column.
     
     Parameters:
         df (pd.DataFrame): The input DataFrame from which the subset will be extracted.
@@ -35,7 +35,7 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     '''
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
-    
+
     if not pd.Series(column_values).isin(df[column_name]).all():
         raise ValueError("Not all values are in column.")
 
@@ -398,7 +398,7 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
 
     # Calculate bridge score = num non-zero entries in square of adjacency matrix if bridge was included divided by square of num cards in deck + 1.
     bridge_score = calculate_bridge_scores(deck_monster_names, bridge_matrix)
-    
+
     #assemble df
     return assemble_df_bridges(df_bridges, number_of_connections, bridge_score).head(top)
 
@@ -416,3 +416,15 @@ def find_best_bridges_from_ydk(ydk_file: str, top: int = None) -> pd.DataFrame:
     deck_monster_names = ydk_to_monster_names(ydk_file)
     df_bridges = find_best_bridges(deck_monster_names, top=top)
     return df_bridges
+
+### MISC FUNCTIONS FOR STATISTICS ###
+
+def top_bridges(top: int = 10) -> pd.DataFrame:
+    """Returns the top bridges of all cards."""
+    total_connections = calculate_all_cards_adjacency_matrix().sum(axis=0)
+    main_monsters = load_main_monsters().copy()
+    main_monsters.insert(2, 'total connections', total_connections)
+    return main_monsters.sort_values(by=['total connections'], ascending=False).head(top)
+
+if __name__ == "__main__":
+    print(f"The top bridges are: {top_bridges()}.")
