@@ -419,12 +419,15 @@ def find_best_bridges_from_ydk(ydk_file: str, top: int = None) -> pd.DataFrame:
 
 ### MISC FUNCTIONS FOR STATISTICS ###
 
-def top_bridges(top: int = 10) -> pd.DataFrame:
-    """Returns the top bridges of all cards."""
+def top_bridges(reverse: bool = False, num: int = 10, ) -> pd.DataFrame:
+    """Returns the top bridges of all cards.
+    Optional arguments: reverse to return bottom bridges, num to specify the number of bridges."""
     total_connections = calculate_all_cards_adjacency_matrix().sum(axis=0)
     main_monsters = load_main_monsters().copy()
     main_monsters.insert(2, 'total connections', total_connections)
-    return main_monsters.sort_values(by=['total connections'], ascending=False).head(top)
+    return main_monsters.sort_values(by=['total connections'], ascending=reverse).head(num)
 
 if __name__ == "__main__":
-    print(f"The top bridges are: {top_bridges()}.")
+    print(f"The top bridges are: {top_bridges()}.\n")
+    print(f"The bottom bridges are: {top_bridges(reverse=True)}.\n")
+    print(f"The total number of main deck monster cards is {len(load_main_monsters())}")
