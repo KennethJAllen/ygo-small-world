@@ -113,15 +113,15 @@ Consider a Mathmech deck consisting of the monsters
 ```
 Then the graph of connections via Small World can be visualized as follows.
 
-<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/examples/images/sample-graph.png" width="500" />
+<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/images/sample-graph.png" width="500" />
 
 The adjacency matrix corresponding to cards in a Mathmech deck is the following matrix. If an entry is black, that means the corresponding cards connect via Small World. If an entry is white, that means there is no connection.
 
-<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/examples/images/sample-adjacency-matrix.png" width="500" />
+<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/images/sample-adjacency-matrix.png" width="500" />
 
 Squaring the adjacency matrix, we get the following figure. If an entry is non-white, that means that one corresponding card can be searched from the other. The darker the color, the more connecting bridges the two cards have.
 
-<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/examples/images/sample-adjacency-matrix-squared.png" width="500" />
+<img src="https://github.com/KennethJAllen/YGO-small-world/blob/main/images/sample-adjacency-matrix-squared.png" width="500" />
 
 Every entry in the column corresponding to [Mathmech Circular](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=17430) is non-zero except for the entry corresponding to [Mathmech Multiplication](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=14748), which means that Mathmech Circular can be searched with Small World starting from any monster in the deck except Mathmech Multiplication.
 
