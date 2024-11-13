@@ -226,9 +226,9 @@ def plot_graph(graph: nx.Graph, save_image_indicator: bool = False) -> None:
     ax.axis('off')
 
     if save_image_indicator:
-        save_image('graph_image.png')
+        fig.save_image('graph_image.png')
 
-    plt.show()
+    return fig
 
 #### CREATE MATRIX IMAGE ####
 
@@ -286,7 +286,7 @@ def cards_and_matrix_to_full_image(adjacency_matrix: np.ndarray, card_names: lis
 
     # If the adjacency matrix is all zeros, then there are no Small World connections between cards.
     adjacency_max = np.max(adjacency_matrix)
-    if adjacency_max==0:
+    if adjacency_max == 0:
         raise ValueError("There are no Small World connections between cards.")
 
     # Create matrix subimage
@@ -345,13 +345,12 @@ def plot_matrix(full_image: np.ndarray, squared: bool = False, save_image_indica
     full_image = full_image.astype(np.uint8)
 
     #create figure
-    plt.imshow(full_image)
-    ax = plt.subplot(111)
+    fig, ax = plt.subplots()
+    ax.imshow(full_image)
     ax.axis('off')
 
-    if squared & save_image_indicator:
-        save_image('small-world-matrix-squared.png')
-    elif save_image_indicator:
-        save_image('small-world-matrix.png')
+    if save_image_indicator:
+        file_name = 'small-world-matrix-squared.png' if squared else 'small-world-matrix.png'
+        save_image(file_name)
 
-    plt.show()
+    return fig
