@@ -15,17 +15,16 @@ Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is es
 """
 
 import json
-from pathlib import Path
 from functools import cache
 from io import BytesIO
 from collections import namedtuple
-
 import requests
 from PIL import Image
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
+from pyprojroot import here
 
 from ygo_small_world import small_world_bridge_generator as sw
 
@@ -42,8 +41,8 @@ def names_to_image_urls(card_names: list[str]) -> list[str]:
     Returns:
         list: A list of URLs corresponding to the card images.
     """
-    current_dir = Path.cwd()
-    cardinfo_path = current_dir / "data" / "cardinfo.json"
+    root_dir = here()
+    cardinfo_path = root_dir / "data" / "cardinfo.json"
 
     # Load the contents of cardinfo.json
     with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
@@ -138,8 +137,8 @@ def save_image(file_name: str) -> None:
     Parameters:
         file_name (str): The name of the file to save.
     """
-    current_dir = Path.cwd()
-    images_dir = current_dir / "images"
+    root_dir = here()
+    images_dir = root_dir / "images"
     images_dir.mkdir(parents=True, exist_ok=True) # ensures directory exists
     image_path = images_dir / file_name
     plt.savefig(image_path, dpi=450, bbox_inches='tight')

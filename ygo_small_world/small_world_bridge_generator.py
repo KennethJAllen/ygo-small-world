@@ -13,12 +13,10 @@ Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is es
 """
 
 import json
-from pathlib import Path
 from functools import cache
-
 import pandas as pd
 import numpy as np
-
+from pyprojroot import here
 from ygo_small_world import fetch_card_data as fcd
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
@@ -51,8 +49,8 @@ def load_cards() -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing information about all cards, 
                       including their ID, name, type, attribute, level, attack, and defense.
     """
-    current_dir = Path.cwd()
-    cardinfo_path = current_dir / "data" / "cardinfo.json"
+    root_dir = here()
+    cardinfo_path = root_dir / "data" / "cardinfo.json"
 
     # Pull card data if it doesn't exist
     if not cardinfo_path.exists():
