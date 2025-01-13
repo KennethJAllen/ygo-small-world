@@ -34,8 +34,8 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
     if column_name not in df.columns:
         raise ValueError(f"'{column_name}' is not a valid column in the DataFrame.")
 
-    if not pd.Series(column_values).isin(df[column_name]).all():
-        raise ValueError("Not all values are in column.")
+    if not pd.Series(column_values).isin(df[column_name]).any():
+        raise ValueError("No values are in df. Data may need to be updated.")
 
     mask = df[column_name].isin(column_values)
     return df.loc[mask].copy()
