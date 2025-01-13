@@ -21,13 +21,6 @@ def save_uploaded_file(uploaded_file):
         return temp_path
     return None
 
-def save_fig_to_bytes(fig):
-    """Convert matplotlib figure to bytes for download"""
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png', bbox_inches='tight', dpi=300)
-    buf.seek(0)
-    return buf
-
 def create_figure_for_download(data, is_graph=True):
     """Create a fresh figure for downloading"""
     if is_graph:
