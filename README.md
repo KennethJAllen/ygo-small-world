@@ -16,6 +16,9 @@ The purpose of this repository is to assist in finding the best Small World brid
 1. [📊 Dataset](#-dataset)
 2. [🔧 Installation](#-installation)
 3. [💻 Running the Code](#-running-the-code)
+   - [Streamlit Graphical User Interface](#streamlit-graphical-user-interface)
+   - [Command Line Interface](#command-line-interface)
+   - [Jupyter Notebooks](#jupyter-notebooks)
 4. [🎴 Example](#-example)
 5. [🌐 Small World Mathematics](#-small-world-mathematics)
    - [Theorem](#theorem)
@@ -82,7 +85,7 @@ The command line interface for interacting with the Yu-Gi-Oh! Small World analys
 
    Ensure `deck_name.ydk` is replaced with your .ydk file name.
 
-### Using Jupyter Notebooks
+### Jupyter Notebooks
 
 For a more interactive approach or for example usage, you can utilize the Jupyter notebooks located in the `examples` folder:
 
