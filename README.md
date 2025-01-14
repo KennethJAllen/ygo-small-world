@@ -2,6 +2,8 @@
 
 A brige visualizer and recommender for the *Yu-Gi-Oh* card *Small World*.
 
+[Use the web app here!](https://smallworld.streamlit.app/)
+
 ## Summary
 
 [Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a *Yu-Gi-Oh!* card which is notorious for being difficult to understand. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card, then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
@@ -45,9 +47,9 @@ You can now run the project's scripts within the poetry shell.
 
 ### Streamlit Graphical User Interface
 
-For a graphical user interface, use the Streamlit app:
+The graphical user interface can be accessed as a streamlit app: https://smallworld.streamlit.app/
 
-`streamlit run app.py`
+To run Streamlit locally: `streamlit run app.py`
 
 ### Command Line Interface
 
