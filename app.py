@@ -26,16 +26,6 @@ def main():
     Upload your .ydk file to analyze Small World connections in your deck.
     You'll see bridge recommendations and visualizations of the connections between your cards.
     """)
-
-    # Sidebar for database update
-    st.sidebar.header("Update Database")
-    
-    # Update data option
-    if st.sidebar.button("Update Card Database"):
-        with st.spinner("Updating card database..."):
-            fcd.fetch_card_data()
-        st.success("Card database updated successfully!")
-
     # File uploader
     uploaded_file = st.file_uploader("Choose your .ydk file", type=['ydk'])
 
