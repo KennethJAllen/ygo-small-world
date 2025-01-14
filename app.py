@@ -4,7 +4,6 @@ import tempfile
 import streamlit as st
 from ygo_small_world import small_world_bridge_generator as sw
 from ygo_small_world import graph_adjacency_visualizer as gav
-from ygo_small_world import fetch_card_data as fcd
 
 def save_uploaded_file(uploaded_file):
     """Save uploaded file to temporary location and return the path"""
