@@ -1,8 +1,6 @@
 """YGO Small World Streamlit app."""
 import os
-import io
 import tempfile
-from pathlib import Path
 import streamlit as st
 from ygo_small_world import small_world_bridge_generator as sw
 from ygo_small_world import graph_adjacency_visualizer as gav
@@ -21,18 +19,8 @@ def save_uploaded_file(uploaded_file):
         return temp_path
     return None
 
-def create_figure_for_download(data, is_graph=True):
-    """Create a fresh figure for downloading"""
-    if is_graph:
-        fig = gav.plot_graph(data)
-    else:
-        fig = gav.plot_matrix(data)
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png', bbox_inches='tight', dpi=300)
-    buf.seek(0)
-    return buf
-
 def main():
+    """Main entry point to app."""
     st.title("Yu-Gi-Oh! Small World Bridge Generator")
     st.write("""
     Upload your .ydk file to analyze Small World connections in your deck.
@@ -55,13 +43,12 @@ def main():
     if uploaded_file is not None:
         # Save the uploaded file
         file_path = save_uploaded_file(uploaded_file)
-        file_name = Path(file_path).stem
         try:
             # 1. Small World Bridges Section
             st.header("Top Small World Bridges")
             with st.spinner("Finding bridges..."):
                 try:
-                    df_bridges = sw.find_best_bridges_from_ydk(file_path, top=100)
+                    df_bridges = sw.find_best_bridges_from_ydk(file_path, top=150)
                     if df_bridges is not None and not df_bridges.empty:
                         df_bridges = df_bridges.copy()
                         df_bridges['bridge_score'] = df_bridges['bridge_score'].map(lambda x: f"{x*100:.2f}%")
@@ -83,11 +70,6 @@ def main():
                     graph = gav.ydk_to_graph(file_path)
                     display_fig = gav.plot_graph(graph)
                     st.pyplot(display_fig)
-                    st.download_button(
-                        label="Download Graph",
-                        data=create_figure_for_download(graph, is_graph=True),
-                        file_name=f"{file_name}_small_world_graph.png",
-                        mime="image/png")
                 except Exception as e:
                     st.error(f"Error generating network graph: {str(e)}")
 
@@ -100,11 +82,6 @@ def main():
                     connection_data = connection_data = gav.ydk_to_matrix_image(file_path, squared=False)
                     display_fig = gav.plot_matrix(connection_data)
                     st.pyplot(display_fig)
-                    st.download_button(
-                        label="Download Small World Connections",
-                        data=create_figure_for_download(connection_data, is_graph=False),
-                        file_name=f"{file_name}_small_world_connections.png",
-                        mime="image/png")
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
 
@@ -117,11 +94,6 @@ def main():
                     heatmap = gav.ydk_to_matrix_image(file_path, squared=True)
                     display_fig = gav.plot_matrix(heatmap)
                     st.pyplot(display_fig)
-                    st.download_button(
-                        label="Download Searchable Cards Heatmap",
-                        data=create_figure_for_download(heatmap, is_graph=False),
-                        file_name=f"{file_name}_searchable_cards_heatmap.png",
-                        mime="image/png")
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
 

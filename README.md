@@ -1,6 +1,6 @@
 # ygo-small-world
 
-A brige visualizer and recommender for the *Yu-Gi-Oh* card *Small World *.
+A brige visualizer and recommender for the *Yu-Gi-Oh* card *Small World*.
 
 ## Summary
 
