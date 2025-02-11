@@ -174,4 +174,4 @@ M_b^2 = \begin{bmatrix}M^2 + x_bx_b^\top & Mx_b\\x_b^\top M & x_b^\top x_b\end{b
 
 Because $M$ is symmetric, $x_b^\top M = (Mx_b)^\top$. So to calculate $M_b^2$ we only need to calculate $M^2$ once which is $O(n^3)$. Then for each potential bridge $b$, we calculate $x_bx_b^\top$ and, $Mx_b$ which is $O(n^2)$ each, and, $x_b^\top x_b$ which is $O(n)$.
 
-Therefore if there are $m$ possible bridges $b$, then calculating the Small World bridge score for every bridge with this approach only takes $O(mn^2)$ multiplications because $m \geq n$. This is much better than the naive approach of performing the full matrix multiplication $M_b^2$ for each bridge $b$, which would take $O(mn^3)$ multiplications.
+Therefore if there are $m$ possible bridges $b$, then calculating the Small World bridge score for every bridge with this approach only takes $O(mn^2 + n^3)$ multiplications. This is much better than the naive approach of performing the full matrix multiplication $M_b^2$ for each bridge $b$, which would take $O(mn^3)$ multiplications.
