@@ -17,6 +17,7 @@ def save_temp_file(uploaded_file):
     with open(temp_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
     return Path(temp_path)
+
 def main():
     """Main entry point to app."""
     st.title("Yu-Gi-Oh! Small World Bridge Generator")
