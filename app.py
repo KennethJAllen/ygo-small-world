@@ -1,23 +1,22 @@
 """YGO Small World Streamlit app."""
 import os
+from pathlib import Path
 import tempfile
 import streamlit as st
 from ygo_small_world import small_world_bridge_generator as sw
 from ygo_small_world import graph_adjacency_visualizer as gav
 
-def save_uploaded_file(uploaded_file):
+def save_temp_file(uploaded_file):
     """Save uploaded file to temporary location and return the path"""
-    if uploaded_file is not None:
-        # Create a temporary file
-        temp_dir = tempfile.mkdtemp()
-        temp_path = os.path.join(temp_dir, uploaded_file.name)
+    # Create a temporary file
+    temp_dir = tempfile.mkdtemp()
+    print(uploaded_file)
+    temp_path = os.path.join(temp_dir, uploaded_file.name)
 
-        # Write the file
-        with open(temp_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        return temp_path
-    return None
-
+    # Write the file
+    with open(temp_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return Path(temp_path)
 def main():
     """Main entry point to app."""
     st.title("Yu-Gi-Oh! Small World Bridge Generator")
@@ -28,10 +27,17 @@ def main():
     # File uploader
     uploaded_file = st.file_uploader("Choose your .ydk file", type=['ydk'])
 
-    # Process the file when uploaded
+    use_sample_deck = st.button("Use Sample Deck")
+
+    file_path = None
     if uploaded_file is not None:
-        # Save the uploaded file
-        file_path = save_uploaded_file(uploaded_file)
+        file_path = save_temp_file(uploaded_file)
+    elif use_sample_deck:
+        file_path = Path.cwd() / 'data' / 'sample_deck.ydk'
+
+    # Process the file when uploaded
+    if file_path is not None:
+        st.success(f"Using deck: {file_path.stem.replace('_', ' ').title()}")
         try:
             # 1. Small World Bridges Section
             st.header("Top Small World Bridges")
@@ -92,7 +98,7 @@ def main():
 
         finally:
             # Clean up the temporary file
-            if file_path and os.path.exists(file_path):
+            if uploaded_file and file_path and os.path.exists(file_path):
                 os.remove(file_path)
                 os.rmdir(os.path.dirname(file_path))
 
