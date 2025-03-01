@@ -1,5 +1,4 @@
 '''Tests for graph_adjacency_visualizer.py'''
-# pylint: disable=redefined-outer-name
 
 import os
 import pytest
@@ -10,16 +9,16 @@ from ygo_small_world import graph_adjacency_visualizer as gav
 from ygo_small_world import small_world_bridge_generator as sw
 
 
-@pytest.fixture
-def sample_card_names():
+@pytest.fixture(name='sample_card_names')
+def fixture_sample_card_names():
     '''A list sample card names.'''
     return ['Archfiend Eccentrick',
             'Ash Blossom & Joyous Spring',
             'Effect Veiler',
             'PSY-Framegear Gamma']
 
-@pytest.fixture
-def ydk_file_path():
+@pytest.fixture(name='ydk_file_path')
+def fixture_ydk_file_path():
     '''The path of the test ydk file.'''
     current_dir = os.path.dirname(os.path.abspath(__file__))
     ydk_file = 'test_deck.ydk'

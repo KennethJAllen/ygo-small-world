@@ -1,7 +1,7 @@
 import argparse
 from ygo_small_world import small_world_bridge_generator as sw
 from ygo_small_world import graph_adjacency_visualizer as gav
-from ygo_small_world import fetch_card_data as fcd
+from ygo_small_world.update_data import update_card_data
 
 def main():
     """
@@ -29,7 +29,7 @@ def main():
 
     # optional arguments
     parser.add_argument('--update_data', type=bool, nargs='?', const=True, default=False,
-                        help='Update card data cardinfo.json.')
+                        help='Update card data.')
     parser.add_argument('--top', type=int, default=20,
                         help='Number of top bridges to display.')
     parser.add_argument('--squared', type=bool, nargs='?', const=True, default=False,
@@ -39,7 +39,7 @@ def main():
 
     # update card data
     if args.update_data:
-        fcd.fetch_card_data()
+        update_card_data()
 
     # Process based on the action
     if args.action == 'bridges':
@@ -57,3 +57,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

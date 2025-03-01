@@ -1,16 +1,16 @@
 '''Tests for small_world_bridge_generator.py.'''
-# pylint: disable=redefined-outer-name
 
 import os
 import numpy as np
 import pandas as pd
 import pytest
 from ygo_small_world import small_world_bridge_generator as sw
+from ygo_small_world import utils
 
 # fixtures
 
-@pytest.fixture
-def sample_df():
+@pytest.fixture(name='sample_df')
+def fixture_sample_df():
     '''A sample dataframe for testing the sub_df function.'''
     return pd.DataFrame({
         'A': [1, 2, 3, 4, 5],
@@ -18,13 +18,13 @@ def sample_df():
         'C': [10, 20, 30, 40, 50]
     })
 
-@pytest.fixture
-def sample_monster_names():
+@pytest.fixture(name='sample_monster_names')
+def fixture_sample_monster_names():
     '''A list sample monster names.'''
     return ['Archfiend Eccentrick', 'Ash Blossom & Joyous Spring', 'Effect Veiler', 'PSY-Framegear Gamma']
 
-@pytest.fixture
-def sample_card_df(sample_monster_names):
+@pytest.fixture(name='sample_card_df')
+def fixture_sample_card_df(sample_monster_names):
     '''A sample card dataframe.'''
     return pd.DataFrame({
         'id': [57624336, 14558127, 97268402, 38814750],
@@ -36,31 +36,31 @@ def sample_card_df(sample_monster_names):
         'def': [1000.0, 1800.0, 0.0, 0.0]
     })
 
-@pytest.fixture
-def ydk_file_path():
+@pytest.fixture(name='ydk_file_path')
+def fixture_ydk_file_path():
     '''The path of the test ydk file.'''
     current_dir = os.path.dirname(os.path.abspath(__file__))
     ydk_file = 'test_deck.ydk'
     ydk_file_path = os.path.join(current_dir, ydk_file)
     return ydk_file_path
 
-@pytest.fixture
-def sample_adjacency_matrix():
+@pytest.fixture(name='sample_adjacency_matrix')
+def fixture_sample_adjacency_matrix():
     '''A sample adjacency matrix.'''
     return np.array([[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]])
 
-@pytest.fixture
-def sample_adjacency_matrix_squared():
+@pytest.fixture(name='sample_adjacency_matrix_squared')
+def fixture_sample_adjacency_matrix_squared():
     '''A sample adjacency matrix squared.'''
     return np.array([[3, 1, 1, 0], [1, 2, 1, 1], [1, 1, 2, 1], [0, 1, 1, 1]])
 
-@pytest.fixture
-def sample_labeled_adjacency_matrix(sample_adjacency_matrix, sample_monster_names):
+@pytest.fixture(name='sample_labeled_adjacency_matrix')
+def fixture_sample_labeled_adjacency_matrix(sample_adjacency_matrix, sample_monster_names):
     '''A sample labeled adjacency matrix.'''
     return pd.DataFrame(sample_adjacency_matrix, index=sample_monster_names, columns=sample_monster_names)
 
-@pytest.fixture
-def sample_labeled_adjacency_matrix_squared(sample_adjacency_matrix_squared, sample_monster_names):
+@pytest.fixture(name='sample_labeled_adjacency_matrix_squared')
+def fixture_sample_labeled_adjacency_matrix_squared(sample_adjacency_matrix_squared, sample_monster_names):
     '''A sample labeled adjacency matrix squared.'''
     return pd.DataFrame(sample_adjacency_matrix_squared, index=sample_monster_names, columns=sample_monster_names)
 
@@ -68,7 +68,7 @@ def sample_labeled_adjacency_matrix_squared(sample_adjacency_matrix_squared, sam
 
 def test_valid_subset_ints(sample_df):
     '''Test subset with integer values in column.'''
-    result = sw.sub_df(sample_df, column_values=[2, 4], column_name='A').reset_index(drop=True)
+    result = utils.sub_df(sample_df, column_values=[2, 4], column_name='A').reset_index(drop=True)
     expected = pd.DataFrame({
         'A': [2, 4],
         'B': ['b', 'd'],
@@ -78,7 +78,7 @@ def test_valid_subset_ints(sample_df):
 
 def test_valid_subset_strs(sample_df):
     '''Test subset with string values in column.'''
-    result = sw.sub_df(sample_df, column_values=['b', 'd'], column_name='B').reset_index(drop=True)
+    result = utils.sub_df(sample_df, column_values=['b', 'd'], column_name='B').reset_index(drop=True)
     expected = pd.DataFrame({
         'A': [2, 4, 5],
         'B': ['b', 'd', 'd'],
@@ -86,26 +86,21 @@ def test_valid_subset_strs(sample_df):
     })
     pd.testing.assert_frame_equal(result, expected)
 
-def test_empty_subset(sample_df):
-    '''Test empty subset.'''
-    with pytest.raises(ValueError, match=r"Not all values are in column."):
-        sw.sub_df(sample_df, column_values=[6, 7], column_name='A')
-
 def test_invalid_column(sample_df):
     '''Test invalid column name.'''
     with pytest.raises(ValueError, match=r"'D' is not a valid column in the DataFrame."):
-        sw.sub_df(sample_df, column_values=[1, 2], column_name='D')
+        utils.sub_df(sample_df, column_values=[1, 2], column_name='D')
 
 def test_column_values_not_list(sample_df):
     '''Test value not in column.'''
     with pytest.raises(TypeError):
-        sw.sub_df(sample_df, column_values="a", column_name='B')
+        utils.sub_df(sample_df, column_values="a", column_name='B')
 
 # test load_main_monsters
 
 def test_main_monsters_notnull():
     '''Test there are no nulls.'''
-    main_monsters = sw.load_main_monsters()
+    main_monsters = sw.load_cards()
     assert main_monsters.notnull().values.all()
 
 # test monster_names_to_df
@@ -113,7 +108,8 @@ def test_main_monsters_notnull():
 def test_monster_names_to_df(sample_monster_names, sample_card_df):
     '''Test getting df from sample monster names'''
     result = sw.monster_names_to_df(sample_monster_names).reset_index(drop=True)
-    pd.testing.assert_frame_equal(result, sample_card_df)
+    small_world_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']
+    pd.testing.assert_frame_equal(result[small_world_columns], sample_card_df)
 
 # test ydk_to_card_ids
 

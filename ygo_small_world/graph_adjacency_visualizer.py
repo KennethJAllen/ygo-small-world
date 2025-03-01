@@ -14,19 +14,18 @@ Note: Effective for visual analysis of deck structures in relation to Small Worl
 Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
 """
 
-import json
 from functools import cache
 from io import BytesIO
 from collections import namedtuple
 import requests
 from PIL import Image
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 from pyprojroot import here
 
 from ygo_small_world import small_world_bridge_generator as sw
+from ygo_small_world import utils
 
 Settings = namedtuple("Settings", ["card_size", "max_pixel_brightness"])
 SETTINGS = Settings(624, 255)
@@ -41,17 +40,9 @@ def names_to_image_urls(card_names: list[str]) -> list[str]:
     Returns:
         list: A list of URLs corresponding to the card images.
     """
-    root_dir = here()
-    cardinfo_path = root_dir / "data" / "cardinfo.json"
-
-    # Load the contents of cardinfo.json
-    with open(cardinfo_path, 'r', encoding='utf-8') as file_path:
-        json_all_cards = json.load(file_path)
-    df_all_cards = pd.DataFrame(json_all_cards['data']) #dataframe of all cards to get image links
-
-    df_deck_images = sw.sub_df(df_all_cards, card_names, 'name')
-    df_deck_images['card_images'] = df_deck_images['card_images'].apply(lambda x: x[0]['image_url_cropped'])
-    urls = df_deck_images['card_images'].tolist()
+    cards_df = sw.load_cards()
+    deck_df = utils.sub_df(cards_df, card_names, 'name')
+    urls = deck_df['card_images'].tolist()
     return urls
 
 @cache
@@ -88,6 +79,7 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
 def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
     """
     Normalizes a list of images to a standard size.
+    This is mostly relevant for pendulum cards which have a non-standard image size.
 
     Parameters:
         images (list): A list of NumPy arrays representing the images.
