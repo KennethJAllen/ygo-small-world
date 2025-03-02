@@ -1,17 +1,6 @@
 """
-Module: graph_adjacency_visualizer
-
-This module is a part of the YGO-small-world project, aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
+This module is aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
 It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
-
-Key Functions:
-- create_graph: Constructs a graph from deck data.
-- display_graph: Renders the graph for visualization.
-
-Usage: Used for graphically representing the Small World connections between Yu-Gi-Oh! cards, aiding in strategic deck building.
-
-Note: Effective for visual analysis of deck structures in relation to Small World card strategies.
-Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
 """
 
 from functools import cache
