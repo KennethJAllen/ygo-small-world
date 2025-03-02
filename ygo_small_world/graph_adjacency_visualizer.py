@@ -54,7 +54,7 @@ def load_image(url: str) -> np.ndarray:
         url (str): The URL of the image.
 
     Returns:
-        ndarray: A NumPy array representing the image.
+        ndarray: A numpy array representing the image.
     """
     res = requests.get(url, timeout=10)
     imgage = np.array(Image.open(BytesIO(res.content)))
@@ -68,7 +68,7 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
         urls (list): A list of URLs of the images.
 
     Returns:
-        list: A list of NumPy arrays representing the images.
+        list: A list of numpy arrays representing the images.
     """
     images = []
     for url in urls:
@@ -131,7 +131,7 @@ def save_image(file_name: str) -> None:
     """
     root_dir = here()
     images_dir = root_dir / "images"
-    images_dir.mkdir(parents=True, exist_ok=True) # ensures directory exists
+    images_dir.mkdir(parents=True, exist_ok=True)
     image_path = images_dir / file_name
     plt.savefig(image_path, dpi=450, bbox_inches='tight')
 
@@ -154,7 +154,7 @@ def matrix_to_graph(adjacency_matrix: np.ndarray, card_images: list[np.ndarray])
     graph = nx.from_numpy_array(adjacency_matrix)
     for node_index, card_image in enumerate(card_images):
         graph.nodes[node_index]['image'] = card_image
-    
+
     return graph
 
 def names_to_graph(card_names: list[str]) -> nx.Graph:
