@@ -40,6 +40,7 @@ cd ygo-small-world
 * Install UV if not already installed.
 * Create the virtual environment: `uv sync`
 * Activate the Virtual Environment
+* Install project `uv pip install -e .`
 
 You can now run the project's scripts within the poetry shell.
 

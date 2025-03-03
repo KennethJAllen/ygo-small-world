@@ -4,3 +4,4 @@ images/small-world-matrix.png
 images/small-world-matrix-squared.png
 .vscode
 .venv/
+*.egg-info/
