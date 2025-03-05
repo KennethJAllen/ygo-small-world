@@ -115,7 +115,7 @@ def test_monster_names_to_df(sample_monster_names, sample_card_df):
 
 def test_ydk_to_card_ids(ydk_file_path):
     '''Test getting card ids from test ydk file'''
-    result = sw.ydk_to_card_ids(ydk_file_path)
+    result = utils.ydk_to_card_ids(ydk_file_path)
     print(ydk_file_path)
     expected = [14558127, 97268402, 14558127, 38814750, 57624336, 14558127]
     assert result == expected

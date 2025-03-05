@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
@@ -20,3 +21,25 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
 
     mask = df[column_name].isin(column_values)
     return df.loc[mask].copy()
+
+def ydk_to_card_ids(ydk_path: Path) -> list[int]:
+    """
+    Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
+
+    Parameters:
+        ydk_file (str): Path to the ydk file.
+
+    Returns:
+        list: A list of card IDs as integers.
+    """
+    card_ids = []
+    with open(ydk_path, encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in lines:
+            try:
+                card_id = int(line)
+            except ValueError:
+                pass
+            else:
+                card_ids.append(card_id)
+    return card_ids

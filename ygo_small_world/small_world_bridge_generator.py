@@ -11,7 +11,6 @@ Key Functions:
 
 Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
 """
-from pathlib import Path
 import pandas as pd
 import numpy as np
 from pyprojroot import here
@@ -22,41 +21,11 @@ def main():
     all_cards = AllCards()
     print(all_cards.top_bridges(20))
 
-def df_to_adjacency_matrix(df_cards: pd.DataFrame) -> np.ndarray:
-    """
-    Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
-    Two cards are considered adjacent if they have exactly one property in common from the following attributes: type, attribute, level, attack, or defense.
-
-    Parameters:
-        df_cards (pd.DataFrame): DataFrame containing information about the cards.
-
-    Returns:
-        np.array: An adjacency matrix representing the connections between cards.
-    """
-    required_columns = ['type', 'attribute', 'level', 'atk', 'def']
-    if not all(column in df_cards.columns for column in required_columns):
-        raise ValueError("DataFrame must have columns: 'type', 'attribute', 'level', 'atk', 'def'")
-
-    # Extract relevant columns and convert to numpy array
-    card_attributes = df_cards[required_columns].to_numpy()
-
-    # Broadcasting to compare each card with every other card
-    # This creates a 3D array where the third dimension is the attribute comparison between cards
-    comparisons = card_attributes[:, np.newaxis, :] == card_attributes
-
-    # Sum along the last axis to count the number of similarities between each pair of cards
-    similarity_count = comparisons.sum(axis=2)
-
-    # Create the adjacency matrix where exactly one attribute matches
-    adjacency_matrix = (similarity_count == 1).astype(int)
-
-    return adjacency_matrix
-
 class AllCards:
     """Contains data for main deck monster cards relevant for Small World"""
     def __init__(self):
         self._df: pd.DataFrame = self._load_cards()
-        self._adjacency_matrix: np.ndarray = df_to_adjacency_matrix(self._df)
+        self._adjacency_matrix: np.ndarray = self._calculate_to_adjacency_matrix()
 
     def get_df(self):
         """
@@ -110,13 +79,43 @@ class AllCards:
 
         return df_all_cards
 
+    def _calculate_to_adjacency_matrix(self) -> np.ndarray:
+        """
+        Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
+        Two cards are considered adjacent if they have exactly one property in common
+        from the following attributes: type, attribute, level, attack, or defense.
+
+        Returns:
+            np.array: An adjacency matrix representing the connections between cards.
+        """
+        required_columns = ['type', 'attribute', 'level', 'atk', 'def']
+        if not all(column in self._df.columns for column in required_columns):
+            raise ValueError("DataFrame must have columns: 'type', 'attribute', 'level', 'atk', 'def'")
+
+        # Extract relevant columns and convert to numpy array
+        card_attributes = self._df[required_columns].to_numpy()
+
+        # Broadcasting to compare each card with every other card
+        # This creates a 3D array where the third dimension is the attribute comparison between cards
+        comparisons = card_attributes[:, np.newaxis, :] == card_attributes
+
+        # Sum along the last axis to count the number of similarities between each pair of cards
+        similarity_count = comparisons.sum(axis=2)
+
+        # Create the adjacency matrix where exactly one attribute matches
+        adjacency_matrix = (similarity_count == 1).astype(int)
+
+        return adjacency_matrix
+
 class Deck:
     """Contains data for deck relevant for Small World"""
     def __init__(self, deck_ids: list[int], all_cards: AllCards):
         self._deck_ids = deck_ids
-        self._all_cards = all_cards
         self._df = utils.sub_df(all_cards.get_df(), self._deck_ids, 'id')
-        self._adjacency_matrix = None
+
+        # calculate adjacency matrix
+        deck_indices = self._df.index
+        self._adjacency_matrix = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
         self._squared_adjacency_matrix = None
 
     def get_df(self):
@@ -124,18 +123,12 @@ class Deck:
         return self._df
 
     def get_adjacency_matrix(self):
-        """Returns the Small World adjacency matrix for deck.
-        Generates it if it does not exist."""
-        if self._adjacency_matrix is None:
-            deck_indices = self._df.index
-            self._adjacency_matrix = self._all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
+        """Returns the Small World adjacency matrix for deck."""
         return self._adjacency_matrix
 
     def get_squared_adjacency_matrix(self):
         """Returns the square of the Small World adjacency matrix for deck.
-        Generates it if it does not exist."""
-        if self._adjacency_matrix is None:
-            self.get_adjacency_matrix()
+        Generates it if it has not been calculated yet."""
         if self._squared_adjacency_matrix is None:
             self._squared_adjacency_matrix = self._adjacency_matrix @ self._adjacency_matrix
         return self._squared_adjacency_matrix
@@ -145,89 +138,63 @@ class Deck:
         card_names = self._df['names'].to_list()
         return pd.DataFrame(self._adjacency_matrix, index=card_names, columns=card_names)
 
-def ydk_to_card_ids(ydk_path: Path) -> list[int]:
-    """
-    Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
+    def __len__(self):
+        return len(self._df)
 
-    Parameters:
-        ydk_file (str): Path to the ydk file.
+class Bridges:
+    """Contains logic for generating bridges for deck from card_pool."""
+    def __init__(self, deck: Deck, card_pool: Deck):
+        self._deck = deck
+        self._card_pool = card_pool
+        self._bridge_matrix = self._calculate_bridge_matrix()
 
-    Returns:
-        list: A list of card IDs as integers.
-    """
-    card_ids = []
-    with open(ydk_path, encoding='utf-8') as f:
-        lines = f.readlines()
-        for line in lines:
-            try:
-                card_id = int(line)
-            except ValueError:
-                pass
-            else:
-                card_ids.append(card_id)
-    return card_ids
+    def _calculate_bridge_matrix(self) -> np.ndarray:
+        """
+        Constructs a bridge matrix from a given deck and card pool dataframes.
 
-def get_bridge_matrix(deck: Deck, card_pool: Deck):
-    """
-    Constructs a bridge matrix from a given deck and card pool dataframes.
+        The bridge matrix is a subset of the full adjacency matrix of all cards, representing 
+        connections between monsters in the deck and those satisfying the required connections.
 
-    The bridge matrix is a subset of the full adjacency matrix of all cards, representing 
-    connections between monsters in the deck and those satisfying the required connections.
+        If there are m cards in total and n cards in the deck, the result should be n x m
 
-    If there are m cards in total and n cards in the deck, the result should be n x m
+        
+        Returns:
+        - np.ndarray: The bridge matrix indicating connections between deck monsters and bridge monsters.
+        """
+        # Calculate full adjacency matrix
+        pool_adjacency_matrix = self._card_pool.get_adjacency_matrix()
 
-    
-    Returns:
-    - np.ndarray: The bridge matrix indicating connections between deck monsters and bridge monsters.
-    """
-    # Calculate full adjacency matrix
-    pool_adjacency_matrix = card_pool.get_adjacency_matrix()
+        # Get indices of monsters that satisfy all required connections
+        pool_indices = self._card_pool.get_df().index
+        deck_indices = self._deck.get_df().index
 
-    # Get indices of monsters that satisfy all required connections
-    pool_indices = card_pool.get_df().index
-    deck_indices = deck.get_df().index
+        # Construct bridge matrix
+        return pool_adjacency_matrix[deck_indices,:][:,pool_indices]
 
-    # Construct bridge matrix
-    return pool_adjacency_matrix[deck_indices,:][:,pool_indices]
+    def calculate_bridge_scores(self) -> np.ndarray:
+        """
+        Calculates bridge scores for a deck of cards. The score is the number of non-zero entries in the squared 
+        adjacency matrix (representing deck connections) adjusted by the bridge matrix,
+        normalized by the square of (number of cards in the deck + 1).
 
+        Returns:
+        - np.ndarray: Array of calculated bridge scores for each monster card.
+        """
+        deck_size = len(self._deck)
 
-#### WORK IN PROGRESS
+        i,j = np.mgrid[:deck_size, :deck_size]
+        outer_product_tensor = self._bridge_matrix[i] * self._bridge_matrix[j] # outer product of connection vectors
+        deck_connection_tensor = outer_product_tensor + self._deck.get_squared_adjacency_matrix()[:, :, np.newaxis] # A^2 + x(x.T) for all connection vectors x
+        deck_connectivity = deck_connection_tensor.astype(bool).sum(axis=(0,1)) #number of non-zero elements in each slice
 
+        bridge_connection_matrix = self._deck.get_adjacency_matrix() @ self._bridge_matrix
+        bridge_connectivity = bridge_connection_matrix.astype(bool).sum(axis=0) #num non-zero elements in each row
 
-def calculate_bridge_scores(deck_monster_names: list[str], bridge_matrix: np.ndarray) -> np.ndarray:
-    """
-    Calculates bridge scores for a deck of cards. The score is the number of non-zero entries in the squared 
-    adjacency matrix (representing deck connections) adjusted by the bridge matrix, normalized by the square of 
-    (number of cards in the deck + 1).
+        # Formula for bridge score derived from block matrix multiplication.
+        bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((deck_size+1)**2)
+        return bridge_score
 
-    Parameters:
-    - deck_monster_names (list[str]): Names of monsters in the deck.
-    - bridge_matrix (np.ndarray): Bridge matrix for the deck with the required connections.
-
-    Returns:
-    - np.ndarray: Array of calculated bridge scores for each monster card.
-
-    Raises:
-    - ValueError: If the dimensions of the bridge matrix do not match the expected size.
-    """
-    deck_adjacency_matrix = card_ids_to_adjacency_matrix(deck_monster_names)
-    deck_adjacency_matrix_squared = deck_adjacency_matrix @ deck_adjacency_matrix
-
-    num_deck_cards = len(deck_monster_names)
-    if deck_adjacency_matrix_squared.shape[0] != num_deck_cards:
-        raise ValueError("Mismatch in dimensions between the deck adjacency matrix and bridge matrix.")
-
-    i,j = np.mgrid[:num_deck_cards, :num_deck_cards]
-    outer_product_tensor = bridge_matrix[i] * bridge_matrix[j] #outer product of connection vectors
-    deck_connection_tensor = outer_product_tensor + deck_adjacency_matrix_squared[:, :, np.newaxis] #A^2 + x(x.T) for all connection vectors x
-    deck_connectivity = deck_connection_tensor.astype(bool).sum(axis=(0,1)) #number of non-zero elements in each slice
-
-    bridge_connection_matrix = deck_adjacency_matrix @ bridge_matrix
-    bridge_connectivity = bridge_connection_matrix.astype(bool).sum(axis=0) #num non-zero elements in each row
-
-    # Formula for bridge score derived from block matrix multiplication.
-    bridge_score = (deck_connectivity + 2*bridge_connectivity + 1)/((num_deck_cards+1)**2)
-    return bridge_score
+### work in progress
 
 def assemble_df_bridges(df_bridges: pd.DataFrame, number_of_connections: list[int], bridge_score: list[float]) -> pd.DataFrame:
     """
@@ -289,7 +256,7 @@ def find_best_bridges(deck_monster_names: list[str], required_target_names: list
 
     df_deck = utils.sub_df(main_monsters, deck_monster_names, 'name')
     # bridge_matrix is subset of adjacency matrix corresponding to (deck monsters) by (monsters with connections to the required cards)
-    bridge_matrix = get_bridge_matrix(df_deck, df_bridges)
+    bridge_matrix = _get_bridge_matrix(df_deck, df_bridges)
 
     # One array entry for each monster in df_bridges, with entry corresponding to number of connections.
     number_of_connections = bridge_matrix.sum(axis=0)
