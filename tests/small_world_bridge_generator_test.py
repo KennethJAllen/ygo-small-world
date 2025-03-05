@@ -144,12 +144,12 @@ def test_df_to_adjacency_matrix_squared(sample_card_df, sample_adjacency_matrix_
 
 def test_names_to_adjacency_matrix(sample_monster_names, sample_adjacency_matrix):
     '''Test generating adjacency matrix from list of monster names.'''
-    result = sw.names_to_adjacency_matrix(sample_monster_names)
+    result = sw.card_ids_to_adjacency_matrix(sample_monster_names)
     np.testing.assert_array_equal(result, sample_adjacency_matrix)
 
 def test_names_to_adjacency_matrix_squared(sample_monster_names, sample_adjacency_matrix_squared):
     '''Test generating squared adjacency matrix from list of monster names.'''
-    result = sw.names_to_adjacency_matrix(sample_monster_names, squared=True)
+    result = sw.card_ids_to_adjacency_matrix(sample_monster_names, squared=True)
     np.testing.assert_array_equal(result, sample_adjacency_matrix_squared)
 
 # test names_to_labeled_adjacency_matrix

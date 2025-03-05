@@ -31,7 +31,7 @@ def test_names_to_graph(sample_card_names):
     '''Test generating graph from list of names by comparing adjacency matrices'''
     graph = gav.names_to_graph(sample_card_names)
     array = nx.to_numpy_array(graph)
-    expected_array = sw.names_to_adjacency_matrix(sample_card_names)
+    expected_array = sw.card_ids_to_adjacency_matrix(sample_card_names)
     assert np.array_equal(array, expected_array)
 
 # test ydk_to_graph
