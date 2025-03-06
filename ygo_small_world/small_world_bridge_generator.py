@@ -23,6 +23,9 @@ class AllCards:
         self._df: pd.DataFrame = self._load_cards()
         self._adjacency_matrix: np.ndarray = self._calculate_to_adjacency_matrix()
 
+    def __len__(self):
+        return len(self._df)
+
     def get_df(self):
         """
         DataFrame containing information about cards.
@@ -122,6 +125,9 @@ class Deck:
         deck_indices = self._df.index
         self._adjacency_matrix = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
         self._squared_adjacency_matrix = None
+    
+    def __len__(self):
+        return len(self._df)
 
     def get_df(self) -> pd.DataFrame:
         """Returns dataframe of deck."""
@@ -147,23 +153,26 @@ class Deck:
         adjacency_matrix = self.get_adjacency_matrix(squared)
         return pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
 
-    def __len__(self):
-        return len(self._df)
 
+
+# TODO: Fix this when card_pool is not all cards
 class Bridges:
     """Contains logic for generating bridges for deck from card_pool."""
     def __init__(self, deck: Deck, card_pool: AllCards | Deck):
         self._deck = deck
         self._card_pool = card_pool
         self._bridge_matrix = self._calculate_bridge_matrix()
-        self._bridges_df = None
+        self._df = None
+
+    def __len__(self):
+        return len(self._df)
 
     def get_bridge_df(self) -> pd.DataFrame:
         """Returns dataframe of cards from card pool with bridge scores and number of bridges to deck."""
-        if self._bridges_df is None:
+        if self._df is None:
             bridge_scores = self._calculate_bridge_scores()
             self._assemble_bridges_df(bridge_scores)
-        return self._bridges_df
+        return self._df
 
     def _calculate_bridge_matrix(self) -> np.ndarray:
         """
@@ -239,7 +248,7 @@ class Bridges:
 
         # Reorder rows.
         bridges_df = bridges_df.sort_values(by=['bridge_score', 'number_of_connections', 'name'], ascending=[False, False, True]).reset_index(drop=True)
-        self._bridges_df = bridges_df
+        self._df = bridges_df
 
 if __name__ == "__main__":
     print(AllCards().top_bridges(20))
