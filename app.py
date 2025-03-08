@@ -3,8 +3,9 @@ import os
 from pathlib import Path
 import tempfile
 import streamlit as st
-from ygo_small_world import small_world_bridge_generator as sw
-from ygo_small_world import graph_adjacency_visualizer as gav
+from matplotlib import pyplot as plt
+from ygo_small_world.bridges import AllCards, Deck, Bridges
+from ygo_small_world.plots import graph_fig, matrix_fig
 
 def save_temp_file(uploaded_file):
     """Save uploaded file to temporary location and return the path"""
@@ -20,31 +21,38 @@ def save_temp_file(uploaded_file):
 
 def main():
     """Main entry point to app."""
-    st.title("Yu-Gi-Oh! Small World Bridge Generator")
+    st.title("Yu-Gi-Oh! Small World Bridge Finder")
     st.write("""
     Upload your .ydk file to analyze Small World connections in your deck.
     You'll see bridge recommendations and visualizations of the connections between your cards.
     """)
     # File uploader
     uploaded_file = st.file_uploader("Choose your .ydk file", type=['ydk'])
-
     use_sample_deck = st.button("Use Sample Deck")
 
-    file_path = None
+    ydk_path = None
     if uploaded_file is not None:
-        file_path = save_temp_file(uploaded_file)
+        ydk_path = save_temp_file(uploaded_file)
     elif use_sample_deck:
-        file_path = Path.cwd() / 'data' / 'sample_deck.ydk'
+        ydk_path = Path.cwd() / 'data' / 'sample_deck.ydk'
 
     # Process the file when uploaded
-    if file_path is not None:
-        st.success(f"Using deck: {file_path.stem.replace('_', ' ').title()}")
+    if ydk_path is not None:
+        st.success(f"Using deck: {ydk_path.stem.replace('_', ' ').title()}")
         try:
-            # 1. Small World Bridges Section
+            # Load all cards into sessions state
+            if 'all_cards' not in st.session_state:
+                st.session_state.all_cards = AllCards()
+
+            # Create Deck and Bridges
+            deck = Deck(st.session_state.all_cards, ydk_path)
+            bridges = Bridges(deck, st.session_state.all_cards)
+
+            # 1. Small World Bridges
             st.header("Top Small World Bridges")
             with st.spinner("Finding bridges..."):
                 try:
-                    df_bridges = sw.find_best_bridges_from_ydk(file_path, top=150)
+                    df_bridges = bridges.get_df(top = 150)
                     if df_bridges is not None and not df_bridges.empty:
                         df_bridges = df_bridges.copy()
                         df_bridges['bridge_score'] = df_bridges['bridge_score'].map(lambda x: f"{x*100:.2f}%")
@@ -59,37 +67,37 @@ def main():
 
             st.divider()
 
-            # 2. Graph Section
+            # 2. Graph
             st.header("Graph Visualization")
             with st.spinner("Generating graph..."):
                 try:
-                    graph = gav.ydk_to_graph(file_path)
-                    display_fig = gav.plot_graph(graph)
-                    st.pyplot(display_fig)
+                    graph = graph_fig(deck)
+                    st.pyplot(graph)
+                    plt.close(graph)
                 except Exception as e:
                     st.error(f"Error generating network graph: {str(e)}")
 
             st.divider()
 
-            # 3. Small World Connections Section
+            # 3. Adjacency Matrix
             st.header("Small World Connections")
             with st.spinner("Generating connections..."):
                 try:
-                    connection_data = connection_data = gav.ydk_to_matrix_image(file_path, squared=False)
-                    display_fig = gav.plot_matrix(connection_data)
-                    st.pyplot(display_fig)
+                    adjacency_matrix_fig = matrix_fig(deck)
+                    st.pyplot(adjacency_matrix_fig)
+                    plt.close(adjacency_matrix_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
 
             st.divider()
 
-            # 4. Matrix Heatmap Section
+            # 4. Adjacency Matrix Squared
             st.header("Searchable Cards Heatmap")
             with st.spinner("Generating searchable cards..."):
                 try:
-                    heatmap = gav.ydk_to_matrix_image(file_path, squared=True)
-                    display_fig = gav.plot_matrix(heatmap)
-                    st.pyplot(display_fig)
+                    adjacency_matrix_fig = matrix_fig(deck, squared=True)
+                    st.pyplot(adjacency_matrix_fig)
+                    plt.close(adjacency_matrix_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
 
@@ -99,9 +107,9 @@ def main():
 
         finally:
             # Clean up the temporary file
-            if uploaded_file and file_path and os.path.exists(file_path):
-                os.remove(file_path)
-                os.rmdir(os.path.dirname(file_path))
+            if uploaded_file and ydk_path and os.path.exists(ydk_path):
+                os.remove(ydk_path)
+                os.rmdir(os.path.dirname(ydk_path))
 
     # Add helpful information
     st.sidebar.markdown("""

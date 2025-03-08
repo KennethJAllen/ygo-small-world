@@ -1,6 +1,6 @@
 [project]
 name = "ygo-small-world"
-version = "1.1.0"
+version = "1.2.0"
 description = "A bridge finder for the card 'Small World' in the card game 'Yu-Gi-Oh!'."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -15,3 +15,6 @@ dependencies = [
     "requests>=2.32.3",
     "streamlit>=1.41.1",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
