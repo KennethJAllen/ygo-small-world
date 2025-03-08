@@ -1,6 +1,6 @@
 '''Tests for graph_adjacency_visualizer.py'''
 
-import os
+from pathlib import Path
 import pytest
 from PIL import Image
 import numpy as np
@@ -19,10 +19,8 @@ def fixture_sample_card_names():
 
 @pytest.fixture(name='ydk_file_path')
 def fixture_ydk_file_path():
-    '''The path of the test ydk file.'''
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    ydk_file = 'test_deck.ydk'
-    ydk_file_path = os.path.join(current_dir, ydk_file)
+    """The path of the test ydk file."""
+    ydk_file_path = Path(__file__).parent / 'test_data' / 'test_deck.ydk'
     return ydk_file_path
 
 # test names_to_graph
