@@ -137,13 +137,15 @@ class Deck:
         self._adjacency_matrix: np.ndarray = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
         self._squared_adjacency_matrix: np.ndarray = None
         self._graph: Graph = None
-    
+
     def __len__(self):
         return len(self._df)
 
     def get_df(self) -> pd.DataFrame:
         """Returns dataframe of deck."""
         return self._df
+
+    # Adjacency Matrix
 
     def get_adjacency_matrix(self, squared: bool = False) -> np.ndarray:
         """
@@ -153,10 +155,10 @@ class Deck:
         """
         if not squared:
             return self._adjacency_matrix
-        else:
-            if self._squared_adjacency_matrix is None:
-                self._squared_adjacency_matrix = self._adjacency_matrix @ self._adjacency_matrix
-            return self._squared_adjacency_matrix
+
+        if self._squared_adjacency_matrix is None:
+            self._squared_adjacency_matrix = self._adjacency_matrix @ self._adjacency_matrix
+        return self._squared_adjacency_matrix
 
     def get_labeled_adjacency_matrix(self, squared: bool = False) -> pd.DataFrame:
         """Returns adjacency matrix labeled with card names.
@@ -165,29 +167,57 @@ class Deck:
         adjacency_matrix = self.get_adjacency_matrix(squared)
         return pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
 
+    # Graph
+
     def get_graph(self) -> Graph:
         """Returns the Small World graph for the deck."""
         if self._graph is None:
             self._graph = nx.from_numpy_array(self._adjacency_matrix)
         return self._graph
 
-    def set_card_images(self):
-        """Sets the card images as graph values."""
-        if self._graph is None:
-            self.get_graph()
+    def set_card_images(self) -> None:
+        """Sets the card image arrays as graph values."""
+        if 'image' in self.get_graph().nodes[0]:
+            # Images have already been set
+            return
+
         img_urls = self._df['img_url']
         images = utils.load_images(img_urls)
         card_images = utils.normalize_images(images)
         for node_index, card_image in enumerate(card_images):
             self._graph.nodes[node_index]['image'] = card_image
 
+    def get_card_images(self) -> list[np.ndarray]:
+        """Returns list of card images corresponding to deck."""
+        self.set_card_images()
+        card_images = []
+        for node_index in self._graph.nodes:
+            card_image = self._graph.nodes[node_index]['image']
+            card_images.append(card_image)
+        return card_images
+
 class Bridges:
-    """Contains logic for generating bridges for deck from card_pool."""
-    def __init__(self, deck: Deck, card_pool: AllCards | Deck, all_cards: AllCards):
-        self._deck = deck
-        self._card_pool = card_pool
-        self._bridge_matrix = self._calculate_bridge_matrix(all_cards)
-        self._df = None
+    """
+    Contains logic for generating bridges for deck.
+    If target_ydk_path or target_ids is provided,
+    will only consider cards with Small Worlds connections
+    to the required targets as valid bridges.
+    Otherwise, all cards are considered valid bridges.
+    """
+    def __init__(self, deck: Deck, all_cards: AllCards, target_ydk_path: Path=None, target_ids: list[int]=None):
+        # If ydk path is provided, use it to generate target ids
+        if target_ydk_path is not None:
+            target_ids = utils.ydk_to_card_ids(target_ydk_path)
+        if target_ids is not None:
+            bridge_ids = all_cards.filter_required_targets(target_ids)
+            card_pool = Deck(all_cards, card_ids=bridge_ids).get_df()
+        else:
+            card_pool = all_cards.get_df()
+
+        self._card_pool: pd.DataFrame = card_pool
+        self._deck: Deck = deck
+        self._bridge_matrix: np.ndarray = self._calculate_bridge_matrix(all_cards)
+        self._df: pd.DataFrame = None
 
     def __len__(self):
         return len(self._df)
@@ -213,7 +243,7 @@ class Bridges:
         - np.ndarray: The bridge matrix indicating connections between deck monsters and bridge monsters.
         """
         # Get indices of monsters that satisfy all required connections
-        pool_indices = self._card_pool.get_df().index
+        pool_indices = self._card_pool.index
         deck_indices = self._deck.get_df().index
 
         # Construct bridge matrix
@@ -257,7 +287,7 @@ class Bridges:
         Returns:
         - pd.DataFrame: Updated and sorted dataframe.
         """
-        bridges_df = self._card_pool.get_df().copy()
+        bridges_df = self._card_pool.copy()
         number_of_connections = self._bridge_matrix.sum(axis=0)
         bridges_df['number_of_connections'] = number_of_connections
         bridges_df['bridge_score'] = bridge_score

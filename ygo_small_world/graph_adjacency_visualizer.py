@@ -2,22 +2,29 @@
 This module is aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
 It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
 """
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
-from pyprojroot import here
-from ygo_small_world.small_world_bridge_generator import AllCards, Deck, Bridges
-from ygo_small_world import utils
-from ygo_small_world.config import SETTINGS
+from matplotlib.figure import Figure
+from ygo_small_world.small_world_bridge_generator import Deck
+from ygo_small_world.config import SETTINGS, Settings
 
-def plot_graph(graph: nx.Graph, save_image_indicator: bool = False) -> None:
+
+def graph_fig(deck: Deck, img_filepath: Path=None) -> Figure:
     """
-    Plots the graph with images as nodes and optionally saves the image.
+    Plots the Samml World graph of a deck of cards.
+    Uses card images as nodes.
+    Optionally saves the image.
 
     Parameters:
-        graph (nx.Graph): The networkx graph to be plotted.
-        save_image_indicator (bool): Indicator to save the image.
+        deck (Deck): A deck of cards to be plotted.
+        img_filepath (Path): Optional path to save image to.
     """
+    # Loads card images
+    deck.set_card_images()
+
+    graph = deck.get_graph()
     pos = nx.circular_layout(graph)
     fig, ax = plt.subplots(figsize=(5, 5))
     ax.set_aspect('equal')
@@ -42,14 +49,77 @@ def plot_graph(graph: nx.Graph, save_image_indicator: bool = False) -> None:
 
     ax.axis('off')
 
-    if save_image_indicator:
-        fig.save_image('graph_image.png')
+    if img_filepath is not None:
+        plt.savefig(img_filepath, dpi=450, bbox_inches='tight')
 
     return fig
 
-#### CREATE MATRIX IMAGE ####
+def matrix_fig(deck: Deck, squared: bool=False, img_filepath: Path=None) -> Figure:
+    """
+    Plots and saves a matrix image.
 
-def matrix_to_image(adjacency_matrix: np.ndarray) -> np.ndarray:
+    Parameters:
+        full_image (ndarray): An image of the adjacency matrix with cards on each axis.
+        squared (bool, optional):
+            If False, the adjacency matrix is generated.
+            If True, the squared adjacency matrix is generated.
+        img_filepath (Path, optional): Optional path to save image to.
+    """
+    adjacency_matrix = deck.get_adjacency_matrix(squared=squared)
+    card_images = deck.get_card_images()
+    img = _create_matrix_img(adjacency_matrix, card_images)
+    full_image = img.astype(np.uint8)
+
+    #create figure
+    fig, ax = plt.subplots()
+    ax.imshow(full_image)
+    ax.axis('off')
+
+    if img_filepath is not None:
+        plt.savefig(img_filepath, dpi=450, bbox_inches='tight')
+
+    return fig
+
+def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings: Settings=SETTINGS) -> np.ndarray:
+    """
+    Converts an adjacency matrix into an image and saves it.
+
+    Parameters:
+        adjacency_matrix (ndarray): A NumPy array representing the ajdacency matrix.
+        card_names (list): A list of card names to plot.
+    Returns:
+        ndarray: An image of the adjacency matrix with cards on each axis.
+    """
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
+    num_cards = adjacency_matrix.shape[0]
+
+    # Check that number of cards equals each dimension of the adjacency matrix
+    if not num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]:
+        raise ValueError("The number of card images must equal to each dimension of the adjacency matrix.")
+
+    # If the adjacency matrix is all zeros, then there are no Small World connections between cards.
+    adjacency_max = np.max(adjacency_matrix)
+    if adjacency_max == 0:
+        raise ValueError("There are no Small World connections between cards.")
+
+    # Create matrix subimage
+    matrix_subimage = _create_matrix_subimage(adjacency_matrix)
+
+    # Add card images to axes
+    full_image_size = card_size*(num_cards+1)
+    full_image = np.ones((full_image_size,full_image_size,3))*max_pixel_brightness
+
+    vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
+    horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
+
+    full_image[card_size:, 0:card_size, :] = horizontal_cards
+    full_image[0:card_size, card_size:, :] = vertical_cards
+    full_image[card_size:, card_size:, :] = matrix_subimage
+
+    return full_image
+
+def _create_matrix_subimage(adjacency_matrix: np.ndarray, settings: Settings=SETTINGS) -> np.ndarray:
     """
     Generate an ndarray of size N x N x 3 that represents an imgae of a matrix.
     N is CARD_SIZE*num_cards. The third dimension is for the color channels.
@@ -59,8 +129,9 @@ def matrix_to_image(adjacency_matrix: np.ndarray) -> np.ndarray:
     Returns:
         ndarray: An image of the matrix.
     """
-    card_size = SETTINGS.card_size
-    max_pixel_brightness = SETTINGS.max_pixel_brightness
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
+
     num_cards = adjacency_matrix.shape[0]
     #check that the adjacency matrix is square
     if num_cards != adjacency_matrix.shape[1]:
@@ -81,96 +152,3 @@ def matrix_to_image(adjacency_matrix: np.ndarray) -> np.ndarray:
     # Creating the final image by repeating these blocks
     matrix_subimage = np.tile(cell_blocks_repeated, (1, 1, 3))
     return matrix_subimage
-
-
-def cards_and_matrix_to_full_image(adjacency_matrix: np.ndarray, card_names: list[str]) -> np.ndarray:
-    """
-    Converts an adjacency matrix into an image and saves it.
-
-    Parameters:
-        adjacency_matrix (ndarray): A NumPy array representing the ajdacency matrix.
-        card_names (list): A list of card names to plot.
-    Returns:
-        ndarray: An image of the adjacency matrix with cards on each axis.
-    """
-    card_size = SETTINGS.card_size
-    max_pixel_brightness = SETTINGS.max_pixel_brightness
-    num_cards = adjacency_matrix.shape[0]
-
-    # Check that number of cards equals each dimension of the adjacency matrix
-    if not num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]:
-        raise ValueError("The number of card images must equal to each dimension of the adjacency matrix.")
-
-    # If the adjacency matrix is all zeros, then there are no Small World connections between cards.
-    adjacency_max = np.max(adjacency_matrix)
-    if adjacency_max == 0:
-        raise ValueError("There are no Small World connections between cards.")
-
-    # Create matrix subimage
-    matrix_subimage = matrix_to_image(adjacency_matrix)
-
-    # Add card images to axes
-    full_image_size = card_size*(num_cards+1)
-    full_image = np.ones((full_image_size,full_image_size,3))*max_pixel_brightness
-
-    card_images = names_to_images(card_names)
-    vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
-    horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
-
-    full_image[card_size:, 0:card_size, :] = horizontal_cards
-    full_image[0:card_size, card_size:, :] = vertical_cards
-    full_image[card_size:, card_size:, :] = matrix_subimage
-
-    return full_image
-
-def names_to_matrix_image(card_names: list[str], squared: bool = False) -> np.ndarray:
-    """
-    Converts a list of card names into a matrix image.
-
-    Parameters:
-        card_names (list): A list of card names to plot.
-        squared (bool, optional): If True, the adjacency matrix is squared.
-    Returns:
-        ndarray: An image of the adjacency matrix with cards on each axis.
-    """
-    df_deck = sw.monster_names_to_df(card_names).reset_index(drop = True)
-    adjacency_matrix = sw.df_to_adjacency_matrix(df_deck, squared=squared)
-    # returns image of matrix
-    return cards_and_matrix_to_full_image(adjacency_matrix, card_names)
-
-def ydk_to_matrix_image(ydk_file: str, squared: bool = False) -> np.ndarray:
-    """
-    Converts a ydk file into a matrix image.
-
-    Parameters:
-        ydk_file (str): Path to the ydk file of the deck.
-        squared (bool, optional): If True, the adjacency matrix is squared.
-    Returns:
-        ndarray: An image of the adjacency matrix with cards on each axis.
-    """
-    card_names = sw.ydk_to_monster_names(ydk_file)
-    return names_to_matrix_image(card_names, squared=squared)
-
-def plot_matrix(full_image: np.ndarray, squared: bool = False, save_image: bool = False) -> None:
-    """
-    Plots and saves a matrix image.
-
-    Parameters:
-        full_image (ndarray): An image of the adjacency matrix with cards on each axis.
-        squared (bool, optional): If True, the image is saved with name referring to the squared adjacency matrix.
-    """
-    full_image = full_image.astype(np.uint8)
-
-    #create figure
-    fig, ax = plt.subplots()
-    ax.imshow(full_image)
-    ax.axis('off')
-
-    if save_image:
-        file_name = 'small-world-matrix-squared.png' if squared else 'small-world-matrix.png'
-        images_dir = here() / "images"
-        images_dir.mkdir(parents=True, exist_ok=True)
-        image_path = images_dir / file_name
-        plt.savefig(image_path, dpi=450, bbox_inches='tight')
-
-    return fig
