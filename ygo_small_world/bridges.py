@@ -61,17 +61,8 @@ class AllCards:
         num_connections = self._adjacency_matrix[required_indices, :].sum(axis=0)
 
         # Filter main monsters connected to all required targets
-        required_target_mask = num_connections == len(required_target_ids)
+        required_target_mask = num_connections == len(required_indices)
         return self._df[required_target_mask]['id']
-
-    def get_names_from_ids(self, card_ids: list[int]) -> pd.Series:
-        """Given a list of card ids, return the corresponding card names"""
-        return self._df.loc[card_ids, 'names']
-
-    def get_ids_from_names(self, card_names: list[str]) -> pd.Series:
-        """Given a list of card names, return the corresponding card ids."""
-        mask = self._df['names'].isin(card_names)
-        return self._df.index[mask]
 
     def _load_cards(self) -> pd.DataFrame:
         """
@@ -305,4 +296,4 @@ class Bridges:
         self._df = bridges_df
 
 if __name__ == "__main__":
-    print(AllCards().top_bridges(20))
+    print(AllCards().top_bridges(150))

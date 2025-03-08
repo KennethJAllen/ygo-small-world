@@ -21,7 +21,7 @@ def save_temp_file(uploaded_file):
 
 def main():
     """Main entry point to app."""
-    st.title("Yu-Gi-Oh! Small World Bridge Generator")
+    st.title("Yu-Gi-Oh! Small World Bridge Finder")
     st.write("""
     Upload your .ydk file to analyze Small World connections in your deck.
     You'll see bridge recommendations and visualizations of the connections between your cards.
