@@ -82,7 +82,8 @@ def normalize_images(images: list[np.ndarray], settings: Settings=SETTINGS) -> l
     max_pixel_brightness = settings.max_pixel_brightness
     normalized_images = []
     for image in images:
-        image_length, image_width = image.shape
+        image_length = image.shape[0]
+        image_width = image.shape[1]
         normalized_image = np.ones([card_size, card_size, 3])*max_pixel_brightness
         #covering cases when image is too small
         if image_length < card_size and image_width < card_size: #length & width too small
