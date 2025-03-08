@@ -11,7 +11,7 @@ from ygo_small_world.small_world_bridge_generator import Deck
 from ygo_small_world.config import SETTINGS, Settings
 
 
-def graph_fig(deck: Deck, img_filepath: Path=None) -> Figure:
+def graph_fig(deck: Deck, save_path: Path=None) -> Figure:
     """
     Plots the Samml World graph of a deck of cards.
     Uses card images as nodes.
@@ -49,12 +49,12 @@ def graph_fig(deck: Deck, img_filepath: Path=None) -> Figure:
 
     ax.axis('off')
 
-    if img_filepath is not None:
-        plt.savefig(img_filepath, dpi=450, bbox_inches='tight')
+    if save_path is not None:
+        plt.savefig(save_path, dpi=450, bbox_inches='tight')
 
     return fig
 
-def matrix_fig(deck: Deck, squared: bool=False, img_filepath: Path=None) -> Figure:
+def matrix_fig(deck: Deck, squared: bool=False, save_path: Path=None) -> Figure:
     """
     Plots and saves a matrix image.
 
@@ -75,8 +75,8 @@ def matrix_fig(deck: Deck, squared: bool=False, img_filepath: Path=None) -> Figu
     ax.imshow(full_image)
     ax.axis('off')
 
-    if img_filepath is not None:
-        plt.savefig(img_filepath, dpi=450, bbox_inches='tight')
+    if save_path is not None:
+        plt.savefig(save_path, dpi=450, bbox_inches='tight')
 
     return fig
 
