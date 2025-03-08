@@ -213,7 +213,7 @@ class Bridges:
     def __len__(self):
         return len(self._df)
 
-    def get_bridge_df(self, top: int = None) -> pd.DataFrame:
+    def get_df(self, top: int = None) -> pd.DataFrame:
         """Returns dataframe of cards from card pool with bridge scores and number of bridges to deck."""
         if self._df is None:
             bridge_scores = self._calculate_bridge_scores()

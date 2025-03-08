@@ -43,7 +43,7 @@ def test_deck_labeled_adjacency_matrix_squared(deck: Deck, labeled_adjacency_mat
 
 def test_length_find_best_bridges(bridges: Bridges):
     """Checks that length of best bridges is sufficiently large"""
-    result = bridges.get_bridge_df()
+    result = bridges.get_df()
     assert len(result) > 4000
 
 def test_number_of_connections(bridges: Bridges, card_names: list[str]):
@@ -51,7 +51,7 @@ def test_number_of_connections(bridges: Bridges, card_names: list[str]):
     Checks that the most number of connections is equal to the number of monsters.
     This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
     """
-    result = bridges.get_bridge_df()
+    result = bridges.get_df()
     num_monsters = len(card_names)
     assert result['number_of_connections'].max() == num_monsters
 
@@ -60,7 +60,7 @@ def test_bridge_score(bridges: Bridges):
     Checks that the best bridge score is 1.0.
     This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
     """
-    result = bridges.get_bridge_df()
+    result = bridges.get_df()
     assert result['bridge_score'].max() == 1.0
 
 def test_all_required_target_names(bridges_all_required: Bridges, card_names: list[str]):
@@ -68,11 +68,11 @@ def test_all_required_target_names(bridges_all_required: Bridges, card_names: li
     Tests that smallest number of connections with all required targets is equal to the number of monsters.
     This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
     """
-    result = bridges_all_required.get_bridge_df()
+    result = bridges_all_required.get_df()
     num_required_targets = len(card_names)
     assert result['number_of_connections'].min() == num_required_targets
 
 def test_some_required_target_names(bridges_some_required: Bridges):
     '''Tests that smallest number of connections with all required targets is equal to num_in_sublist.'''
-    result = bridges_some_required.get_bridge_df()
+    result = bridges_some_required.get_df()
     assert result['number_of_connections'].min() == 2

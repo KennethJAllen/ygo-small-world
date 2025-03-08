@@ -52,7 +52,7 @@ def main():
             st.header("Top Small World Bridges")
             with st.spinner("Finding bridges..."):
                 try:
-                    df_bridges = bridges.get_bridge_df(top = 150)
+                    df_bridges = bridges.get_df(top = 150)
                     if df_bridges is not None and not df_bridges.empty:
                         df_bridges = df_bridges.copy()
                         df_bridges['bridge_score'] = df_bridges['bridge_score'].map(lambda x: f"{x*100:.2f}%")

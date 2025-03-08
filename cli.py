@@ -46,7 +46,7 @@ def cli():
     bridges = Bridges(deck, all_cards)
 
     # Save bridges to CSV
-    bridges.get_bridge_df().to_csv(output_path / "bridges.csv")
+    bridges.get_df().to_csv(output_path / "bridges.csv")
 
     # Save graph
     graph = graph_fig(deck, save_path = output_path / "graph.png")
