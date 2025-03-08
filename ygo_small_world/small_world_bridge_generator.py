@@ -13,6 +13,8 @@ Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is es
 """
 import pandas as pd
 import numpy as np
+import networkx as nx
+from networkx.classes.graph import Graph
 from pyprojroot import here
 from ygo_small_world import utils
 from ygo_small_world.update_data import update_card_data
@@ -118,13 +120,12 @@ class AllCards:
 class Deck:
     """Contains data for deck relevant for Small World"""
     def __init__(self, deck_ids: list[int], all_cards: AllCards):
-        self._deck_ids = deck_ids
-        self._df = utils.sub_df(all_cards.get_df(), self._deck_ids, 'id')
+        self._df: pd.DataFrame = utils.sub_df(all_cards.get_df(), deck_ids, 'id')
 
-        # calculate adjacency matrix
         deck_indices = self._df.index
-        self._adjacency_matrix = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
-        self._squared_adjacency_matrix = None
+        self._adjacency_matrix: np.ndarray = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
+        self._squared_adjacency_matrix: np.ndarray = None
+        self._graph: Graph = None
     
     def __len__(self):
         return len(self._df)
@@ -153,15 +154,28 @@ class Deck:
         adjacency_matrix = self.get_adjacency_matrix(squared)
         return pd.DataFrame(adjacency_matrix, index=card_names, columns=card_names)
 
+    def get_graph(self) -> Graph:
+        """Returns the Small World graph for the deck."""
+        if self._graph is None:
+            self._graph = nx.from_numpy_array(self._adjacency_matrix)
+        return self._graph
+
+    def set_card_images(self):
+        """Sets the card images as graph values."""
+        img_urls = self._df['img_url']
+        images = utils.load_images(img_urls)
+        card_images = utils.normalize_images(images)
+        for node_index, card_image in enumerate(card_images):
+            self._graph.nodes[node_index]['image'] = card_image
 
 
 # TODO: Fix this when card_pool is not all cards
 class Bridges:
     """Contains logic for generating bridges for deck from card_pool."""
-    def __init__(self, deck: Deck, card_pool: AllCards | Deck):
+    def __init__(self, deck: Deck, card_pool: AllCards | Deck, all_cards: AllCards):
         self._deck = deck
         self._card_pool = card_pool
-        self._bridge_matrix = self._calculate_bridge_matrix()
+        self._bridge_matrix = self._calculate_bridge_matrix(all_cards)
         self._df = None
 
     def __len__(self):
@@ -174,28 +188,25 @@ class Bridges:
             self._assemble_bridges_df(bridge_scores)
         return self._df
 
-    def _calculate_bridge_matrix(self) -> np.ndarray:
+    def _calculate_bridge_matrix(self, all_cards: AllCards) -> np.ndarray:
         """
         Constructs a bridge matrix from a given deck and card pool dataframes.
 
         The bridge matrix is a subset of the full adjacency matrix of all cards, representing 
         connections between monsters in the deck and those satisfying the required connections.
 
-        If there are m cards in total and n cards in the deck, the result should be n x m
+        If there are m cards in the pool and n cards in the deck, the result should be n x m
 
         
         Returns:
         - np.ndarray: The bridge matrix indicating connections between deck monsters and bridge monsters.
         """
-        # Calculate full adjacency matrix
-        pool_adjacency_matrix = self._card_pool.get_adjacency_matrix()
-
         # Get indices of monsters that satisfy all required connections
         pool_indices = self._card_pool.get_df().index
         deck_indices = self._deck.get_df().index
 
         # Construct bridge matrix
-        return pool_adjacency_matrix[deck_indices,:][:,pool_indices]
+        return all_cards.get_adjacency_matrix()[deck_indices,:][:,pool_indices]
 
     def _calculate_bridge_scores(self) -> np.ndarray:
         """
