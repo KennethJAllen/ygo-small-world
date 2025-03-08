@@ -6,7 +6,7 @@ A brige visualizer and recommender for the *Yu-Gi-Oh* card *Small World*.
 
 ## Summary
 
-[Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a *Yu-Gi-Oh!* card which is notorious for being difficult to understand. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card, then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
+[Small World](https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=16555&request_locale=en) is a *Yu-Gi-Oh!* card which can search any monster in your deck. The idea is that you reveal a card from your hand, reveal a card from your deck with exactly one property in common with your original card, then reveal a third card also with exactly one property in common with the second card, and add that third card to your hand.
 
 In theory, Small World can search any monster from your deck and add it to your hand. However, it may not be possible to bridge a card in your hand to the card that you want to search. The first card you reveal in your deck is referred to as the *bridge* which connects the card you reveal in your hand and the card you add to your hand.
 
@@ -54,49 +54,17 @@ To run Streamlit locally: `streamlit run app.py`
 
 ### Command Line Interface
 
-The command line interface for interacting with the Yu-Gi-Oh! Small World analysis tools and performing various analysesis is through `main.py`. Here’s how to use it:
+- The command line interface for interacting with the Yu-Gi-Oh! Small World analysis tools is through `cli.py`.
+- Takes path to `.ydk` file, outputs bridges, adjacency matrix plot, squared adjacency matrix plot, and graph plot to output path (defaults to `./output`)
+- Example: `py -m cli "data/sample_deck.ydk"`
 
-1. **Add .ydk File to Directory**
-   - Add your .ydk file of the deck you wish to analyze to the ygo-small-world directory. A .ydk file may be downloaded from various online deck builder such as the [Ygopro deckbuilder](https://ygoprodeck.com/deckbuilder/).
-2. **Using the Script**:
-   - **Find Bridges**: To analyze bridges from a .ydk file:
-     ```
-     py main.py deck_name.ydk bridges
-     ```
-   - **Generate Adjacency Matrix**:
-     ```
-     py main.py deck_name.ydk matrix
-     ```
-   - **Visualize Graph**:
-     ```
-     py main.py deck_name.ydk graph
-     ```
-   - **Visualize Matrix**:
-     ```
-     py main.py deck_name.ydk matrix_image
-     ```
-   - **Options**:
-     - `--top TOP`: Limit the number of bridges shown for `bridges` argument. e.g. `--top 5` to only show top 5 bridges.
-     - `--squared`: Square the adjacency matrix for `matrix` or `matrix_image` arguments.
-     - `--update_data`: Update the card data to the latest version if needed.
+### Jupyter Notebook
 
-   Ensure `deck_name.ydk` is replaced with your .ydk file name.
+- For a more interactive approach or for example usage, you can utilize demo the Jupyter notebook located in the `examples/demo.ipynb`.
+- Run `fetch_card_data.py` to update the card data to the latest version if needed.
+- Alter path to `.ydk` file or update requiored target ids as desired.
 
-### Jupyter Notebooks
 
-For a more interactive approach or for example usage, you can utilize the Jupyter notebooks located in the `examples` folder:
-
-1. **Initial Setup**:
-   - Open `examples/bridge_generator_examples.ipynb` for top bridges or adjacency matrix outputs, or `examples/graph_adjacency_visualizer_examples.ipynb` for graph and adjaceny matrix image generation.
-   - If using a .ydk file, place it in the `examples` folder. Note: Side deck monsters are included in the analysis. Replace `sample_deck.ydk` with your file's name in all relevant cells.
-   - Run the cell under **Import Module** to set up the environment.
-
-2. **Update Card Data**:
-   - Run `fetch_card_data.py` to update the card data to the latest version if needed.
-
-3. **Finding Bridges to Required Targets**:
-   - Open the `bridge_generator_examples.ipynb` notebook. 
-   - Edit `deck_monster_names` in the cell under **Find Best Bridges From List of Names** with your main deck monster names. To include a list of required targets that must connect to all bridges, edit `required_target_names`. Ensure that all card names match their official names, including capitalization and special characters. Card names can be verified on the Yu-Gi-Oh! card database.
 ## 📊 Dataset
 
 The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
