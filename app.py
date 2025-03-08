@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 import tempfile
 import streamlit as st
-from ygo_small_world import bridges as sw
-from ygo_small_world import plots as gav
+from ygo_small_world.bridges import AllCards, Deck, Bridges
+from ygo_small_world import plots
 
 def save_temp_file(uploaded_file):
     """Save uploaded file to temporary location and return the path"""
@@ -44,7 +44,7 @@ def main():
             st.header("Top Small World Bridges")
             with st.spinner("Finding bridges..."):
                 try:
-                    df_bridges = sw.find_best_bridges_from_ydk(file_path, top=150)
+                    df_bridges = bridges.find_best_bridges_from_ydk(file_path, top=150)
                     if df_bridges is not None and not df_bridges.empty:
                         df_bridges = df_bridges.copy()
                         df_bridges['bridge_score'] = df_bridges['bridge_score'].map(lambda x: f"{x*100:.2f}%")
@@ -63,8 +63,8 @@ def main():
             st.header("Graph Visualization")
             with st.spinner("Generating graph..."):
                 try:
-                    graph = gav.ydk_to_graph(file_path)
-                    display_fig = gav.graph_fig(graph)
+                    graph = plots.ydk_to_graph(file_path)
+                    display_fig = plots.graph_fig(graph)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating network graph: {str(e)}")
@@ -75,8 +75,8 @@ def main():
             st.header("Small World Connections")
             with st.spinner("Generating connections..."):
                 try:
-                    connection_data = connection_data = gav.ydk_to_matrix_image(file_path, squared=False)
-                    display_fig = gav.matrix_fig(connection_data)
+                    connection_data = connection_data = plots.ydk_to_matrix_image(file_path, squared=False)
+                    display_fig = plots.matrix_fig(connection_data)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
@@ -87,8 +87,8 @@ def main():
             st.header("Searchable Cards Heatmap")
             with st.spinner("Generating searchable cards..."):
                 try:
-                    heatmap = gav.ydk_to_matrix_image(file_path, squared=True)
-                    display_fig = gav.matrix_fig(heatmap)
+                    heatmap = plots.ydk_to_matrix_image(file_path, squared=True)
+                    display_fig = plots.matrix_fig(heatmap)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")

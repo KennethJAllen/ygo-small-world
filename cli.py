@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse
 from matplotlib import pyplot as plt
 from ygo_small_world.bridges import AllCards, Deck, Bridges
-from ygo_small_world import plots as gav
+from ygo_small_world.plots import graph_fig, matrix_fig
 from ygo_small_world.update_data import update_card_data
 
 def cli():
@@ -49,14 +49,14 @@ def cli():
     bridges.get_bridge_df().to_csv(output_path / "bridges.csv")
 
     # Save graph
-    graph = gav.graph_fig(deck, save_path = output_path / "graph.png")
+    graph = graph_fig(deck, save_path = output_path / "graph.png")
     plt.close(graph)
     
     # Save adjacency matrices
-    adjacency_fig = gav.matrix_fig(deck, save_path = output_path / "adjacency_matrix.png")
+    adjacency_fig = matrix_fig(deck, save_path = output_path / "adjacency_matrix.png")
     plt.close(adjacency_fig)
 
-    squared_adjacency_fig = gav.matrix_fig(deck, squared=True, save_path = output_path / "squared_adjacency_matrix.png")
+    squared_adjacency_fig = matrix_fig(deck, squared=True, save_path = output_path / "squared_adjacency_matrix.png")
     plt.close(squared_adjacency_fig)
 
 if __name__ == "__main__":
