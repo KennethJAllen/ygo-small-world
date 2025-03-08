@@ -2,176 +2,13 @@
 This module is aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
 It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
 """
-
-from functools import cache
-from io import BytesIO
-from collections import namedtuple
-import requests
-from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 from pyprojroot import here
-
-from ygo_small_world import small_world_bridge_generator as sw
+from ygo_small_world.small_world_bridge_generator import AllCards, Deck, Bridges
 from ygo_small_world import utils
-
-Settings = namedtuple("Settings", ["card_size", "max_pixel_brightness"])
-SETTINGS = Settings(624, 255)
-
-def names_to_image_urls(card_names: list[str]) -> list[str]:
-    """
-    Retrieves the URLs of the images corresponding to the given card names.
-
-    Parameters:
-        card_names (list): A list of card names.
-
-    Returns:
-        list: A list of URLs corresponding to the card images.
-    """
-    cards_df = sw.load_cards()
-    deck_df = utils.sub_df(cards_df, card_names, 'name')
-    urls = deck_df['card_images'].tolist()
-    return urls
-
-@cache
-def load_image(url: str) -> np.ndarray:
-    """
-    Loads an image from a given URL.
-
-    Parameters:
-        url (str): The URL of the image.
-
-    Returns:
-        ndarray: A numpy array representing the image.
-    """
-    res = requests.get(url, timeout=10)
-    imgage = np.array(Image.open(BytesIO(res.content)))
-    return imgage
-
-def load_images(urls: list[str]) -> list[np.ndarray]:
-    """
-    Loads multiple images from a list of URLs.
-
-    Parameters:
-        urls (list): A list of URLs of the images.
-
-    Returns:
-        list: A list of numpy arrays representing the images.
-    """
-    images = []
-    for url in urls:
-        image = load_image(url)
-        images.append(image)
-    return images
-
-def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
-    """
-    Normalizes a list of images to a standard size.
-    This is mostly relevant for pendulum cards which have a non-standard image size.
-
-    Parameters:
-        images (list): A list of NumPy arrays representing the images.
-
-    Returns:
-        list: A list of normalized images.
-    """
-    card_size = SETTINGS.card_size
-    max_pixel_brightness = SETTINGS.max_pixel_brightness
-    normalized_images = []
-    for image in images:
-        image_length = image.shape[0]
-        image_width = image.shape[1]
-        normalized_image = np.ones([card_size, card_size, 3])*max_pixel_brightness
-        #covering cases when image is too small
-        if image_length < card_size and image_width < card_size: #length & width too small
-            normalized_image[:image_length, :image_width, :] = image
-        elif image_length < card_size: #only length is too small
-            normalized_image[:image_length, :, :] = image[:, :card_size, :]
-        elif image_width < card_size: #only width is too small
-            normalized_image[:, :image_width, :] = image[:card_size, :, :]
-        else: #image is same size or too big
-            normalized_image = image[:card_size, :card_size, :]
-        normalized_image = normalized_image.astype(np.uint8)
-        normalized_images.append(normalized_image)
-    return normalized_images
-
-def names_to_images(card_names: list[str]) -> list[np.ndarray]:
-    """
-    Converts a list of card names to normalized images.
-
-    Parameters:
-        card_names (list): A list of card names.
-
-    Returns:
-        list: A list of normalized images.
-    """
-    urls = names_to_image_urls(card_names)
-    images = load_images(urls)
-    normalized_images = normalize_images(images)
-    return normalized_images
-
-def save_image(file_name: str) -> None:
-    """
-    Saves images to the 'images' folder in the current directory. Assumes a figure
-
-    Parameters:
-        file_name (str): The name of the file to save.
-    """
-    root_dir = here()
-    images_dir = root_dir / "images"
-    images_dir.mkdir(parents=True, exist_ok=True)
-    image_path = images_dir / file_name
-    plt.savefig(image_path, dpi=450, bbox_inches='tight')
-
-#### CREATE GRAPH IMAGE ####
-
-def matrix_to_graph(adjacency_matrix: np.ndarray, card_images: list[np.ndarray]) -> nx.Graph:
-    """
-    Creates a graph from an adjacency matrix and assigns images to nodes.
-
-    Parameters:
-        adjacency_matrix (ndarray): A NumPy array representing the adjacency matrix.
-        card_images (list): A list of ndarray images for the nodes.
-
-    Returns:
-        nx.Graph: A networkx graph with images assigned to nodes.
-    """
-    if len(card_images) != adjacency_matrix.shape[0] != adjacency_matrix.shape[1]:
-        raise ValueError("Number of card images must be equal to each dimension of the adjacency matrix.")
-
-    graph = nx.from_numpy_array(adjacency_matrix)
-    for node_index, card_image in enumerate(card_images):
-        graph.nodes[node_index]['image'] = card_image
-
-    return graph
-
-def names_to_graph(card_names: list[str]) -> nx.Graph:
-    """
-    Converts a list of card names into a graph image visualization and saves it.
-
-    Parameters:
-        card_names (list): A list of card names.
-
-    Returns:
-        nx.Graph: A networkx graph with images assigned to nodes.
-    """
-    card_images = names_to_images(card_names)
-    df_deck = sw.monster_names_to_df(card_names).reset_index(drop = True)
-    adjacency_matrix = sw.df_to_adjacency_matrix(df_deck)
-    return matrix_to_graph(adjacency_matrix, card_images)
-
-def ydk_to_graph(ydk_file: str) -> nx.Graph:
-    """
-    Converts a ydk (Yu-Gi-Oh Deck) file into a graph image visualization and saves it.
-
-    Parameters:
-        ydk_file (str): Path to the ydk file of the deck.
-    Returns:
-        nx.Graph: A networkx graph with images assigned to nodes.
-    """
-    card_names = sw.ydk_to_monster_names(ydk_file)
-    return names_to_graph(card_names)
+from ygo_small_world.config import SETTINGS
 
 def plot_graph(graph: nx.Graph, save_image_indicator: bool = False) -> None:
     """
@@ -314,7 +151,7 @@ def ydk_to_matrix_image(ydk_file: str, squared: bool = False) -> np.ndarray:
     card_names = sw.ydk_to_monster_names(ydk_file)
     return names_to_matrix_image(card_names, squared=squared)
 
-def plot_matrix(full_image: np.ndarray, squared: bool = False, save_image_indicator: bool = False) -> None:
+def plot_matrix(full_image: np.ndarray, squared: bool = False, save_image: bool = False) -> None:
     """
     Plots and saves a matrix image.
 
@@ -329,8 +166,11 @@ def plot_matrix(full_image: np.ndarray, squared: bool = False, save_image_indica
     ax.imshow(full_image)
     ax.axis('off')
 
-    if save_image_indicator:
+    if save_image:
         file_name = 'small-world-matrix-squared.png' if squared else 'small-world-matrix.png'
-        save_image(file_name)
+        images_dir = here() / "images"
+        images_dir.mkdir(parents=True, exist_ok=True)
+        image_path = images_dir / file_name
+        plt.savefig(image_path, dpi=450, bbox_inches='tight')
 
     return fig

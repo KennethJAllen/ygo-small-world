@@ -206,7 +206,7 @@ def test_all_required_target_names(sample_monster_names):
     Tests that smallest number of connections with all required targets is equal to the number of monsters.
     This test only works if there is a small world bridge that connects to all monsters in sample_monster_names.
     '''
-    result = sw.find_best_bridges(sample_monster_names, required_target_names=sample_monster_names)
+    result = sw.find_best_bridges(sample_monster_names, required_target_ids=sample_monster_names)
     num_required_targets = len(sample_monster_names)
     assert result['number_of_connections'].min() == num_required_targets
 
@@ -214,5 +214,5 @@ def test_some_required_target_names(sample_monster_names):
     '''Tests that smallest number of connections with all required targets is equal to num_in_sublist.'''
     num_in_sublist = 2
     required_target_names = sample_monster_names[:num_in_sublist]
-    result = sw.find_best_bridges(sample_monster_names, required_target_names=required_target_names)
+    result = sw.find_best_bridges(sample_monster_names, required_target_ids=required_target_names)
     assert result['number_of_connections'].min() == num_in_sublist
