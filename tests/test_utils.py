@@ -1,23 +1,8 @@
 """Tests for utils.py."""
-from pathlib import Path
+
 import pytest
 import pandas as pd
 from ygo_small_world import utils
-
-@pytest.fixture(name='sample_df')
-def fixture_sample_df():
-    '''A sample dataframe for testing the sub_df function.'''
-    return pd.DataFrame({
-        'A': [1, 2, 3, 4, 5],
-        'B': ['a', 'b', 'c', 'd', 'd'],
-        'C': [10, 20, 30, 40, 50]
-    })
-
-@pytest.fixture(name='ydk_file_path')
-def fixture_ydk_file_path():
-    """The path of the test ydk file."""
-    ydk_file_path = Path(__file__).parent / 'test_data' / 'test_deck.ydk'
-    return ydk_file_path
 
 # Test sub_df
 
