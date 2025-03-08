@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 import tempfile
 import streamlit as st
-from ygo_small_world import small_world_bridge_generator as sw
-from ygo_small_world import graph_adjacency_visualizer as gav
+from ygo_small_world import bridges as sw
+from ygo_small_world import plots as gav
 
 def save_temp_file(uploaded_file):
     """Save uploaded file to temporary location and return the path"""
@@ -64,7 +64,7 @@ def main():
             with st.spinner("Generating graph..."):
                 try:
                     graph = gav.ydk_to_graph(file_path)
-                    display_fig = gav.plot_graph(graph)
+                    display_fig = gav.graph_fig(graph)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating network graph: {str(e)}")
@@ -76,7 +76,7 @@ def main():
             with st.spinner("Generating connections..."):
                 try:
                     connection_data = connection_data = gav.ydk_to_matrix_image(file_path, squared=False)
-                    display_fig = gav.plot_matrix(connection_data)
+                    display_fig = gav.matrix_fig(connection_data)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")
@@ -88,7 +88,7 @@ def main():
             with st.spinner("Generating searchable cards..."):
                 try:
                     heatmap = gav.ydk_to_matrix_image(file_path, squared=True)
-                    display_fig = gav.plot_matrix(heatmap)
+                    display_fig = gav.matrix_fig(heatmap)
                     st.pyplot(display_fig)
                 except Exception as e:
                     st.error(f"Error generating matrix heatmap: {str(e)}")

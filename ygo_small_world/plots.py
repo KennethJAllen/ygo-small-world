@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib.figure import Figure
-from ygo_small_world.small_world_bridge_generator import Deck
+from ygo_small_world.bridges import Deck
 from ygo_small_world.config import SETTINGS, Settings
 
 

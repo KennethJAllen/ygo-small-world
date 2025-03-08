@@ -5,8 +5,8 @@ import pytest
 from PIL import Image
 import numpy as np
 import networkx as nx
-from ygo_small_world import graph_adjacency_visualizer as gav
-from ygo_small_world import small_world_bridge_generator as sw
+from ygo_small_world import plots as gav
+from ygo_small_world import bridges as sw
 
 
 @pytest.fixture(name='sample_card_names')

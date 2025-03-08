@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 import pytest
-from ygo_small_world import small_world_bridge_generator as sw
+from ygo_small_world import bridges as sw
 from ygo_small_world import utils
 
 # fixtures

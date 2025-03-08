@@ -2,8 +2,8 @@
 from pathlib import Path
 import argparse
 from matplotlib import pyplot as plt
-from ygo_small_world.small_world_bridge_generator import AllCards, Deck, Bridges
-from ygo_small_world import graph_adjacency_visualizer as gav
+from ygo_small_world.bridges import AllCards, Deck, Bridges
+from ygo_small_world import plots as gav
 from ygo_small_world.update_data import update_card_data
 
 def cli():
