@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import requests
 from PIL import Image
-from ygo_small_world.config import SETTINGS
+from ygo_small_world.config import SETTINGS, Settings
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
     """
@@ -67,7 +67,7 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
         images.append(image)
     return images
 
-def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
+def normalize_images(images: list[np.ndarray], settings: Settings=SETTINGS) -> list[np.ndarray]:
     """
     Normalizes a list of images to a standard size.
     This is mostly relevant for pendulum cards which have a non-standard image size.
@@ -78,12 +78,11 @@ def normalize_images(images: list[np.ndarray]) -> list[np.ndarray]:
     Returns:
         list: A list of normalized images.
     """
-    card_size = SETTINGS.card_size
-    max_pixel_brightness = SETTINGS.max_pixel_brightness
+    card_size = settings.card_size
+    max_pixel_brightness = settings.max_pixel_brightness
     normalized_images = []
     for image in images:
-        image_length = image.shape[0]
-        image_width = image.shape[1]
+        image_length, image_width = image.shape
         normalized_image = np.ones([card_size, card_size, 3])*max_pixel_brightness
         #covering cases when image is too small
         if image_length < card_size and image_width < card_size: #length & width too small
