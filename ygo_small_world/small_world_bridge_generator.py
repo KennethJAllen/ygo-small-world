@@ -11,6 +11,7 @@ Key Functions:
 
 Note: Understanding of Yu-Gi-Oh! card properties and Small World mechanics is essential.
 """
+from pathlib import Path
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -18,6 +19,7 @@ from networkx.classes.graph import Graph
 from pyprojroot import here
 from ygo_small_world import utils
 from ygo_small_world.update_data import update_card_data
+
 
 class AllCards:
     """Contains data for main deck monster cards relevant for Small World"""
@@ -73,8 +75,8 @@ class AllCards:
 
     def _load_cards(self) -> pd.DataFrame:
         """
-        Loads a DataFrame containing information about all main monster cards.
-        Including their ID, name, type, attribute, level, attack, defense, and card_images url
+        Loads the DataFrame of main deck monster cards information
+        including their ID, name, type, attribute, level, attack, defense, and img_url.
         """
         root_dir = here()
         cardinfo_path = root_dir / "data" / "cardinfo.pkl"
@@ -91,7 +93,7 @@ class AllCards:
 
     def _calculate_to_adjacency_matrix(self) -> np.ndarray:
         """
-        Creates an adjacency matrix based on Small World connections for a given DataFrame of cards.
+        Creates the Small World graph adjacency matrix for all cards.
         Two cards are considered adjacent if they have exactly one property in common
         from the following attributes: type, attribute, level, attack, or defense.
 
@@ -118,10 +120,19 @@ class AllCards:
         return adjacency_matrix
 
 class Deck:
-    """Contains data for deck relevant for Small World"""
-    def __init__(self, deck_ids: list[int], all_cards: AllCards):
-        self._df: pd.DataFrame = utils.sub_df(all_cards.get_df(), deck_ids, 'id')
+    """
+    Contains data for deck relevant for Small World.
+    Card information for all_cards must be provided,
+    in addition to either a path to a .ydk (yugioh deck) file or a list of card ids.
+    A .ydk file can be downloaded from most deck building websites such as https://ygoprodeck.com/deckbuilder/
+    """
+    def __init__(self, all_cards: AllCards, ydk_path: Path = None, card_ids: list[int] = None):
+        if ydk_path is None and card_ids is None:
+            raise ValueError("Either a path to a .ydk file or a list of card ids must be provided.")
+        if ydk_path is not None:
+            card_ids = utils.ydk_to_card_ids(ydk_path)
 
+        self._df: pd.DataFrame = utils.sub_df(all_cards.get_df(), card_ids, 'id')
         deck_indices = self._df.index
         self._adjacency_matrix: np.ndarray = all_cards.get_adjacency_matrix()[deck_indices,:][:,deck_indices]
         self._squared_adjacency_matrix: np.ndarray = None
@@ -162,14 +173,14 @@ class Deck:
 
     def set_card_images(self):
         """Sets the card images as graph values."""
+        if self._graph is None:
+            self.get_graph()
         img_urls = self._df['img_url']
         images = utils.load_images(img_urls)
         card_images = utils.normalize_images(images)
         for node_index, card_image in enumerate(card_images):
             self._graph.nodes[node_index]['image'] = card_image
 
-
-# TODO: Fix this when card_pool is not all cards
 class Bridges:
     """Contains logic for generating bridges for deck from card_pool."""
     def __init__(self, deck: Deck, card_pool: AllCards | Deck, all_cards: AllCards):

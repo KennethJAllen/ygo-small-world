@@ -42,7 +42,7 @@ def _filter_card_df(all_cards_df: pd.DataFrame) -> pd.DataFrame:
     df_main_monsters = utils.sub_df(all_cards_df, main_monster_frame_types, 'frameType').reset_index(drop=True)
 
     # Process card image url column
-    df_main_monsters['img_url'] = df_main_monsters['img_url'].apply(lambda x: x[0]['image_url_cropped'])
+    df_main_monsters['img_url'] = df_main_monsters['card_images'].apply(lambda x: x[0]['image_url_cropped'])
 
     # Only keep relevant columns
     relevent_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def', 'img_url']
