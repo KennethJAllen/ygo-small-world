@@ -10,6 +10,7 @@ dependencies = [
     "networkx>=3.4.2",
     "numpy>=2.2.1",
     "pandas>=2.2.3",
+    "pillow>=11.1.0",
     "pyprojroot>=0.3.0",
     "pytest>=8.3.4",
     "requests>=2.32.3",
