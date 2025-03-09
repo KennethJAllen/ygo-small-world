@@ -44,7 +44,7 @@ def test_graph(deck: Deck):
     """Test graph has same adjacency matrix."""
     graph = deck.get_graph()
     result = nx.to_numpy_array(graph)
-    assert result == deck.get_adjacency_matrix()
+    np.testing.assert_array_equal(result, deck.get_adjacency_matrix())
 
 # test Bridges
 
