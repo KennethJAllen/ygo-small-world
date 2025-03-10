@@ -19,6 +19,11 @@ def save_temp_file(uploaded_file):
         f.write(uploaded_file.getbuffer())
     return Path(temp_path)
 
+@st.cache_data
+def load_all_cards() -> AllCards:
+    return AllCards()
+
+
 def main():
     """Main entry point to app."""
     st.title("Yu-Gi-Oh! Small World Bridge Finder")
@@ -26,6 +31,8 @@ def main():
     Upload your .ydk file to analyze Small World connections in your deck.
     You'll see bridge recommendations and visualizations of the connections between your cards.
     """)
+    # Load all cards into sessions state
+    all_cards = load_all_cards()
     # File uploader
     uploaded_file = st.file_uploader("Choose your .ydk file", type=['ydk'])
     use_sample_deck = st.button("Use Sample Deck")
@@ -40,13 +47,9 @@ def main():
     if ydk_path is not None:
         st.success(f"Using deck: {ydk_path.stem.replace('_', ' ').title()}")
         try:
-            # Load all cards into sessions state
-            if 'all_cards' not in st.session_state:
-                st.session_state.all_cards = AllCards()
-
             # Create Deck and Bridges
-            deck = Deck(st.session_state.all_cards, ydk_path)
-            bridges = Bridges(deck, st.session_state.all_cards)
+            deck = Deck(all_cards, ydk_path)
+            bridges = Bridges(deck, all_cards) 
 
             # 1. Small World Bridges
             st.header("Top Small World Bridges")
