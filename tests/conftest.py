@@ -12,7 +12,7 @@ def fixture_ydk_file_path() -> Path:
     ydk_file_path = Path(__file__).parent / 'test_data' / 'test_deck.ydk'
     return ydk_file_path
 
-@pytest.fixture(name='all_cards')
+@pytest.fixture(name='all_cards', scope="session")
 def fixture_all_cards() -> AllCards:
     """Fixture for AllCards."""
     all_cards = AllCards()

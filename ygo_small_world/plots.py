@@ -1,11 +1,16 @@
 """
-This module is aimed at visualizing the 'Small World' adjacency relationships in Yu-Gi-Oh! decks.
-It provides tools for creating and displaying graphs that represent potential 'Small World' bridges and their connections.
+Visualizes Small World adjacency relationships for Yu-Gi-Oh! decks.
+Main functions:
+    graph_fig for visualizing the Small World graph
+    matrix_fig for visualizing the Small World adjacency matrices
+Both take Deck objects as arguments from the bridges module.
 """
+#pylint: disable=no-member
 from pathlib import Path
 import numpy as np
-import matplotlib.pyplot as plt
 import networkx as nx
+from PIL import Image
+from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from ygo_small_world.bridges import Deck
 from ygo_small_world.config import SETTINGS, Settings
@@ -67,12 +72,11 @@ def matrix_fig(deck: Deck, squared: bool=False, save_path: Path=None) -> Figure:
     """
     adjacency_matrix = deck.get_adjacency_matrix(squared=squared)
     card_images = deck.get_card_images()
-    img = _create_matrix_img(adjacency_matrix, card_images)
-    full_image = img.astype(np.uint8)
+    matrix_img = _create_matrix_img(adjacency_matrix, card_images)
 
     #create figure
     fig, ax = plt.subplots()
-    ax.imshow(full_image)
+    ax.imshow(matrix_img)
     ax.axis('off')
 
     if save_path is not None:
@@ -82,13 +86,13 @@ def matrix_fig(deck: Deck, squared: bool=False, save_path: Path=None) -> Figure:
 
 def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarray], settings: Settings=SETTINGS) -> np.ndarray:
     """
-    Converts an adjacency matrix into an image and saves it.
+    Converts an adjacency matrix into a uint8 numpy array with cards on axes.
 
     Parameters:
-        adjacency_matrix (ndarray): A NumPy array representing the ajdacency matrix.
-        card_names (list): A list of card names to plot.
+        adjacency_matrix: A NumPy array representing the ajdacency matrix.
+        card_images: A list of card names to plot on the axes corresponding to the adjacency matrix.
     Returns:
-        ndarray: An image of the adjacency matrix with cards on each axis.
+        ndarray: An image of the adjacency matrix with cards on each axis of type uint8.
     """
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
@@ -108,7 +112,9 @@ def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarra
 
     # Add card images to axes
     full_image_size = card_size*(num_cards+1)
-    full_image = np.ones((full_image_size,full_image_size,3))*max_pixel_brightness
+    full_image = np.full((full_image_size, full_image_size, 3),
+                         fill_value=max_pixel_brightness,
+                         dtype=np.uint8)
 
     vertical_cards = np.concatenate(card_images, axis=1) #concatenated images horizontally
     horizontal_cards = np.concatenate(card_images, axis=0) #concatenated images vertically
@@ -121,34 +127,33 @@ def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarra
 
 def _create_matrix_subimage(adjacency_matrix: np.ndarray, settings: Settings=SETTINGS) -> np.ndarray:
     """
-    Generate an ndarray of size N x N x 3 that represents an imgae of a matrix.
-    N is CARD_SIZE*num_cards. The third dimension is for the color channels.
-
-    Parameters:
-        adjacency_matrix (ndarray): A NumPy array representing the adjacency matrix.
-    Returns:
-        ndarray: An image of the matrix.
+    Turns the adjacency matrix into greyscale uint8 array
+    for placement in full image with cards on axes.
     """
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
 
     num_cards = adjacency_matrix.shape[0]
-    #check that the adjacency matrix is square
     if num_cards != adjacency_matrix.shape[1]:
         raise ValueError("The adjacency matrix must be square.")
 
-    matrix_subimage_size = card_size*num_cards #size of matrix subimage, not including card images
-    matrix_subimage = np.ones((matrix_subimage_size, matrix_subimage_size, 3))*max_pixel_brightness
-
     matrix_maximum = np.max(adjacency_matrix)
+    if matrix_maximum == 0:
+        raise ValueError("There are no Small World connections between cards.")
 
-    # Normalizing the matrix
-    normalized_matrix = adjacency_matrix / matrix_maximum
+    # Normalize to [0..1], invert, scale to max brightness
+    normalized_matrix = 1.0 - (adjacency_matrix / matrix_maximum)
+    matrix_img = (normalized_matrix * max_pixel_brightness).astype(np.uint8)
 
-    # Creating a 3D block for each cell
-    cell_blocks = max_pixel_brightness * (1 - normalized_matrix[:, :, np.newaxis])
-    cell_blocks_repeated = np.repeat(np.repeat(cell_blocks, card_size, axis=0), card_size, axis=1)
+    # Create a Pillow image
+    pil_img = Image.fromarray(matrix_img, mode='L')  # 'L' = 8-bit grayscale
 
-    # Creating the final image by repeating these blocks
-    matrix_subimage = np.tile(cell_blocks_repeated, (1, 1, 3))
+    # Upscale to the final size using nearest‑neighbor
+    new_size = (num_cards * card_size, num_cards * card_size)
+    pil_resized = pil_img.resize(new_size, resample=Image.NEAREST)
+
+    # Convert to RGB, then back to a NumPy array
+    pil_rgb = pil_resized.convert('RGB')
+    matrix_subimage = np.array(pil_rgb, dtype=np.uint8)
+
     return matrix_subimage
