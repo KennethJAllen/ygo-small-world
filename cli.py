@@ -26,8 +26,16 @@ def cli():
     parser.add_argument('ydk_file', type=str, help='File path to the ydk (Yu-Gi-Oh! deck) file.')
 
     # optional arguments
-    parser.add_argument('--update_data', type=bool, nargs='?', const=True, default=False, help='Update card data.')
-    parser.add_argument('--output', type=str, help="Output path.", default=None)
+    parser.add_argument(
+        "-u", "--update_data",
+        action="store_true",
+        help="Update card data (cardinfo.json)."
+    )
+    parser.add_argument(
+        "-o", "--output",
+        type=str,
+        help="Directory to save outputs (default: ./output)."
+    )
 
     args = parser.parse_args()
 

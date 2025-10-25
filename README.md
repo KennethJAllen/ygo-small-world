@@ -35,39 +35,45 @@ The purpose of this repository is to assist in finding the best Small World brid
 git clone https://github.com/KennethJAllen/ygo-small-world
 cd ygo-small-world
 ```
-### Install Dependencies with Poetry:
+### Install Dependencies with UV:
 
-* Install UV if not already installed.
+* Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if not already installed.
 * Create the virtual environment: `uv sync`
-* Activate the Virtual Environment
-* Install project `uv pip install -e .`
-
-You can now run the project's scripts within the poetry shell.
+* Activate the Virtual Environment:
+   * Linux/macOS: `source .venv/bin/activate`
+   * Windows: `.venv\Scripts\activate`
 
 ## 💻 Running the Code
 
-### Streamlit Graphical User Interface
+### Streamlit GUI
 
 The graphical user interface can be accessed as a streamlit app: https://smallworld.streamlit.app/
 
-To run Streamlit locally: `streamlit run app.py`
+To run Streamlit locally: `uv run streamlit run app.py`
 
-### Command Line Interface
+### CLI
 
-- The command line interface for interacting with the Yu-Gi-Oh! Small World analysis tools is through `cli.py`.
-- Takes path to `.ydk` file, outputs bridges, adjacency matrix plot, squared adjacency matrix plot, and graph plot to output path (defaults to `./output`)
-- Example: `py -m cli "data/sample_deck.ydk"`
+- Run the CLI:
+   - `uv run sw path/to/deck.ydk`
+   - Example: `uv run sw data/sample_deck.ydk`
+- Saves bridges csv, and adjacency matrix, squared adjacency matrix, and graph images to output path (defaults to `./output`)
+
 
 ### Jupyter Notebook
 
-- For a more interactive approach or for example usage, you can utilize demo the Jupyter notebook located in the `examples/demo.ipynb`.
+- To use a jupyter notebook, follow the pattern in `examples/demo.ipynb`.
 - Run `fetch_card_data.py` to update the card data to the latest version if needed.
-- Alter path to `.ydk` file or update requiored target ids as desired.
+- Alter path to `.ydk` file or update required target ids as desired.
+   - Note: This is the easiest way to add required targets for bridges
 
 
 ## 📊 Dataset
 
-The card data `cardinfo.json` is obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+The card data `data/cardinfo.pkl` is a pickled pandas dataframe obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+
+### Update Card Data
+
+Run: `uv run update`
 
 ## 🎴 Example
 
