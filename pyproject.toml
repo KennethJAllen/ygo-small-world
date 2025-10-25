@@ -1,6 +1,6 @@
 [project]
 name = "ygo-small-world"
-version = "1.2.0"
+version = "1.2.1"
 description = "A bridge finder for the card 'Small World' in the card game 'Yu-Gi-Oh!'."
 readme = "README.md"
 requires-python = ">=3.12"
