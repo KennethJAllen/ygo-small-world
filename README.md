@@ -38,7 +38,9 @@ cd ygo-small-world
 ### Install Dependencies with UV:
 
 * Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if not already installed.
-* Create the virtual environment: `uv sync`
+* Base install (data updates only): `uv sync`
+* CLI install: `uv sync --extra cli`
+* Full install (including Streamlit app): `uv sync --all-extras`
 * Activate the Virtual Environment:
    * Linux/macOS: `source .venv/bin/activate`
    * Windows: `.venv\Scripts\activate`
@@ -47,11 +49,15 @@ cd ygo-small-world
 
 ### Streamlit GUI
 
+Requires: `uv sync --extra app` (or `uv sync --all-extras`)
+
 The graphical user interface can be accessed as a streamlit app: https://smallworld.streamlit.app/
 
 To run Streamlit locally: `uv run streamlit run app.py`
 
 ### CLI
+
+Requires: `uv sync --extra cli`
 
 - Run the CLI:
    - `uv run sw path/to/deck.ydk`

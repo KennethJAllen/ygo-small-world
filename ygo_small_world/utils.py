@@ -1,16 +1,13 @@
 """Small World utility functions."""
-from io import BytesIO
+from __future__ import annotations
+
 from pathlib import Path
-import numpy as np
 import pandas as pd
-import requests
-from PIL import Image
-from ygo_small_world.config import SETTINGS, Settings
 
 def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFrame:
     """
     Utility function. Creates a subset of the given DataFrame based on specified values in a particular column.
-    
+
     Parameters:
         df (pd.DataFrame): The input DataFrame from which the subset will be extracted.
         column_values (list): A list of values to match against the specified column to filter rows.
@@ -60,6 +57,11 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
     Returns:
         list: A list of numpy arrays representing the images.
     """
+    from io import BytesIO
+    import numpy as np
+    import requests
+    from PIL import Image
+
     images = []
     for url in urls:
         res = requests.get(url, timeout=10)
@@ -67,7 +69,7 @@ def load_images(urls: list[str]) -> list[np.ndarray]:
         images.append(image)
     return images
 
-def normalize_images(images: list[np.ndarray], settings: Settings=SETTINGS) -> list[np.ndarray]:
+def normalize_images(images: list[np.ndarray], settings: Settings | None=None) -> list[np.ndarray]:
     """
     Normalizes a list of images to a standard size.
     This is mostly relevant for pendulum cards which have a non-standard image size.
@@ -78,6 +80,12 @@ def normalize_images(images: list[np.ndarray], settings: Settings=SETTINGS) -> l
     Returns:
         list: A list of normalized images.
     """
+    import numpy as np
+    from ygo_small_world.config import SETTINGS
+
+    if settings is None:
+        settings = SETTINGS
+
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
     normalized_images = []

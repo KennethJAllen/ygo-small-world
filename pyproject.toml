@@ -5,18 +5,21 @@ description = "A bridge finder for the card 'Small World' in the card game 'Yu-G
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pandas>=2.2.3",
+    "pyprojroot>=0.3.0",
+    "requests>=2.32.3",
+]
+
+[project.optional-dependencies]
+cli = [
     "matplotlib>=3.10.0",
     "networkx>=3.4.2",
     "numpy>=2.2.1",
-    "pandas>=2.2.3",
     "pillow>=11.1.0",
-    "pyprojroot>=0.3.0",
-    "requests>=2.32.3",
-    "streamlit>=1.41.1",
 ]
-
-packages = [
-    { include = "ygo_small_world" }
+app = [
+    "ygo-small-world[cli]",
+    "streamlit>=1.41.1",
 ]
 
 [project.scripts]

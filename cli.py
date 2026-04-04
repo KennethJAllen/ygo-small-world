@@ -1,9 +1,21 @@
 """Small World command line interface."""
 from pathlib import Path
 import argparse
-from matplotlib import pyplot as plt
-from ygo_small_world.bridges import AllCards, Deck, Bridges
-from ygo_small_world.plots import graph_fig, matrix_fig
+import sys
+
+try:
+    from matplotlib import pyplot as plt
+    from ygo_small_world.bridges import AllCards, Deck, Bridges
+    from ygo_small_world.plots import graph_fig, matrix_fig
+except ImportError as e:
+    print(
+        f"Missing dependency: {e.name}\n"
+        "The CLI requires additional dependencies. Install with:\n"
+        "  uv sync --extra cli",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
 from ygo_small_world.update_data import update_card_data
 
 def cli():
