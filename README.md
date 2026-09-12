@@ -57,14 +57,19 @@ To run Streamlit locally: `uv run streamlit run app.py`
    - `uv run sw path/to/deck.ydk`
    - Example: `uv run sw data/sample_deck.ydk`
 - Saves bridges csv, and adjacency matrix, squared adjacency matrix, and graph images to output path (defaults to `./output`)
+- The default output directory is relative to your current working directory. Use `--output PATH` to choose another location.
+- Only the `#main` section of a YDK file is analyzed; extra-deck and side-deck entries are ignored. Ordinary decks are filtered to supported monsters.
+- Installed wheels include the CLI and a card database, so `sw` also works outside the source checkout.
 
 
 ### Jupyter Notebook
 
 - To use a jupyter notebook, follow the pattern in `examples/demo.ipynb`.
-- Run `fetch_card_data.py` to update the card data to the latest version if needed.
+- Run `uv run update` to update the card data to the latest version if needed.
 - Alter path to `.ydk` file or update required target ids as desired.
    - Note: This is the easiest way to add required targets for bridges
+
+Required target IDs must all identify supported main-deck monsters. Target YDK files should contain only intended monster targets in their `#main` section. Unknown or unsupported targets raise an error; valid targets with no common bridge return an empty result. An empty target list means no constraints.
 
 
 ## 📊 Dataset
@@ -74,6 +79,10 @@ The card data `data/cardinfo.pkl` is a pickled pandas dataframe obtained from th
 ### Update Card Data
 
 Run: `uv run update`
+
+In a source checkout, updates replace `data/cardinfo.pkl`. Installed distributions use the bundled database until an update is saved to `~/.ygo-small-world/cardinfo.pkl`. Data paths do not depend on the working directory. Failed downloads or validation leave the previous database intact.
+
+Deck analysis computes only the connections it needs. The full database adjacency matrix is generated and cached only when explicitly requested through `AllCards.get_adjacency_matrix()` or its labeled counterpart; these full matrices can still consume substantial memory.
 
 ## 🎴 Example
 

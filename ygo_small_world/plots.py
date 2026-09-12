@@ -96,19 +96,13 @@ def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarra
     """
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
+    _validate_matrix(adjacency_matrix)
     num_cards = adjacency_matrix.shape[0]
-
-    # Check that number of cards equals each dimension of the adjacency matrix
-    if not num_cards == adjacency_matrix.shape[0] == adjacency_matrix.shape[1]:
+    if len(card_images) != num_cards:
         raise ValueError("The number of card images must equal to each dimension of the adjacency matrix.")
 
-    # If the adjacency matrix is all zeros, then there are no Small World connections between cards.
-    adjacency_max = np.max(adjacency_matrix)
-    if adjacency_max == 0:
-        raise ValueError("There are no Small World connections between cards.")
-
     # Create matrix subimage
-    matrix_subimage = _create_matrix_subimage(adjacency_matrix)
+    matrix_subimage = _create_matrix_subimage(adjacency_matrix, settings)
 
     # Add card images to axes
     full_image_size = card_size*(num_cards+1)
@@ -125,6 +119,13 @@ def _create_matrix_img(adjacency_matrix: np.ndarray, card_images: list[np.ndarra
 
     return full_image
 
+def _validate_matrix(adjacency_matrix: np.ndarray) -> None:
+    if adjacency_matrix.ndim != 2 or adjacency_matrix.shape[0] != adjacency_matrix.shape[1]:
+        raise ValueError("The adjacency matrix must be square.")
+    if adjacency_matrix.shape[0] == 0:
+        raise ValueError("Cannot plot an empty deck.")
+
+
 def _create_matrix_subimage(adjacency_matrix: np.ndarray, settings: Settings=SETTINGS) -> np.ndarray:
     """
     Turns the adjacency matrix into greyscale uint8 array
@@ -133,20 +134,16 @@ def _create_matrix_subimage(adjacency_matrix: np.ndarray, settings: Settings=SET
     card_size = settings.card_size
     max_pixel_brightness = settings.max_pixel_brightness
 
+    _validate_matrix(adjacency_matrix)
     num_cards = adjacency_matrix.shape[0]
-    if num_cards != adjacency_matrix.shape[1]:
-        raise ValueError("The adjacency matrix must be square.")
 
     matrix_maximum = np.max(adjacency_matrix)
-    if matrix_maximum == 0:
-        raise ValueError("There are no Small World connections between cards.")
-
     # Normalize to [0..1], invert, scale to max brightness
-    normalized_matrix = 1.0 - (adjacency_matrix / matrix_maximum)
+    normalized_matrix = 1.0 - (adjacency_matrix / matrix_maximum) if matrix_maximum else np.ones_like(adjacency_matrix)
     matrix_img = (normalized_matrix * max_pixel_brightness).astype(np.uint8)
 
     # Create a Pillow image
-    pil_img = Image.fromarray(matrix_img, mode='L')  # 'L' = 8-bit grayscale
+    pil_img = Image.fromarray(matrix_img)
 
     # Upscale to the final size using nearest‑neighbor
     new_size = (num_cards * card_size, num_cards * card_size)

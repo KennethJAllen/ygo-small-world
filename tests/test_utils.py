@@ -44,3 +44,17 @@ def test_ydk_to_card_ids(ydk_file_path):
     print(ydk_file_path)
     expected = [14558127, 97268402, 14558127, 38814750, 57624336, 14558127]
     assert result == expected
+
+
+def test_ydk_sections_comments_and_bom(tmp_path):
+    path = tmp_path / 'sections.ydk'
+    path.write_text('\ufeff#created by test\n99\n#main\n1\n#comment\n\n2\n1\n#extra\n3\n!side\n4\n', encoding='utf-8')
+    assert utils.ydk_to_card_ids(path) == [1, 2, 1]
+
+
+@pytest.mark.parametrize('text', ['', '1\n2\n', '#extra\n1\n!side\n2\n', '#main\n#comment\n#extra\n1\n'])
+def test_ydk_requires_nonempty_main(tmp_path, text):
+    path = tmp_path / 'empty.ydk'
+    path.write_text(text)
+    with pytest.raises(ValueError, match='no main-deck card IDs'):
+        utils.ydk_to_card_ids(path)
