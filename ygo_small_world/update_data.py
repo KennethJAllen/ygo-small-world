@@ -13,6 +13,7 @@ def update_card_data() -> None:
     df_all_cards = _card_json_to_df(card_info)
     df_main_monsters = _filter_card_df(df_all_cards)
     _validate_card_df(df_main_monsters)
+    df_main_monsters = df_main_monsters.sort_values('id').reset_index(drop=True)
 
     output_path = writable_card_path()
     output_path.parent.mkdir(parents=True, exist_ok=True)
