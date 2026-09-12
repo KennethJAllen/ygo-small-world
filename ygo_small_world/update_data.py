@@ -78,6 +78,7 @@ def _filter_card_df(all_cards_df: pd.DataFrame) -> pd.DataFrame:
     # Only keep relevant columns
     relevent_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def', 'img_url']
     df_main_monsters = df_main_monsters[relevent_columns]
+    df_main_monsters = df_main_monsters.dropna(subset=relevent_columns)
     return df_main_monsters
 
 if __name__ == "__main__":
