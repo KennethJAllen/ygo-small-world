@@ -30,7 +30,7 @@ def sub_df(df: pd.DataFrame, column_values: list, column_name: str) -> pd.DataFr
 
 def ydk_to_card_ids(ydk_path: Path) -> list[int]:
     """
-    Extracts card IDs from a given ydk (Yu-Gi-Oh Deck) file.
+    Extracts main-deck card IDs from a YDK file, preserving order and duplicates.
 
     Parameters:
         ydk_file (str): Path to the ydk file.
@@ -39,15 +39,26 @@ def ydk_to_card_ids(ydk_path: Path) -> list[int]:
         list: A list of card IDs as integers.
     """
     card_ids = []
-    with open(ydk_path, encoding='utf-8') as f:
-        lines = f.readlines()
-        for line in lines:
+    in_main = False
+    with open(ydk_path, encoding='utf-8-sig') as f:
+        for line in f:
+            line = line.strip()
+            if line == '#main':
+                in_main = True
+                continue
+            if line in ('#extra', '!side'):
+                in_main = False
+                continue
+            if not in_main or not line or line.startswith(('#', '!')):
+                continue
             try:
                 card_id = int(line)
             except ValueError:
                 pass
             else:
                 card_ids.append(card_id)
+    if not card_ids:
+        raise ValueError("YDK file contains no main-deck card IDs (expected a #main section).")
     return card_ids
 
 def load_images(urls: list[str]) -> list[np.ndarray]:

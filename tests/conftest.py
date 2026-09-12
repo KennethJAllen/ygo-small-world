@@ -6,6 +6,27 @@ import numpy as np
 import pandas as pd
 from ygo_small_world.bridges import AllCards, Deck, Bridges
 
+
+@pytest.fixture
+def synthetic_cards(monkeypatch):
+    """Small deterministic database spanning a connection/scoring batch boundary."""
+    rng = np.random.default_rng(42)
+    size = 270
+    frame = pd.DataFrame({
+        'id': np.arange(size),
+        'name': [f'Card {i:03}' for i in range(size)],
+        'type': rng.choice(['Fiend', 'Warrior', 'Zombie'], size),
+        'attribute': rng.choice(['LIGHT', 'DARK', 'FIRE'], size),
+        'level': rng.integers(1, 9, size).astype(float),
+        'atk': rng.choice([-1., 0., 100., 200.], size),
+        'def': rng.choice([-1., 0., 100., 200.], size),
+        'img_url': ['https://example.invalid/card.jpg'] * size,
+    }, index=np.arange(size) * 3)
+    # A candidate disconnected from every other card.
+    frame.loc[0, ['type', 'attribute', 'level', 'atk', 'def']] = ['Aqua', 'WATER', 99., 999., 999.]
+    monkeypatch.setattr(AllCards, '_load_cards', lambda self: frame.copy())
+    return AllCards()
+
 @pytest.fixture(name='ydk_file_path')
 def fixture_ydk_file_path() -> Path:
     """The path for the test .ydk file."""
