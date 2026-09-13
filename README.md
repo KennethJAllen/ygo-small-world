@@ -80,6 +80,12 @@ The card data `data/cardinfo.csv` is a UTF-8 CSV obtained from the [Yu-Gi-Oh! AP
 
 Run: `uv run update`
 
+GitHub Actions also runs the update on the first of each month at 06:17 UTC. After the update and tests pass, it commits `data/cardinfo.csv` directly to the default branch if the data changed. Failed runs do not publish an update.
+
+To run it manually, open **Actions → Update card data → Run workflow**. The workflow must be on the default branch, and repository rules must allow its `GITHUB_TOKEN` to push with `contents: write` permission. Concurrent updates are serialized; a conflicting branch update causes the push to fail without overwriting commits.
+
+GitHub may delay scheduled runs and disables schedules in public repositories after 60 days without repository activity. See [GitHub's scheduled workflow documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule) for details and reactivation instructions.
+
 In a source checkout, updates replace `data/cardinfo.csv`. Installed distributions use the bundled database until an update is saved to `~/.ygo-small-world/cardinfo.csv`. Data paths do not depend on the working directory. Failed downloads or validation leave the previous database intact. Older user snapshots in pickle format are ignored; run `uv run update` to refresh the CSV snapshot.
 
 Deck analysis computes only the connections it needs. The full database adjacency matrix is generated and cached only when explicitly requested through `AllCards.get_adjacency_matrix()` or its labeled counterpart; these full matrices can still consume substantial memory.
