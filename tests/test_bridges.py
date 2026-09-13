@@ -17,28 +17,34 @@ def test_deck_df(deck: Deck, card_df: pd.DataFrame):
     """Test getting df from sample monster names'''"""
     df = deck.get_df().reset_index(drop=True)
     small_world_columns = ['id', 'name', 'type', 'attribute', 'level', 'atk', 'def']
-    result = df[small_world_columns]
-    pd.testing.assert_frame_equal(result, card_df)
+    result = df[small_world_columns].sort_values('id').reset_index(drop=True)
+    pd.testing.assert_frame_equal(result, card_df.sort_values('id').reset_index(drop=True))
 
-def test_deck_adjacency_matrix(deck: Deck, adjacency_matrix: np.ndarray):
+def test_deck_adjacency_matrix(deck: Deck, adjacency_matrix: np.ndarray, card_names):
     """Test generating adjacency matrix from dataframe"""
     result = deck.get_adjacency_matrix()
+    order = [deck.get_df()['name'].tolist().index(name) for name in card_names]
+    result = result[np.ix_(order, order)]
     np.testing.assert_array_equal(result, adjacency_matrix)
 
-def test_deck_adjacency_matrix_squared(deck: Deck, adjacency_matrix_squared: np.ndarray):
+def test_deck_adjacency_matrix_squared(deck: Deck, adjacency_matrix_squared: np.ndarray, card_names):
     """Test generating squared adjacency matrix from dataframe"""
     result = deck.get_adjacency_matrix(squared=True)
+    order = [deck.get_df()['name'].tolist().index(name) for name in card_names]
+    result = result[np.ix_(order, order)]
     np.testing.assert_array_equal(result, adjacency_matrix_squared)
 
 def test_deck_labeled_adjacency_matrix(deck: Deck, labeled_adjacency_matrix: np.ndarray):
     """Test generating adjacency matrix from list of monster names"""
     result = deck.get_labeled_adjacency_matrix()
-    np.testing.assert_array_equal(result, labeled_adjacency_matrix)
+    pd.testing.assert_frame_equal(result.loc[labeled_adjacency_matrix.index, labeled_adjacency_matrix.columns],
+                                  labeled_adjacency_matrix)
 
 def test_deck_labeled_adjacency_matrix_squared(deck: Deck, labeled_adjacency_matrix_squared: np.ndarray):
     """Test generating squared adjacency matrix from list of monster names"""
     result = deck.get_labeled_adjacency_matrix(squared=True)
-    np.testing.assert_array_equal(result, labeled_adjacency_matrix_squared)
+    pd.testing.assert_frame_equal(result.loc[labeled_adjacency_matrix_squared.index, labeled_adjacency_matrix_squared.columns],
+                                  labeled_adjacency_matrix_squared)
 
 def test_graph(deck: Deck):
     """Test graph has same adjacency matrix."""

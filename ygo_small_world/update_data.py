@@ -8,7 +8,7 @@ from ygo_small_world import utils
 from ygo_small_world.data_paths import writable_card_path
 
 def update_card_data() -> None:
-    """Updates card data in DataFrame pickle."""
+    """Updates card data in CSV format."""
     card_info = _fetch_card_data()
     df_all_cards = _card_json_to_df(card_info)
     df_main_monsters = _filter_card_df(df_all_cards)
@@ -19,9 +19,10 @@ def update_card_data() -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = None
     try:
-        with NamedTemporaryFile(dir=output_path.parent, suffix='.pkl', delete=False) as temporary:
+        with NamedTemporaryFile(mode='w', encoding='utf-8', newline='',
+                                dir=output_path.parent, suffix='.csv', delete=False) as temporary:
             temporary_path = temporary.name
-            df_main_monsters.to_pickle(temporary)
+            df_main_monsters.to_csv(temporary, index=False, lineterminator='\n')
         os.replace(temporary_path, output_path)
     finally:
         if temporary_path is not None and os.path.exists(temporary_path):
