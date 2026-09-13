@@ -27,7 +27,7 @@ build-backend = "hatchling.build"
 packages = ["ygo_small_world"]
 
 [tool.hatch.build.targets.wheel.force-include]
-"data/cardinfo.pkl" = "ygo_small_world/data/cardinfo.pkl"
+"data/cardinfo.csv" = "ygo_small_world/data/cardinfo.csv"
 
 [dependency-groups]
 dev = [

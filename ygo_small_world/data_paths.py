@@ -14,8 +14,8 @@ def writable_card_path() -> Path:
     """Source checkouts update their snapshot; installations update a user copy."""
     root = _source_root()
     if root is not None:
-        return root / 'data' / 'cardinfo.pkl'
-    return Path.home() / '.ygo-small-world' / 'cardinfo.pkl'
+        return root / 'data' / 'cardinfo.csv'
+    return Path.home() / '.ygo-small-world' / 'cardinfo.csv'
 
 
 def readable_card_path() -> Path:
@@ -23,4 +23,4 @@ def readable_card_path() -> Path:
     path = writable_card_path()
     if path.is_file() or _source_root() is not None:
         return path
-    return Path(__file__).resolve().parent / 'data' / 'cardinfo.pkl'
+    return Path(__file__).resolve().parent / 'data' / 'cardinfo.csv'

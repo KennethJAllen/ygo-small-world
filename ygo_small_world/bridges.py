@@ -74,7 +74,7 @@ class AllCards:
             cardinfo_path = readable_card_path()
 
         # Load the contents of card data
-        df_all_cards = pd.read_pickle(cardinfo_path)
+        df_all_cards = pd.read_csv(cardinfo_path, encoding='utf-8', keep_default_na=False)
 
         return df_all_cards
 

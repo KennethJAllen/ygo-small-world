@@ -74,13 +74,13 @@ Required target IDs must all identify supported main-deck monsters. Target YDK f
 
 ## 📊 Dataset
 
-The card data `data/cardinfo.pkl` is a pickled pandas dataframe obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+The card data `data/cardinfo.csv` is a UTF-8 CSV obtained from the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/), sorted by card ID and saved without a DataFrame index.
 
 ### Update Card Data
 
 Run: `uv run update`
 
-In a source checkout, updates replace `data/cardinfo.pkl`. Installed distributions use the bundled database until an update is saved to `~/.ygo-small-world/cardinfo.pkl`. Data paths do not depend on the working directory. Failed downloads or validation leave the previous database intact.
+In a source checkout, updates replace `data/cardinfo.csv`. Installed distributions use the bundled database until an update is saved to `~/.ygo-small-world/cardinfo.csv`. Data paths do not depend on the working directory. Failed downloads or validation leave the previous database intact. Older user snapshots in pickle format are ignored; run `uv run update` to refresh the CSV snapshot.
 
 Deck analysis computes only the connections it needs. The full database adjacency matrix is generated and cached only when explicitly requested through `AllCards.get_adjacency_matrix()` or its labeled counterpart; these full matrices can still consume substantial memory.
 
