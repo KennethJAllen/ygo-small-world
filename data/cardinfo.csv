@@ -128,6 +128,7 @@ id,name,type,attribute,level,atk,def,img_url
 1995985,Silent Swordsman LV3,Warrior,LIGHT,3.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/1995985.jpg
 2009101,Blackwing - Gale the Whirlwind,Winged Beast,DARK,3.0,1300.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/2009101.jpg
 2067935,Gladiator Beast Lanista,Winged Beast,WIND,4.0,1800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/2067935.jpg
+2083229,Reindsurm Carcasas,Insect,LIGHT,4.0,2000.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/2083229.jpg
 2088870,Worm Victory,Reptile,LIGHT,7.0,0.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/2088870.jpg
 2089016,Chronomaly Tuspa Rocket,Rock,EARTH,4.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/2089016.jpg
 2095764,"Bixi, Water of the Yang Zing",Wyrm,WATER,2.0,0.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/2095764.jpg
@@ -210,6 +211,7 @@ id,name,type,attribute,level,atk,def,img_url
 3078576,Yata-Garasu,Fiend,WIND,2.0,200.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/3078576.jpg
 3084730,Bio-Insect Armor,Insect,EARTH,5.0,1500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/3084730.jpg
 3096468,Tatsunecro,Zombie,DARK,3.0,500.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/3096468.jpg
+3106767,The Secret Crane Princess Who Returns A Favor,Winged Beast,LIGHT,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/3106767.jpg
 3111207,Lappis Dragon,Sea Serpent,WATER,5.0,0.0,2600.0,https://images.ygoprodeck.com/images/cards_cropped/3111207.jpg
 3117804,Superheavy Samurai Big Benkei,Machine,EARTH,8.0,1000.0,3500.0,https://images.ygoprodeck.com/images/cards_cropped/3117804.jpg
 3121655,Junk Dragonlet,Machine,EARTH,5.0,2100.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/3121655.jpg
@@ -279,6 +281,7 @@ id,name,type,attribute,level,atk,def,img_url
 3985011,Lucky Trinket,Spellcaster,LIGHT,2.0,600.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/3985011.jpg
 4022819,Hieratic Dragon of Eset,Dragon,LIGHT,5.0,1900.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/4022819.jpg
 4035199,Shapesnatch,Machine,DARK,5.0,1200.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/4035199.jpg
+4040906,Invincible Rocket Warrior,Warrior,LIGHT,4.0,1500.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/4040906.jpg
 4041838,Ninja Grandmaster Sasuke,Warrior,LIGHT,4.0,1800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/4041838.jpg
 4042268,Island Turtle,Aqua,WATER,4.0,1100.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/4042268.jpg
 4055337,Orcust Knightmare,Machine,DARK,7.0,100.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/4055337.jpg
@@ -299,6 +302,7 @@ id,name,type,attribute,level,atk,def,img_url
 4253484,Gladiator Beast Hoplomus,Rock,EARTH,4.0,700.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/4253484.jpg
 4266839,Kiseitai,Fiend,DARK,2.0,300.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/4266839.jpg
 4271596,King of the Ashened City,Pyro,DARK,8.0,1400.0,2700.0,https://images.ygoprodeck.com/images/cards_cropped/4271596.jpg
+4328355,Bunnillin: Mocha MOD,Cyberse,LIGHT,4.0,0.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/4328355.jpg
 4334811,Scrap Recycler,Machine,EARTH,3.0,900.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/4334811.jpg
 4335427,"Sophia, Goddess of Rebirth",Fairy,DARK,11.0,3600.0,3400.0,https://images.ygoprodeck.com/images/cards_cropped/4335427.jpg
 4335645,Newdoria,Fiend,DARK,4.0,1200.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/4335645.jpg
@@ -366,6 +370,7 @@ id,name,type,attribute,level,atk,def,img_url
 5257687,Jowls of Dark Demise,Fiend,WATER,2.0,200.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/5257687.jpg
 5259518,Predaplant Heliamphorhynchus,Plant,DARK,8.0,1200.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/5259518.jpg
 5265750,Skull Mariner,Warrior,WATER,4.0,1600.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/5265750.jpg
+5266584,Salamangreat Bastella,Cyberse,FIRE,3.0,1600.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/5266584.jpg
 5267507,Earthbound Immortal Red Nova,Fiend,DARK,12.0,3500.0,3000.0,https://images.ygoprodeck.com/images/cards_cropped/5267507.jpg
 5284653,Evilswarm Obliviwisp,Pyro,DARK,4.0,450.0,2050.0,https://images.ygoprodeck.com/images/cards_cropped/5284653.jpg
 5285665,Elemental HERO Neo Bubbleman,Warrior,WATER,4.0,800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/5285665.jpg
@@ -510,7 +515,7 @@ id,name,type,attribute,level,atk,def,img_url
 7392745,Chewbone,Zombie,EARTH,3.0,300.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/7392745.jpg
 7407724,Erica the Rikka Fairy,Plant,WATER,6.0,2400.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/7407724.jpg
 7409792,Dynatherium,Beast,WIND,4.0,1600.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/7409792.jpg
-7428507,Burial Summit Xenovader△ Helheim,Psychic,EARTH,6.0,2400.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/7428507.jpg
+7428507,Burial Summit Trirealm Rift Helheim,Psychic,EARTH,6.0,2400.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/7428507.jpg
 7443908,Hayate the Earth Star,Warrior,EARTH,5.0,2100.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/7443908.jpg
 7445307,Dual Assembwurm,Cyberse,DARK,8.0,2800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/7445307.jpg
 7459013,"Zure, Knight of Dark World",Fiend,DARK,4.0,1800.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/7459013.jpg
@@ -597,7 +602,7 @@ id,name,type,attribute,level,atk,def,img_url
 8495780,Deep Sea Artisan,Sea Serpent,WATER,1.0,0.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/8495780.jpg
 8508055,Chu-Ske the Mouse Fighter,Beast,EARTH,3.0,1200.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/8508055.jpg
 8512558,Utopic Onomatopoeia,Warrior,LIGHT,4.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/8512558.jpg
-8540055,Xenovader△ of Blue Tuonela,Psychic,WATER,3.0,300.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/8540055.jpg
+8540055,Trirealm Rift of Blue Tuonela,Psychic,WATER,3.0,300.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/8540055.jpg
 8567955,Balancer Lord,Cyberse,LIGHT,4.0,1700.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/8567955.jpg
 8571567,Blackwing - Shamal the Sandstorm,Winged Beast,DARK,4.0,1600.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/8571567.jpg
 8576764,Gluttonous Reptolphin Greethys,Fish,WATER,3.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/8576764.jpg
@@ -1204,6 +1209,7 @@ id,name,type,attribute,level,atk,def,img_url
 16366810,Yellow Duston,Fiend,EARTH,1.0,0.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/16366810.jpg
 16366944,Moonlit Papillon,Insect,LIGHT,4.0,1200.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/16366944.jpg
 16387555,Kewl Tune Cue,Fairy,LIGHT,3.0,900.0,1900.0,https://images.ygoprodeck.com/images/cards_cropped/16387555.jpg
+16389132,"Anu, Knight of the Winter Raven",Illusion,LIGHT,4.0,1400.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/16389132.jpg
 16392422,Toon Masked Sorcerer,Spellcaster,DARK,4.0,900.0,1400.0,https://images.ygoprodeck.com/images/cards_cropped/16392422.jpg
 16404809,Kuribandit,Fiend,DARK,3.0,1000.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/16404809.jpg
 16428514,Subterror Guru,Dragon,EARTH,4.0,1600.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/16428514.jpg
@@ -1258,6 +1264,7 @@ id,name,type,attribute,level,atk,def,img_url
 17063599,Heavenly Zephyr - Miradora,Dragon,WIND,7.0,2000.0,2600.0,https://images.ygoprodeck.com/images/cards_cropped/17063599.jpg
 17080584,"Abyssrhine, the Atlantean Spirit",Aqua,WATER,3.0,1600.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/17080584.jpg
 17086528,Xiangsheng Magician,Spellcaster,LIGHT,4.0,500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/17086528.jpg
+17101624,Harpie Lady - Alluring Dance,Winged Beast,WIND,4.0,1300.0,1400.0,https://images.ygoprodeck.com/images/cards_cropped/17101624.jpg
 17115745,Yormungarde,Reptile,EARTH,3.0,1200.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/17115745.jpg
 17129783,Constellar Leonis,Beast,LIGHT,3.0,1000.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/17129783.jpg
 17132130,Destiny HERO - Dogma,Warrior,DARK,8.0,3400.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/17132130.jpg
@@ -1271,6 +1278,7 @@ id,name,type,attribute,level,atk,def,img_url
 17201951,Full-Speed Warrior,Warrior,WIND,2.0,900.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/17201951.jpg
 17209452,Kewl Tune Rotary,Cyberse,LIGHT,1.0,100.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/17209452.jpg
 17214465,Maiden of the Aqua,Aqua,WATER,4.0,700.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/17214465.jpg
+17223202,Amazoness Chain Master - Brink of Death Chain Dance,Warrior,EARTH,4.0,1500.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/17223202.jpg
 17238333,Wretched Ghost of the Attic,Fiend,DARK,2.0,550.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/17238333.jpg
 17241370,Gishki Natalia,Spellcaster,WATER,4.0,1800.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/17241370.jpg
 17241941,Gigathunder Giclops,Thunder,WIND,4.0,1400.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/17241941.jpg
@@ -1369,6 +1377,7 @@ id,name,type,attribute,level,atk,def,img_url
 18426196,Noble Knight Joan,Warrior,LIGHT,4.0,1900.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/18426196.jpg
 18430390,Winged Rhynos,Beast-Warrior,WIND,4.0,1800.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/18430390.jpg
 18444902,Tatakawa Knight,Warrior,EARTH,4.0,1500.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/18444902.jpg
+18446859,"Makyura, Destructor of the Sun God",Warrior,DARK,4.0,1600.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/18446859.jpg
 18474999,Impcantation Bookstone,Spellcaster,DARK,5.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/18474999.jpg
 18482591,Warlock of the Ice Barrier,Spellcaster,WATER,3.0,400.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/18482591.jpg
 18486927,Ancient Gear Gadget,Machine,EARTH,4.0,500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/18486927.jpg
@@ -1843,6 +1852,7 @@ id,name,type,attribute,level,atk,def,img_url
 24731391,Cyberse Magician,Cyberse,DARK,7.0,2500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/24731391.jpg
 24731453,Snow Plow Hustle Rustle,Machine,EARTH,10.0,2500.0,3000.0,https://images.ygoprodeck.com/images/cards_cropped/24731453.jpg
 24779554,Rucia of the White Forest,Spellcaster,LIGHT,4.0,800.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/24779554.jpg
+24780790,Chaospawn Bishop,Fiend,DARK,4.0,100.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/24780790.jpg
 24857466,Van'Dalgyon the Dark Dragon Lord,Dragon,DARK,8.0,2800.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/24857466.jpg
 24861088,Chronomaly Nebra Disk,Machine,LIGHT,4.0,1800.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/24861088.jpg
 24892828,Returned of the Tistina,Aqua,FIRE,2.0,500.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/24892828.jpg
@@ -2226,6 +2236,7 @@ id,name,type,attribute,level,atk,def,img_url
 30303854,Laval Archer,Pyro,FIRE,4.0,1000.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/30303854.jpg
 30312361,Phantom of Chaos,Fiend,DARK,4.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/30312361.jpg
 30314994,Element Dragon,Dragon,LIGHT,4.0,1500.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/30314994.jpg
+30316053,Heretic Eradicator,Warrior,EARTH,7.0,2700.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/30316053.jpg
 30325729,Dokuroyaiba,Fiend,FIRE,3.0,1000.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/30325729.jpg
 30327674,Chaos Witch,Spellcaster,DARK,4.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/30327674.jpg
 30328508,Shaddoll Squamata,Spellcaster,DARK,4.0,1800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/30328508.jpg
@@ -2298,6 +2309,7 @@ id,name,type,attribute,level,atk,def,img_url
 31374201,"Whitebeard, the Plunder Patroll Helm",Fiend,WATER,4.0,1500.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/31374201.jpg
 31383545,XX-Saber Darksoul,Beast,EARTH,3.0,100.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/31383545.jpg
 31425736,Cupsy☆Yummy,Beast,LIGHT,1.0,0.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/31425736.jpg
+31439641,Ashtrata Tamayori,Fairy,FIRE,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/31439641.jpg
 31440046,Prank-Kids Rocksies,Rock,EARTH,4.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/31440046.jpg
 31440542,Rafflesia Seduction,Plant,EARTH,2.0,300.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/31440542.jpg
 31447217,Wingweaver,Fairy,LIGHT,7.0,2750.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/31447217.jpg
@@ -2470,7 +2482,7 @@ id,name,type,attribute,level,atk,def,img_url
 33746252,Majesty's Fiend,Fiend,LIGHT,6.0,2400.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/33746252.jpg
 33750025,Samsara Dragon,Dragon,LIGHT,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/33750025.jpg
 33776734,Winged Kuriboh LV9,Fairy,LIGHT,9.0,-1.0,-1.0,https://images.ygoprodeck.com/images/cards_cropped/33776734.jpg
-33822112,Mad Tempest Xenovader△ Ploutonion,Psychic,WIND,7.0,2100.0,2800.0,https://images.ygoprodeck.com/images/cards_cropped/33822112.jpg
+33822112,Mad Tempest Trirealm Rift Ploutonion,Psychic,WIND,7.0,2100.0,2800.0,https://images.ygoprodeck.com/images/cards_cropped/33822112.jpg
 33823832,Performapal Fire Mufflerlion,Beast,FIRE,3.0,800.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/33823832.jpg
 33833230,Performapal Seal Eel,Fish,WATER,1.0,100.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/33833230.jpg
 33837653,Tenma the Sky Star,Warrior,LIGHT,5.0,2100.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/33837653.jpg
@@ -2538,7 +2550,7 @@ id,name,type,attribute,level,atk,def,img_url
 34614910,Cyclamen the Rikka Fairy,Plant,WATER,4.0,1800.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/34614910.jpg
 34620088,Gimmick Puppet Shadow Feeler,Machine,DARK,8.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/34620088.jpg
 34627841,Kaibaman,Warrior,LIGHT,3.0,200.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/34627841.jpg
-34645790,Xenovader△ of Scarlet Naraka,Psychic,FIRE,4.0,1700.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/34645790.jpg
+34645790,Trirealm Rift of Scarlet Naraka,Psychic,FIRE,4.0,1700.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/34645790.jpg
 34659866,Darksea Rescue,Machine,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/34659866.jpg
 34680482,Madolche Anjelly,Fairy,EARTH,4.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/34680482.jpg
 34688023,Edge Imp Saw,Fiend,DARK,3.0,500.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/34688023.jpg
@@ -2600,7 +2612,7 @@ id,name,type,attribute,level,atk,def,img_url
 35638627,Worm Warlord,Reptile,LIGHT,6.0,2350.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/35638627.jpg
 35645105,Infinitrack Harvester,Machine,EARTH,2.0,0.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/35645105.jpg
 35712107,Monstrous Bird,Winged Beast,WIND,6.0,2000.0,1900.0,https://images.ygoprodeck.com/images/cards_cropped/35712107.jpg
-35761342,Xenovader△ of Emptiness Gehenna,Psychic,DARK,1.0,100.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/35761342.jpg
+35761342,Trirealm Rift of Emptiness Gehenna,Psychic,DARK,1.0,100.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/35761342.jpg
 35763582,Lunalight Silver Hound,Beast-Warrior,DARK,3.0,1400.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/35763582.jpg
 35770983,Dinowrestler Martial Ankylo,Dinosaur,EARTH,2.0,1000.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/35770983.jpg
 35781051,Arcana Force III - The Empress,Fairy,LIGHT,4.0,1300.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/35781051.jpg
@@ -2780,6 +2792,7 @@ id,name,type,attribute,level,atk,def,img_url
 38445524,Gil Garth,Fiend,DARK,4.0,1800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/38445524.jpg
 38450736,Inzektor Earwig,Insect,DARK,4.0,1000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/38450736.jpg
 38468214,Alien Hypno,Reptile,WATER,4.0,1600.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/38468214.jpg
+38478224,Reindsurm Gigalovendra,Insect,FIRE,8.0,3000.0,1100.0,https://images.ygoprodeck.com/images/cards_cropped/38478224.jpg
 38479725,The Trojan Horse,Beast,EARTH,4.0,1600.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/38479725.jpg
 38480590,Lady Panther,Beast-Warrior,EARTH,4.0,1400.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/38480590.jpg
 38491199,Junkuriboh,Machine,EARTH,1.0,300.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/38491199.jpg
@@ -2867,6 +2880,7 @@ id,name,type,attribute,level,atk,def,img_url
 39522887,"Snopios, Shade of the Ghoti",Fish,WATER,6.0,2100.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/39522887.jpg
 39552864,Mystical Shine Ball,Fairy,LIGHT,2.0,500.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/39552864.jpg
 39581190,Subterror Nemesis Archer,Fairy,EARTH,3.0,1600.0,1400.0,https://images.ygoprodeck.com/images/cards_cropped/39581190.jpg
+39590415,Reindsurm Amurusa,Insect,WIND,4.0,1000.0,2200.0,https://images.ygoprodeck.com/images/cards_cropped/39590415.jpg
 39618799,Cyber Angel Dakini,Fairy,LIGHT,8.0,2700.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/39618799.jpg
 39643167,Bunny Ear Enthusiast,Beast-Warrior,EARTH,1.0,200.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/39643167.jpg
 39648965,Meklord Army of Wisel,Machine,DARK,4.0,1800.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/39648965.jpg
@@ -3071,6 +3085,7 @@ id,name,type,attribute,level,atk,def,img_url
 42348802,Trakodon,Dinosaur,EARTH,3.0,1300.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/42348802.jpg
 42352091,Numeron Wall,Fiend,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/42352091.jpg
 42364374,Arsenal Bug,Insect,EARTH,3.0,2000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/42364374.jpg
+42373771,Sinful Spoils of the Winter Raven's Forest,Spellcaster,FIRE,7.0,2500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/42373771.jpg
 42377643,Gunkan Suship Uni,Aqua,FIRE,5.0,900.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/42377643.jpg
 42382265,D/D Scale Surveyor,Fiend,DARK,2.0,0.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/42382265.jpg
 42386471,Toon Gemini Elf,Spellcaster,EARTH,4.0,1900.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/42386471.jpg
@@ -3096,6 +3111,7 @@ id,name,type,attribute,level,atk,def,img_url
 42600274,Cyber Tutubon,Warrior,EARTH,5.0,1800.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/42600274.jpg
 42625254,Little D,Dinosaur,EARTH,3.0,1100.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/42625254.jpg
 42647539,Ryu-Kishin Clown,Fiend,DARK,2.0,800.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/42647539.jpg
+42651293,Primrose the Twin Rikka Fairy,Plant,WATER,8.0,2600.0,2600.0,https://images.ygoprodeck.com/images/cards_cropped/42651293.jpg
 42679662,Evilswarm Azzathoth,Reptile,DARK,4.0,750.0,1950.0,https://images.ygoprodeck.com/images/cards_cropped/42679662.jpg
 42682609,Chrysalis Dolphin,Fish,WATER,2.0,400.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/42682609.jpg
 42685062,Emissary from Pandemonium,Fiend,EARTH,7.0,2600.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/42685062.jpg
@@ -3159,6 +3175,7 @@ id,name,type,attribute,level,atk,def,img_url
 43580269,Emes the Infinity,Machine,LIGHT,7.0,2500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/43580269.jpg
 43583400,Antialian,Cyberse,EARTH,4.0,1900.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/43583400.jpg
 43586926,Twin-Headed Behemoth,Dragon,WIND,3.0,1500.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/43586926.jpg
+43596329,Purifire of the Winter Raven's Forest,Pyro,FIRE,1.0,700.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/43596329.jpg
 43598843,Gimmick Puppet Terror Baby,Machine,DARK,4.0,500.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/43598843.jpg
 43632709,"Cerynemesia, Mystical Beast of the Forest",Beast,EARTH,2.0,0.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/43632709.jpg
 43642620,Zombie Mammoth,Zombie,EARTH,4.0,1900.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/43642620.jpg
@@ -3225,6 +3242,7 @@ id,name,type,attribute,level,atk,def,img_url
 44519536,Left Leg of the Forbidden One,Spellcaster,DARK,1.0,200.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/44519536.jpg
 44573911,R.B. Ga10 Pile Bunker,Machine,EARTH,8.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/44573911.jpg
 44586426,Batteryman Solar,Thunder,LIGHT,4.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/44586426.jpg
+44618916,Amazoness Fighter - Instant Kill Dance,Warrior,EARTH,4.0,1500.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/44618916.jpg
 44632120,Kuribah,Fiend,DARK,1.0,300.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/44632120.jpg
 44635489,Constellar Siat,Fairy,LIGHT,1.0,100.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/44635489.jpg
 44640691,Rogue of Endymion,Spellcaster,FIRE,3.0,1500.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/44640691.jpg
@@ -3295,6 +3313,7 @@ id,name,type,attribute,level,atk,def,img_url
 45313993,Red Warg,Fiend,FIRE,6.0,1400.0,2200.0,https://images.ygoprodeck.com/images/cards_cropped/45313993.jpg
 45358284,Mirror Ladybug,Insect,LIGHT,1.0,100.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/45358284.jpg
 45425051,Fairy King Truesdale,Plant,WATER,6.0,2200.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/45425051.jpg
+45430558,"Gil Garth, Exterminator of the Sun God",Fiend,DARK,4.0,1800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/45430558.jpg
 45439263,Laval Coatl,Pyro,FIRE,2.0,1300.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/45439263.jpg
 45450218,Ally of Justice Omni-Weapon,Machine,DARK,5.0,2200.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/45450218.jpg
 45452224,Kinka-byo,Beast,DARK,1.0,400.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/45452224.jpg
@@ -3799,6 +3818,7 @@ id,name,type,attribute,level,atk,def,img_url
 52182715,Green Duston,Fiend,WIND,1.0,0.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/52182715.jpg
 52222372,Genex Turbine,Machine,EARTH,4.0,1400.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/52222372.jpg
 52240819,Abyss Actor - Evil Heel,Fiend,DARK,8.0,3000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/52240819.jpg
+52245126,"Audhumla, Progenitor of the Frozen Expanse",Aqua,WATER,9.0,2500.0,3200.0,https://images.ygoprodeck.com/images/cards_cropped/52245126.jpg
 52248570,Imprisoned Queen Archfiend,Fiend,DARK,8.0,2600.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/52248570.jpg
 52253888,Light Law Medium,Fairy,LIGHT,2.0,400.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/52253888.jpg
 52254878,Dimensional Allotrope Varis,Psychic,LIGHT,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/52254878.jpg
@@ -4439,7 +4459,7 @@ id,name,type,attribute,level,atk,def,img_url
 60764609,Fiendsmith Engraver,Fiend,LIGHT,6.0,1800.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/60764609.jpg
 60802233,Kuwagata α,Insect,EARTH,4.0,1250.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/60802233.jpg
 60806437,UFO Turtle,Machine,FIRE,4.0,1400.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/60806437.jpg
-60811211,Emptiness Devouring Xenovader△ Jahannam,Psychic,DARK,8.0,3000.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/60811211.jpg
+60811211,Trirealm Rift Darkness,Psychic,DARK,8.0,3000.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/60811211.jpg
 60822251,Kaiki the Unity Star,Warrior,LIGHT,5.0,1000.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/60822251.jpg
 60823690,Shinobaron Shade Peacock,Winged Beast,WIND,4.0,2000.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/60823690.jpg
 60832978,Double Resonator,Fiend,FIRE,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/60832978.jpg
@@ -4457,7 +4477,7 @@ id,name,type,attribute,level,atk,def,img_url
 61011438,Brilliant Rose,Rock,LIGHT,2.0,500.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/61011438.jpg
 61019812,Red Duston,Fiend,FIRE,1.0,0.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/61019812.jpg
 61027400,Gunkan Suship Ikura,Aqua,FIRE,4.0,200.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/61027400.jpg
-61033809,Sky Thunder Xenovader△ Yomi,Psychic,LIGHT,5.0,1000.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/61033809.jpg
+61033809,Sky Thunder Trirealm Rift Yomi,Psychic,LIGHT,5.0,1000.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/61033809.jpg
 61049315,Naturia Rosewhip,Plant,EARTH,3.0,400.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/61049315.jpg
 61052897,R-Genex Turing,Spellcaster,DARK,2.0,600.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/61052897.jpg
 61089209,Myutant Mist,Spellcaster,WIND,8.0,2700.0,2900.0,https://images.ygoprodeck.com/images/cards_cropped/61089209.jpg
@@ -4777,6 +4797,7 @@ id,name,type,attribute,level,atk,def,img_url
 65758454,Ganbara Lancer,Warrior,LIGHT,5.0,1000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/65758454.jpg
 65844845,Inzektor Giga-Cricket,Insect,DARK,5.0,2000.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/65844845.jpg
 65848811,Heroic Challenger - Assault Halberd,Warrior,EARTH,4.0,1800.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/65848811.jpg
+65866932,Reindsurm Giriakarma,Insect,DARK,8.0,3300.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/65866932.jpg
 65877963,Impcantation Chalislime,Aqua,DARK,7.0,2500.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/65877963.jpg
 65878864,Nobleman-Eater Bug,Insect,EARTH,5.0,900.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/65878864.jpg
 65899613,Battlewasp - Pin the Bullseye,Insect,WIND,1.0,200.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/65899613.jpg
@@ -4826,6 +4847,7 @@ id,name,type,attribute,level,atk,def,img_url
 66569334,Nightmell the Dark Bonder,Psychic,WIND,4.0,1500.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/66569334.jpg
 66570171,Necroworld Banshee,Zombie,DARK,4.0,1800.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/66570171.jpg
 66574418,The Black Stone of Legend,Dragon,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/66574418.jpg
+66589510,Reindsurm Luvian,Insect,WATER,4.0,1900.0,1100.0,https://images.ygoprodeck.com/images/cards_cropped/66589510.jpg
 66602787,Saggi the Dark Clown,Spellcaster,DARK,3.0,600.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/66602787.jpg
 66625883,"Karakuri Strategist mdl 248 ""Nishipachi""",Machine,EARTH,3.0,500.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/66625883.jpg
 66646087,Super Quantal Fairy Zetan,Zombie,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/66646087.jpg
@@ -4836,6 +4858,7 @@ id,name,type,attribute,level,atk,def,img_url
 66675911,Nehshaddoll Genius,Machine,EARTH,4.0,1800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/66675911.jpg
 66690411,Mind on Air,Spellcaster,DARK,6.0,1000.0,1600.0,https://images.ygoprodeck.com/images/cards_cropped/66690411.jpg
 66699781,Chaos Mirage Dragon,Wyrm,LIGHT,4.0,1600.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/66699781.jpg
+66701162,Nightmare Twinkle,Illusion,LIGHT,4.0,1700.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/66701162.jpg
 66707058,Goblin Black Ops,Beast-Warrior,DARK,4.0,1300.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/66707058.jpg
 66712593,Element Soldier,Fiend,DARK,4.0,1500.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/66712593.jpg
 66722103,Thunderclap Monk,Thunder,LIGHT,4.0,1900.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/66722103.jpg
@@ -5106,6 +5129,7 @@ id,name,type,attribute,level,atk,def,img_url
 70546737,Umbral Horror Will o' the Wisp,Fiend,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/70546737.jpg
 70551291,Black Luster Soldier - Legendary Swordsman,Warrior,EARTH,8.0,3000.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/70551291.jpg
 70595331,Il Blud,Zombie,DARK,6.0,2100.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/70595331.jpg
+70612015,Amazoness Spellcaster - Forbidden Spell Dance,Warrior,EARTH,3.0,400.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/70612015.jpg
 70624184,Constellar Rasalhague,Spellcaster,LIGHT,2.0,900.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/70624184.jpg
 70630741,Rescue Warrior,Warrior,EARTH,4.0,1600.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/70630741.jpg
 70645913,Vampire Retainer,Zombie,DARK,2.0,1200.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/70645913.jpg
@@ -5148,7 +5172,7 @@ id,name,type,attribute,level,atk,def,img_url
 71107816,The Bistro Butcher,Fiend,DARK,4.0,1800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/71107816.jpg
 71108540,Invincible Demise Lord,Fiend,DARK,6.0,1300.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/71108540.jpg
 71133680,Mermail Abyssnerei,Aqua,WATER,3.0,1200.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/71133680.jpg
-71155456,Xenovader△ of Sky Sheol,Psychic,LIGHT,2.0,1200.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/71155456.jpg
+71155456,Trirealm Rift of Sky Sheol,Psychic,LIGHT,2.0,1200.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/71155456.jpg
 71172240,Backlinker,Cyberse,DARK,3.0,1600.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/71172240.jpg
 71175527,"Pilica, Descendant of Gusto",Psychic,WIND,3.0,1000.0,1500.0,https://images.ygoprodeck.com/images/cards_cropped/71175527.jpg
 71181155,Phantom Beast Cross-Wing,Beast-Warrior,LIGHT,4.0,1300.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/71181155.jpg
@@ -5608,6 +5632,7 @@ id,name,type,attribute,level,atk,def,img_url
 77723643,Shaddoll Dragon,Spellcaster,DARK,4.0,1900.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/77723643.jpg
 77754169,"Super Armored Robot Armed Black Iron ""C""",Insect,EARTH,8.0,2400.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/77754169.jpg
 77797992,"Alpacaribou, Mystical Beast of the Forest",Beast,EARTH,7.0,2700.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/77797992.jpg
+77823650,Rampant Wings of Atlantis,Sea Serpent,WATER,5.0,2000.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/77823650.jpg
 77827521,Trial of Nightmare,Fiend,DARK,4.0,1300.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/77827521.jpg
 77832858,Thestalos the Shadowfire Monarch,Pyro,FIRE,10.0,3000.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/77832858.jpg
 77841719,Evilswarm Coppelia,Machine,DARK,6.0,2450.0,2050.0,https://images.ygoprodeck.com/images/cards_cropped/77841719.jpg
@@ -5659,6 +5684,7 @@ id,name,type,attribute,level,atk,def,img_url
 78613627,Des Kangaroo,Beast,DARK,4.0,1500.0,1700.0,https://images.ygoprodeck.com/images/cards_cropped/78613627.jpg
 78636495,Slate Warrior,Fiend,WIND,4.0,1900.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/78636495.jpg
 78642798,Golden-Eyes Idol,Spellcaster,DARK,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/78642798.jpg
+78646298,Rikka Black Princess,Plant,WATER,6.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/78646298.jpg
 78651105,Beast King Barbaros,Beast-Warrior,EARTH,8.0,3000.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/78651105.jpg
 78658564,Goblin Attack Force,Warrior,EARTH,4.0,2300.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/78658564.jpg
 78661338,Fantastical Dragon Phantazmay,Dragon,DARK,7.0,2400.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/78661338.jpg
@@ -5723,6 +5749,7 @@ id,name,type,attribute,level,atk,def,img_url
 79703905,Cloudian - Altus,Fairy,WATER,4.0,1300.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/79703905.jpg
 79724755,Guitar Gurnards Duonigis,Sea Serpent,WATER,3.0,1500.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/79724755.jpg
 79757784,Tamtam the Melodious Diva,Fairy,LIGHT,4.0,1000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/79757784.jpg
+79768885,Salamangreat Markhor,Cyberse,FIRE,4.0,300.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/79768885.jpg
 79783880,Shiranui Spectralsword Shade,Zombie,FIRE,3.0,800.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/79783880.jpg
 79785958,Evilswarm Castor,Warrior,DARK,4.0,1750.0,550.0,https://images.ygoprodeck.com/images/cards_cropped/79785958.jpg
 79794767,Amorphage Wrath,Dragon,EARTH,4.0,1650.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/79794767.jpg
@@ -5745,6 +5772,7 @@ id,name,type,attribute,level,atk,def,img_url
 79967395,Performapal Whip Snake,Reptile,EARTH,4.0,1700.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/79967395.jpg
 79972330,Swallowtail Butterspy,Warrior,DARK,4.0,1800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/79972330.jpg
 79979666,Elemental HERO Bubbleman,Warrior,WATER,4.0,800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/79979666.jpg
+79980427,"Mart, Knight of the Winter Raven",Illusion,LIGHT,4.0,1700.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/79980427.jpg
 80019195,Legendary Knight Timaeus,Warrior,LIGHT,8.0,2800.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/80019195.jpg
 80045583,Ancient Gear Cannon,Machine,EARTH,2.0,500.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/80045583.jpg
 80054655,Crossroad Sonic Chick,Winged Beast,EARTH,1.0,300.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/80054655.jpg
@@ -5884,6 +5912,7 @@ id,name,type,attribute,level,atk,def,img_url
 81816475,Overlay Eater,Reptile,LIGHT,2.0,300.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/81816475.jpg
 81823360,Megalosmasher X,Dinosaur,WATER,4.0,2000.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/81823360.jpg
 81825063,General Wayne of the Ice Barrier,Warrior,WATER,5.0,2100.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/81825063.jpg
+81839663,"Viser Des Shock, Tormentor of the Sun God",Fiend,DARK,4.0,800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/81839663.jpg
 81843628,Needle Worm,Insect,EARTH,2.0,750.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/81843628.jpg
 81846636,Gem-Knight Lazuli,Rock,EARTH,1.0,600.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/81846636.jpg
 81863068,Hiro's Shadow Scout,Fiend,DARK,2.0,650.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/81863068.jpg
@@ -5975,6 +6004,7 @@ id,name,type,attribute,level,atk,def,img_url
 82913020,Constellar Caduceus,Spellcaster,LIGHT,4.0,1600.0,1550.0,https://images.ygoprodeck.com/images/cards_cropped/82913020.jpg
 82933935,Mimighoul Flower,Plant,EARTH,1.0,0.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/82933935.jpg
 82946847,Petiteranodon,Dinosaur,EARTH,2.0,500.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/82946847.jpg
+82951145,"Helpoemer, Chanter of the Sun God",Fiend,DARK,5.0,2000.0,1400.0,https://images.ygoprodeck.com/images/cards_cropped/82951145.jpg
 82962242,Vampire Vamp,Zombie,DARK,7.0,2000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/82962242.jpg
 82970905,Father Grizzly,Beast-Warrior,WATER,4.0,1400.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/82970905.jpg
 82971335,Fortune Lady Earth,Spellcaster,EARTH,6.0,-1.0,-1.0,https://images.ygoprodeck.com/images/cards_cropped/82971335.jpg
@@ -6547,6 +6577,7 @@ id,name,type,attribute,level,atk,def,img_url
 91215724,Junk Armor,Warrior,EARTH,2.0,600.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/91215724.jpg
 91222209,Rescue-ACE Monitor,Warrior,FIRE,4.0,1800.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/91222209.jpg
 91250514,Tongue Twister,Fiend,DARK,6.0,400.0,300.0,https://images.ygoprodeck.com/images/cards_cropped/91250514.jpg
+91251637,Javelin Beetle of the Alliance,Insect,EARTH,8.0,2450.0,2550.0,https://images.ygoprodeck.com/images/cards_cropped/91251637.jpg
 91258852,SPYRAL Master Plan,Spellcaster,DARK,7.0,1200.0,2800.0,https://images.ygoprodeck.com/images/cards_cropped/91258852.jpg
 91262474,Stardust Wurm,Dragon,LIGHT,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/91262474.jpg
 91283212,Battlewasp - Dart the Hunter,Insect,WIND,1.0,100.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/91283212.jpg
@@ -7048,6 +7079,7 @@ id,name,type,attribute,level,atk,def,img_url
 98439949,Infinitrack Crab Crane,Machine,EARTH,5.0,2100.0,500.0,https://images.ygoprodeck.com/images/cards_cropped/98439949.jpg
 98446407,Hand of Nephthys,Spellcaster,WIND,2.0,600.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/98446407.jpg
 98456117,Boneheimer,Aqua,WATER,3.0,850.0,400.0,https://images.ygoprodeck.com/images/cards_cropped/98456117.jpg
+98518633,Kerolia the Frolicsome,Aqua,WATER,1.0,200.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/98518633.jpg
 98520301,Asset Mountis,Insect,LIGHT,7.0,2300.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/98520301.jpg
 98555327,Galaxy Wizard,Spellcaster,LIGHT,4.0,0.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/98555327.jpg
 98582704,Wing Egg Elf,Fairy,LIGHT,3.0,500.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/98582704.jpg
@@ -7119,6 +7151,7 @@ id,name,type,attribute,level,atk,def,img_url
 99581584,Guard Penguin,Winged Beast,WATER,4.0,0.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/99581584.jpg
 99594764,Dragunity Corsesca,Dragon,WIND,1.0,800.0,700.0,https://images.ygoprodeck.com/images/cards_cropped/99594764.jpg
 99628747,Megalith Bethor,Rock,EARTH,8.0,1500.0,2600.0,https://images.ygoprodeck.com/images/cards_cropped/99628747.jpg
+99630221,Tigress in Silent Repose,Beast-Warrior,EARTH,3.0,1700.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/99630221.jpg
 99634927,Abyss Actor - Funky Comedian,Fiend,DARK,1.0,300.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/99634927.jpg
 99641328,Sylvan Komushroomo,Plant,FIRE,2.0,100.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/99641328.jpg
 99645428,Gem-Knight Lapis,Rock,EARTH,3.0,1200.0,100.0,https://images.ygoprodeck.com/images/cards_cropped/99645428.jpg
@@ -7148,30 +7181,15 @@ id,name,type,attribute,level,atk,def,img_url
 99946920,"Taotie, Shadow of the Yang Zing",Wyrm,DARK,5.0,2200.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/99946920.jpg
 100350263,The Dark Dragon Lord of Ultum,Dragon,EARTH,8.0,2000.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/100350263.jpg
 100460001,Pritima the Infinity Cubic Vessel,Machine,EARTH,4.0,800.0,800.0,https://images.ygoprodeck.com/images/cards_cropped/100460001.jpg
+100460026,Marincess Azuri,Cyberse,WATER,3.0,1600.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/100460026.jpg
+100460027,Marincess Ulpis,Cyberse,WATER,5.0,600.0,2400.0,https://images.ygoprodeck.com/images/cards_cropped/100460027.jpg
+100460028,Aqua Leviathan @Marincess,Cyberse,WATER,7.0,2300.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/100460028.jpg
+100460050,Ghostrick Lich,Zombie,DARK,3.0,1500.0,600.0,https://images.ygoprodeck.com/images/cards_cropped/100460050.jpg
 100461000,"Diabellstar, the Seeker of Sinful Spoils",Spellcaster,DARK,7.0,2500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/100461000.jpg
+100461001,"Buster Blader, the One Who Surpasses the Limits",Warrior,EARTH,8.0,2600.0,2300.0,https://images.ygoprodeck.com/images/cards_cropped/100461001.jpg
+100462004,Magistus Witchcrafter Aruru,Spellcaster,LIGHT,8.0,2800.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/100462004.jpg
+100463002,Gandora-X the Blackmetal Rampaging Dragon,Dragon,DARK,8.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/100463002.jpg
 101304014,Elvennotes Regina,Spellcaster,WIND,6.0,2000.0,1800.0,https://images.ygoprodeck.com/images/cards_cropped/101304014.jpg
-101402082,Tigress in Silent Repose,Beast-Warrior,EARTH,3.0,1700.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/101402082.jpg
-101402085,Kerolia the Frolicsome,Aqua,WATER,1.0,200.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/101402085.jpg
-101402089,Chaospawn Bishop,Fiend,DARK,4.0,100.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/101402089.jpg
-101402101,"Audhumla, Progenitor of the Frozen Expanse",Aqua,WATER,9.0,2500.0,3200.0,https://images.ygoprodeck.com/images/cards_cropped/101402101.jpg
-101403001,"Helpoemer, Chanter of the Sun God",Fiend,DARK,5.0,2000.0,1400.0,https://images.ygoprodeck.com/images/cards_cropped/101403001.jpg
-101403002,"Makyura, Destructor of the Sun God",Warrior,DARK,4.0,1600.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/101403002.jpg
-101403003,"Gil Garth, Exterminator of the Sun God",Fiend,DARK,4.0,1800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/101403003.jpg
-101403004,"Viser Des Shock, Tormentor of the Sun God",Fiend,DARK,4.0,800.0,1200.0,https://images.ygoprodeck.com/images/cards_cropped/101403004.jpg
-101403009,Purifire of the Winter Raven's Forest,Pyro,FIRE,1.0,700.0,200.0,https://images.ygoprodeck.com/images/cards_cropped/101403009.jpg
-101403010,"Mart, Knight of the Winter Raven",Illusion,LIGHT,4.0,1700.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/101403010.jpg
-101403011,"Anu, Knight of the Winter Raven",Illusion,LIGHT,4.0,1400.0,900.0,https://images.ygoprodeck.com/images/cards_cropped/101403011.jpg
-101403012,Sinful Spoils of the Winter Raven's Forest,Spellcaster,FIRE,7.0,2500.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/101403012.jpg
-101403013,Salamangreat Markhor,Cyberse,FIRE,4.0,300.0,2100.0,https://images.ygoprodeck.com/images/cards_cropped/101403013.jpg
-101403014,Salamangreat Bastella,Cyberse,FIRE,3.0,1600.0,1000.0,https://images.ygoprodeck.com/images/cards_cropped/101403014.jpg
-101403020,Bunnillin: Mocha MOD,Cyberse,LIGHT,4.0,0.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/101403020.jpg
-101403023,The Secret Crane Princess Who Returns A Favor,Winged Beast,LIGHT,1.0,0.0,0.0,https://images.ygoprodeck.com/images/cards_cropped/101403023.jpg
-101403024,Reindsurm Amurusa,Insect,WIND,4.0,1000.0,2200.0,https://images.ygoprodeck.com/images/cards_cropped/101403024.jpg
-101403025,Reindsurm Luvian,Insect,WATER,4.0,1900.0,1100.0,https://images.ygoprodeck.com/images/cards_cropped/101403025.jpg
-101403026,Reindsurm Carcasas,Insect,LIGHT,4.0,2000.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/101403026.jpg
-101403027,Reindsurm Gigalovendra,Insect,FIRE,8.0,3000.0,1100.0,https://images.ygoprodeck.com/images/cards_cropped/101403027.jpg
-101403028,Reindsurm Giriakarma,Insect,DARK,8.0,3300.0,1300.0,https://images.ygoprodeck.com/images/cards_cropped/101403028.jpg
-101403029,Javelin Beetle of the Alliance,Insect,EARTH,8.0,2450.0,2550.0,https://images.ygoprodeck.com/images/cards_cropped/101403029.jpg
 501000000,Ulevo,Winged Beast,EARTH,10.0,3000.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/501000000.jpg
 501000001,Meteo the Matchless,Beast-Warrior,DARK,8.0,2400.0,2000.0,https://images.ygoprodeck.com/images/cards_cropped/501000001.jpg
 501000002,King of Destruction - Xexex,Fiend,DARK,10.0,3000.0,2500.0,https://images.ygoprodeck.com/images/cards_cropped/501000002.jpg
